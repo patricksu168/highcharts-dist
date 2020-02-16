@@ -187,7 +187,7 @@
              *
              * @private
              */
-            drillUpText: '◁ Back to {series.name}'
+            drillUpText: '◁ Back'
         });
         /**
          * Options for drill down, the concept of inspecting increasingly high
