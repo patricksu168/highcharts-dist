@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v8.0.0 (2019-12-10)
+ * @license Highcharts JS v8.0.0 (2020-02-16)
  *
  * Debugger module
  *
@@ -165,17 +165,15 @@
     _registerModule(_modules, 'modules/debugger.src.js', [_modules['parts/Globals.js'], _modules['parts/Utilities.js']], function (H, U) {
         /* *
          *
-         *  (c) 2010-2019 Torstein Honsi
+         *  (c) 2010-2020 Torstein Honsi
          *
          *  License: www.highcharts.com/license
          *
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var isNumber = U.isNumber;
-        var addEvent = H.addEvent,
-            setOptions = H.setOptions,
-            each = H.each;
+        var addEvent = U.addEvent, isNumber = U.isNumber;
+        var setOptions = H.setOptions, each = H.each;
         setOptions({
             /**
              * @optionparent chart
@@ -196,13 +194,7 @@
         });
         /* eslint-disable no-invalid-this */
         addEvent(H.Chart, 'displayError', function (e) {
-            var chart = this,
-                code = e.code,
-                msg,
-                options = chart.options.chart,
-                renderer = chart.renderer,
-                chartWidth,
-                chartHeight;
+            var chart = this, code = e.code, msg, options = chart.options.chart, renderer = chart.renderer, chartWidth, chartHeight;
             if (chart.errorElements) {
                 each(chart.errorElements, function (el) {
                     if (el) {

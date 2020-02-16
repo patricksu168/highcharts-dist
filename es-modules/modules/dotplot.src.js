@@ -1,6 +1,6 @@
 /* *
  *
- *  (c) 2009-2019 Torstein Honsi
+ *  (c) 2009-2020 Torstein Honsi
  *
  *  Dot plot series type for Highcharts
  *
@@ -19,9 +19,8 @@
 'use strict';
 import H from '../parts/Globals.js';
 import U from '../parts/Utilities.js';
-var extend = U.extend, objectEach = U.objectEach, pick = U.pick;
+var extend = U.extend, objectEach = U.objectEach, pick = U.pick, seriesType = U.seriesType;
 import '../parts/Series.js';
-var seriesType = H.seriesType;
 /**
  * @private
  * @class

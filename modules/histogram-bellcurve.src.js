@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v8.0.0 (2019-12-10)
+ * @license Highcharts JS v8.0.0 (2020-02-16)
  *
  * (c) 2010-2019 Highsoft AS
  * Author: Sebastian Domas
@@ -33,10 +33,8 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var defined = U.defined;
-        var Series = H.Series,
-            addEvent = H.addEvent,
-            noop = H.noop;
+        var addEvent = U.addEvent, defined = U.defined;
+        var Series = H.Series, noop = H.noop;
         /* ************************************************************************** *
          *
          * DERIVED SERIES MIXIN
@@ -50,18 +48,17 @@
          * @mixin derivedSeriesMixin
          */
         var derivedSeriesMixin = {
-                hasDerivedData: true,
-                /* eslint-disable valid-jsdoc */
-                /**
-                 * Initialise series
-                 *
-                 * @private
-                 * @function derivedSeriesMixin.init
-                 * @return {void}
-                 */
-                init: function () {
-                    Series.prototype.init.apply(this,
-            arguments);
+            hasDerivedData: true,
+            /* eslint-disable valid-jsdoc */
+            /**
+             * Initialise series
+             *
+             * @private
+             * @function derivedSeriesMixin.init
+             * @return {void}
+             */
+            init: function () {
+                Series.prototype.init.apply(this, arguments);
                 this.initialised = false;
                 this.baseSeries = null;
                 this.eventRemovers = [];
@@ -87,11 +84,9 @@
              * @return {void}
              */
             setBaseSeries: function () {
-                var chart = this.chart,
-                    baseSeriesOptions = this.options.baseSeries,
-                    baseSeries = (defined(baseSeriesOptions) &&
-                        (chart.series[baseSeriesOptions] ||
-                            chart.get(baseSeriesOptions)));
+                var chart = this.chart, baseSeriesOptions = this.options.baseSeries, baseSeries = (defined(baseSeriesOptions) &&
+                    (chart.series[baseSeriesOptions] ||
+                        chart.get(baseSeriesOptions)));
                 this.baseSeries = baseSeries || null;
             },
             /**
@@ -102,8 +97,7 @@
              * @return {void}
              */
             addEvents: function () {
-                var derivedSeries = this,
-                    chartSeriesLinked;
+                var derivedSeries = this, chartSeriesLinked;
                 chartSeriesLinked = addEvent(this.chart, 'afterLinkSeries', function () {
                     derivedSeries.setBaseSeries();
                     if (derivedSeries.baseSeries && !derivedSeries.initialised) {
@@ -123,9 +117,7 @@
              * @return {void}
              */
             addBaseSeriesEvents: function () {
-                var derivedSeries = this,
-                    updatedDataRemover,
-                    destroyRemover;
+                var derivedSeries = this, updatedDataRemover, destroyRemover;
                 updatedDataRemover = addEvent(derivedSeries.baseSeries, 'updatedData', function () {
                     derivedSeries.setDerivedData();
                 });
@@ -152,7 +144,7 @@
 
         return derivedSeriesMixin;
     });
-    _registerModule(_modules, 'modules/histogram.src.js', [_modules['parts/Globals.js'], _modules['parts/Utilities.js'], _modules['mixins/derived-series.js']], function (H, U, derivedSeriesMixin) {
+    _registerModule(_modules, 'modules/histogram.src.js', [_modules['parts/Utilities.js'], _modules['mixins/derived-series.js']], function (U, derivedSeriesMixin) {
         /* *
          *
          *  Copyright (c) 2010-2017 Highsoft AS
@@ -163,13 +155,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var arrayMax = U.arrayMax,
-            arrayMin = U.arrayMin,
-            correctFloat = U.correctFloat,
-            isNumber = U.isNumber,
-            objectEach = U.objectEach;
-        var seriesType = H.seriesType,
-            merge = H.merge;
+        var arrayMax = U.arrayMax, arrayMin = U.arrayMin, correctFloat = U.correctFloat, isNumber = U.isNumber, merge = U.merge, objectEach = U.objectEach, seriesType = U.seriesType;
         /* ************************************************************************** *
          *  HISTOGRAM
          * ************************************************************************** */
@@ -178,8 +164,8 @@
          * base series
          **/
         var binsNumberFormulas = {
-                'square-root': function (baseSeries) {
-                    return Math.ceil(Math.sqrt(baseSeries.options.data.length));
+            'square-root': function (baseSeries) {
+                return Math.ceil(Math.sqrt(baseSeries.options.data.length));
             },
             'sturges': function (baseSeries) {
                 return Math.ceil(Math.log(baseSeries.options.data.length) * Math.LOG2E);
@@ -264,22 +250,14 @@
                 if (!yData.length) {
                     return;
                 }
-                var data = this.derivedData(yData,
-                    this.binsNumber(),
-                    this.options.binWidth);
+                var data = this.derivedData(yData, this.binsNumber(), this.options.binWidth);
                 this.setData(data, false);
             },
             derivedData: function (baseData, binsNumber, binWidth) {
-                var series = this,
-                    max = arrayMax(baseData), 
-                    // Float correction needed, because first frequency value is not
-                    // corrected when generating frequencies (within for loop).
-                    min = correctFloat(arrayMin(baseData)),
-                    frequencies = [],
-                    bins = {},
-                    data = [],
-                    x,
-                    fitToBin;
+                var series = this, max = arrayMax(baseData), 
+                // Float correction needed, because first frequency value is not
+                // corrected when generating frequencies (within for loop).
+                min = correctFloat(arrayMin(baseData)), frequencies = [], bins = {}, data = [], x, fitToBin;
                 binWidth = series.binWidth = series.options.pointRange = (correctFloat(isNumber(binWidth) ?
                     (binWidth || 1) :
                     (max - min) / binsNumber));
@@ -323,8 +301,8 @@
             binsNumber: function () {
                 var binsNumberOption = this.options.binsNumber;
                 var binsNumber = binsNumberFormulas[binsNumberOption] ||
-                        // #7457
-                        (typeof binsNumberOption === 'function' && binsNumberOption);
+                    // #7457
+                    (typeof binsNumberOption === 'function' && binsNumberOption);
                 return Math.ceil((binsNumber && binsNumber(this.baseSeries)) ||
                     (isNumber(binsNumberOption) ?
                         binsNumberOption :
@@ -352,10 +330,10 @@
         ''; // adds doclets above to transpiled file
 
     });
-    _registerModule(_modules, 'modules/bellcurve.src.js', [_modules['parts/Globals.js'], _modules['parts/Utilities.js'], _modules['mixins/derived-series.js']], function (H, U, derivedSeriesMixin) {
+    _registerModule(_modules, 'modules/bellcurve.src.js', [_modules['parts/Utilities.js'], _modules['mixins/derived-series.js']], function (U, derivedSeriesMixin) {
         /* *
          *
-         *  (c) 2010-2019 Highsoft AS
+         *  (c) 2010-2020 Highsoft AS
          *
          *  Author: Sebastian Domas
          *
@@ -364,10 +342,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var correctFloat = U.correctFloat,
-            isNumber = U.isNumber;
-        var seriesType = H.seriesType,
-            merge = H.merge;
+        var correctFloat = U.correctFloat, isNumber = U.isNumber, merge = U.merge, seriesType = U.seriesType;
         /* ************************************************************************** *
          *  BELL CURVE                                                                *
          * ************************************************************************** */
@@ -376,10 +351,8 @@
          * @private
          */
         function mean(data) {
-            var length = data.length,
-                sum = data.reduce(function (sum,
-                value) {
-                    return (sum += value);
+            var length = data.length, sum = data.reduce(function (sum, value) {
+                return (sum += value);
             }, 0);
             return length > 0 && sum / length;
         }
@@ -387,8 +360,7 @@
          * @private
          */
         function standardDeviation(data, average) {
-            var len = data.length,
-                sum;
+            var len = data.length, sum;
             average = isNumber(average) ? average : mean(data);
             sum = data.reduce(function (sum, value) {
                 var diff = value - average;
@@ -468,13 +440,7 @@
                 return (void 0);
             },
             derivedData: function (mean, standardDeviation) {
-                var intervals = this.options.intervals,
-                    pointsInInterval = this.options.pointsInInterval,
-                    x = mean - intervals * standardDeviation,
-                    stop = intervals * pointsInInterval * 2 + 1,
-                    increment = standardDeviation / pointsInInterval,
-                    data = [],
-                    i;
+                var intervals = this.options.intervals, pointsInInterval = this.options.pointsInInterval, x = mean - intervals * standardDeviation, stop = intervals * pointsInInterval * 2 + 1, increment = standardDeviation / pointsInInterval, data = [], i;
                 for (i = 0; i < stop; i++) {
                     data.push([x, normalDensity(x, mean, standardDeviation)]);
                     x += increment;

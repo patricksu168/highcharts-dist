@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.0 (2019-12-10)
+ * @license Highstock JS v8.0.0 (2020-02-16)
  *
  * Indicator series type for Highstock
  *
@@ -28,7 +28,7 @@
             obj[path] = fn.apply(null, args);
         }
     }
-    _registerModule(_modules, 'indicators/trendline.src.js', [_modules['parts/Globals.js'], _modules['parts/Utilities.js']], function (H, U) {
+    _registerModule(_modules, 'indicators/trendline.src.js', [_modules['parts/Utilities.js']], function (U) {
         /* *
          *
          *  License: www.highcharts.com/license
@@ -36,8 +36,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var isArray = U.isArray;
-        var seriesType = H.seriesType;
+        var isArray = U.isArray, seriesType = U.seriesType;
         /**
          * The Trend line series type.
          *
@@ -85,22 +84,7 @@
             nameBase: 'Trendline',
             nameComponents: false,
             getValues: function (series, params) {
-                var xVal = series.xData,
-                    yVal = series.yData,
-                    LR = [],
-                    xData = [],
-                    yData = [],
-                    sumX = 0,
-                    sumY = 0,
-                    sumXY = 0,
-                    sumX2 = 0,
-                    xValLength = xVal.length,
-                    index = params.index,
-                    alpha,
-                    beta,
-                    i,
-                    x,
-                    y;
+                var xVal = series.xData, yVal = series.yData, LR = [], xData = [], yData = [], sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, xValLength = xVal.length, index = params.index, alpha, beta, i, x, y;
                 // Get sums:
                 for (i = 0; i < xValLength; i++) {
                     x = xVal[i];

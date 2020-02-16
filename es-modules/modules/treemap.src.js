@@ -1,6 +1,6 @@
 /* *
  *
- *  (c) 2014-2019 Highsoft AS
+ *  (c) 2014-2020 Highsoft AS
  *
  *  Authors: Jon Arild Nygard / Oystein Moseng
  *
@@ -13,18 +13,19 @@
 import H from '../parts/Globals.js';
 import mixinTreeSeries from '../mixins/tree-series.js';
 import drawPoint from '../mixins/draw-point.js';
+import Color from '../parts/Color.js';
+var color = Color.parse;
 import U from '../parts/Utilities.js';
-var correctFloat = U.correctFloat, defined = U.defined, extend = U.extend, isArray = U.isArray, isNumber = U.isNumber, isObject = U.isObject, isString = U.isString, objectEach = U.objectEach, pick = U.pick;
+var addEvent = U.addEvent, correctFloat = U.correctFloat, defined = U.defined, error = U.error, extend = U.extend, fireEvent = U.fireEvent, isArray = U.isArray, isNumber = U.isNumber, isObject = U.isObject, isString = U.isString, merge = U.merge, objectEach = U.objectEach, pick = U.pick, seriesType = U.seriesType, stableSort = U.stableSort;
 import '../parts/Options.js';
 import '../parts/Series.js';
-import '../parts/Color.js';
 /* eslint-disable no-invalid-this */
 var AXIS_MAX = 100;
-var seriesType = H.seriesType, seriesTypes = H.seriesTypes, addEvent = H.addEvent, merge = H.merge, error = H.error, noop = H.noop, fireEvent = H.fireEvent, getColor = mixinTreeSeries.getColor, getLevelOptions = mixinTreeSeries.getLevelOptions, 
+var seriesTypes = H.seriesTypes, noop = H.noop, getColor = mixinTreeSeries.getColor, getLevelOptions = mixinTreeSeries.getLevelOptions, 
 // @todo Similar to eachObject, this function is likely redundant
 isBoolean = function (x) {
     return typeof x === 'boolean';
-}, Series = H.Series, stableSort = H.stableSort, color = H.Color, 
+}, Series = H.Series, 
 // @todo Similar to recursive, this function is likely redundant
 eachObject = function (list, func, context) {
     context = context || this;
@@ -41,7 +42,7 @@ recursive = function (item, func, context) {
     if (next !== false) {
         recursive(next, func, context);
     }
-}, updateRootId = mixinTreeSeries.updateRootId;
+}, updateRootId = mixinTreeSeries.updateRootId, treemapAxisDefaultValues = false;
 /* eslint-enable no-invalid-this */
 /**
  * @private
@@ -59,7 +60,7 @@ seriesType('treemap', 'scatter'
  *         Treemap
  *
  * @extends      plotOptions.scatter
- * @excluding    dragDrop, marker, jitter
+ * @excluding    dragDrop, marker, jitter, dataSorting
  * @product      highcharts
  * @requires     modules/treemap
  * @optionparent plotOptions.treemap
@@ -1361,25 +1362,6 @@ seriesType('treemap', 'scatter'
         Series.prototype.getExtremes.call(this);
     },
     getExtremesFromAll: true,
-    bindAxes: function () {
-        var treeAxis = {
-            endOnTick: false,
-            gridLineWidth: 0,
-            lineWidth: 0,
-            min: 0,
-            dataMin: 0,
-            minPadding: 0,
-            max: AXIS_MAX,
-            dataMax: AXIS_MAX,
-            maxPadding: 0,
-            startOnTick: false,
-            title: null,
-            tickPositions: []
-        };
-        Series.prototype.bindAxes.call(this);
-        extend(this.yAxis.options, treeAxis);
-        extend(this.xAxis.options, treeAxis);
-    },
     /**
      * Workaround for `inactive` state. Since `series.opacity` option is
      * already reserved, don't use that state at all by disabling
@@ -1438,14 +1420,43 @@ seriesType('treemap', 'scatter'
         var point = this;
         return isNumber(point.plotY) && point.y !== null;
     }
-    /* eslint-enable no-invalid-this, valid-jsdoc */
 });
+addEvent(H.Series, 'afterBindAxes', function () {
+    var series = this, xAxis = series.xAxis, yAxis = series.yAxis, treeAxis;
+    if (xAxis && yAxis) {
+        if (series.is('treemap')) {
+            treeAxis = {
+                endOnTick: false,
+                gridLineWidth: 0,
+                lineWidth: 0,
+                min: 0,
+                dataMin: 0,
+                minPadding: 0,
+                max: AXIS_MAX,
+                dataMax: AXIS_MAX,
+                maxPadding: 0,
+                startOnTick: false,
+                title: null,
+                tickPositions: []
+            };
+            extend(yAxis.options, treeAxis);
+            extend(xAxis.options, treeAxis);
+            treemapAxisDefaultValues = true;
+        }
+        else if (treemapAxisDefaultValues) {
+            yAxis.setOptions(yAxis.userOptions);
+            xAxis.setOptions(xAxis.userOptions);
+            treemapAxisDefaultValues = false;
+        }
+    }
+});
+/* eslint-enable no-invalid-this, valid-jsdoc */
 /**
  * A `treemap` series. If the [type](#series.treemap.type) option is
  * not specified, it is inherited from [chart.type](#chart.type).
  *
  * @extends   series,plotOptions.treemap
- * @excluding dataParser, dataURL, stack
+ * @excluding dataParser, dataURL, stack, dataSorting
  * @product   highcharts
  * @requires  modules/treemap
  * @apioption series.treemap

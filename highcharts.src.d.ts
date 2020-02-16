@@ -38,6 +38,15 @@ export type AlignValue = ("center"|"left"|"right");
  *        The SVG element to animate.
  */
 export type AnimationStepCallbackFunction = (this: SVGElement) => void;
+/**
+ * Callback to modify annotation's possitioner controls.
+ */
+export type AnnotationControlPointPositionerFunction = (this: AnnotationControlPoint, target: AnnotationControllable) => PositionObject;
+/**
+ * Possible directions for draggable annotations. An empty string (`''`) makes
+ * the annotation undraggable.
+ */
+export type AnnotationDraggableValue = (''|'x'|'xy'|'y');
 export type AxisEventCallbackFunction = (this: Axis) => void;
 export type AxisExtremesTriggerValue = ("navigator"|"pan"|"scrollbar"|"zoom"|"rangeSelectorButton"|"rangeSelectorInput"|"traverseUpButton");
 /**
@@ -392,7 +401,6 @@ export type OptionsApproximationValue = ("barnes-hut"|"none");
 export type OptionsBoostBlendingValue = ("add"|"darken"|"multiply");
 export type OptionsDataClassColorValue = ("category"|"tween");
 export type OptionsDateFormatValue = ("dd/mm/YY"|"dd/mm/YYYY"|"mm/dd/YY"|"mm/dd/YYYY"|"YYYY/mm/dd");
-export type OptionsDraggableValue = (""|"x"|"xy"|"y");
 export type OptionsFindNearestPointByValue = ("x"|"xy");
 export type OptionsGapUnitValue = ("relative"|"value");
 export type OptionsGridLineInterpolationValue = ("circle"|"polygon");
@@ -414,7 +422,7 @@ export type OptionsPinchTypeValue = ("x"|"xy"|"y");
 export type OptionsPointIntervalUnitValue = ("day"|"month"|"year");
 export type OptionsPointValKeyValue = ("close"|"high"|"low"|"open");
 export type OptionsPosition3dValue = ("chart"|"flap"|"offset"|"ortho");
-export type OptionsRotationModeValue = ("auto"|"parallel"|"perpendicular");
+export type OptionsRotationModeValue = ("auto"|"circular"|"parallel"|"perpendicular");
 export type OptionsRotationOriginValue = ("center"|"end"|"start");
 export type OptionsStackingValue = ("normal"|"overlap"|"percent"|"stream");
 export type OptionsStepValue = ("center"|"left"|"right");
@@ -720,15 +728,15 @@ export type SeriesNetworkgraphDataLabelsFormatterCallbackFunction = (this: (Data
 export type SeriesOptionsType = (SeriesAbandsOptions|SeriesAdOptions|SeriesAoOptions|SeriesApoOptions|SeriesAreaOptions|SeriesArearangeOptions|SeriesAreasplineOptions|SeriesAreasplinerangeOptions|
 SeriesAroonOptions|SeriesAroonoscillatorOptions|SeriesAtrOptions|SeriesBarOptions|SeriesBbOptions|SeriesBellcurveOptions|SeriesBoxplotOptions|SeriesBubbleOptions|SeriesBulletOptions|
 SeriesCandlestickOptions|SeriesCciOptions|SeriesChaikinOptions|SeriesCmfOptions|SeriesColumnOptions|SeriesColumnpyramidOptions|SeriesColumnrangeOptions|SeriesCylinderOptions|SeriesDemaOptions|
-SeriesDependencywheelOptions|SeriesDpoOptions|SeriesEmaOptions|SeriesErrorbarOptions|SeriesFlagsOptions|SeriesFunnel3dOptions|SeriesFunnelOptions|SeriesGanttOptions|SeriesGaugeOptions|
-SeriesHeatmapOptions|SeriesHistogramOptions|SeriesIkhOptions|SeriesItemOptions|SeriesKeltnerchannelsOptions|SeriesLinearregressionangleOptions|SeriesLinearregressioninterceptOptions|
-SeriesLinearregressionOptions|SeriesLinearregressionslopeOptions|SeriesLineOptions|SeriesMacdOptions|SeriesMapbubbleOptions|SeriesMaplineOptions|SeriesMapOptions|SeriesMappointOptions|
-SeriesMfiOptions|SeriesMomentumOptions|SeriesNatrOptions|SeriesNetworkgraphOptions|SeriesOhlcOptions|SeriesOrganizationOptions|SeriesPackedbubbleOptions|SeriesParetoOptions|SeriesPcOptions|
-SeriesPieOptions|SeriesPivotpointsOptions|SeriesPolygonOptions|SeriesPpoOptions|SeriesPriceenvelopesOptions|SeriesPsarOptions|SeriesPyramid3dOptions|SeriesPyramidOptions|SeriesRocOptions|
-SeriesRsiOptions|SeriesSankeyOptions|SeriesScatter3dOptions|SeriesScatterOptions|SeriesSlowstochasticOptions|SeriesSmaOptions|SeriesSolidgaugeOptions|SeriesSplineOptions|SeriesStochasticOptions|
-SeriesStreamgraphOptions|SeriesSunburstOptions|SeriesSupertrendOptions|SeriesTemaOptions|SeriesTilemapOptions|SeriesTimelineOptions|SeriesTreemapOptions|SeriesTrendlineOptions|SeriesTrixOptions|
-SeriesVariablepieOptions|SeriesVariwideOptions|SeriesVbpOptions|SeriesVectorOptions|SeriesVennOptions|SeriesVwapOptions|SeriesWaterfallOptions|SeriesWilliamsrOptions|SeriesWindbarbOptions|
-SeriesWmaOptions|SeriesWordcloudOptions|SeriesXrangeOptions|SeriesZigzagOptions);
+SeriesDependencywheelOptions|SeriesDpoOptions|SeriesDumbbellOptions|SeriesEmaOptions|SeriesErrorbarOptions|SeriesFlagsOptions|SeriesFunnel3dOptions|SeriesFunnelOptions|SeriesGanttOptions|
+SeriesGaugeOptions|SeriesHeatmapOptions|SeriesHistogramOptions|SeriesIkhOptions|SeriesItemOptions|SeriesKeltnerchannelsOptions|SeriesLinearregressionangleOptions|
+SeriesLinearregressioninterceptOptions|SeriesLinearregressionOptions|SeriesLinearregressionslopeOptions|SeriesLineOptions|SeriesLollipopOptions|SeriesMacdOptions|SeriesMapbubbleOptions|
+SeriesMaplineOptions|SeriesMapOptions|SeriesMappointOptions|SeriesMfiOptions|SeriesMomentumOptions|SeriesNatrOptions|SeriesNetworkgraphOptions|SeriesOhlcOptions|SeriesOrganizationOptions|
+SeriesPackedbubbleOptions|SeriesParetoOptions|SeriesPcOptions|SeriesPieOptions|SeriesPivotpointsOptions|SeriesPolygonOptions|SeriesPpoOptions|SeriesPriceenvelopesOptions|SeriesPsarOptions|
+SeriesPyramid3dOptions|SeriesPyramidOptions|SeriesRocOptions|SeriesRsiOptions|SeriesSankeyOptions|SeriesScatter3dOptions|SeriesScatterOptions|SeriesSlowstochasticOptions|SeriesSmaOptions|
+SeriesSolidgaugeOptions|SeriesSplineOptions|SeriesStochasticOptions|SeriesStreamgraphOptions|SeriesSunburstOptions|SeriesSupertrendOptions|SeriesTemaOptions|SeriesTilemapOptions|SeriesTimelineOptions|
+SeriesTreemapOptions|SeriesTrendlineOptions|SeriesTrixOptions|SeriesVariablepieOptions|SeriesVariwideOptions|SeriesVbpOptions|SeriesVectorOptions|SeriesVennOptions|SeriesVwapOptions|
+SeriesWaterfallOptions|SeriesWilliamsrOptions|SeriesWindbarbOptions|SeriesWmaOptions|SeriesWordcloudOptions|SeriesXrangeOptions|SeriesZigzagOptions);
 /**
  * Layout value for the child nodes in an organization chart. If `hanging`, this
  * node's children will hang below their parent, allowing a tighter packing of
@@ -810,6 +818,23 @@ export type TimeFormatCallbackFunction = (timestamp: number) => string;
  * @return Formatted data label text
  */
 export type TimelineDataLabelsFormatterCallbackFunction = (this: (DataLabelsFormatterContextObject|TimelineDataLabelsFormatterContextObject)) => (number|string|null|undefined);
+/**
+ * Time units used in `Time.get` and `Time.set`
+ */
+export type TimeUnitValue = ("Date"|"Day"|"FullYear"|"Hours"|"Milliseconds"|"Minutes"|"Month"|"Seconds");
+/**
+ * A callback to return the time zone offset for a given datetime. It takes the
+ * timestamp in terms of milliseconds since January 1 1970, and returns the
+ * timezone offset in minutes. This provides a hook for drawing time based
+ * charts in specific time zones using their local DST crossover dates, with the
+ * help of external libraries.
+ *
+ * @param timestamp
+ *        Timestamp in terms of milliseconds since January 1 1970.
+ *
+ * @return Timezone offset in minutes.
+ */
+export type TimezoneOffsetCallbackFunction = (timestamp: number) => number;
 /**
  * Callback function to format the text of the tooltip from scratch.
  *
@@ -1058,45 +1083,15 @@ export interface AccessibilityOptions {
  */
 export interface AccessibilityPointOptions {
     /**
-     * (Highcharts, Highstock, Highmaps, Gantt) Date format to use for points on
-     * datetime axes when describing them to screen reader users.
+     * (Highcharts, Highstock, Highmaps, Gantt) Format to use for describing the
+     * values of data points to assistive technology - including screen readers.
+     * The point context is available as `{point}`.
      *
-     * Defaults to the same format as in tooltip.
-     *
-     * For an overview of the replacement codes, see dateFormat.
+     * Additionally, the series name, annotation info, and description added in
+     * `point.accessibility.description` is added by default if relevant. To
+     * override this, use the accessibility.point.descriptionFormatter option.
      */
-    dateFormat?: string;
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) Formatter function to determine
-     * the date/time format used with points on datetime axes when describing
-     * them to screen reader users. Receives one argument, `point`, referring to
-     * the point to describe. Should return a date format string compatible with
-     * dateFormat.
-     */
-    dateFormatter?: ScreenReaderFormatterCallbackFunction<Point>;
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) Formatter function to use
-     * instead of the default for point descriptions. Receives one argument,
-     * `point`, referring to the point to describe. Should return a string with
-     * the description of the point for a screen reader user. If `false` is
-     * returned, the default formatter will be used for that point.
-     */
-    descriptionFormatter?: ScreenReaderFormatterCallbackFunction<Point>;
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) Decimals to use for the values
-     * in the point descriptions. Uses tooltip.valueDecimals if not defined.
-     */
-    valueDecimals?: number;
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) Prefix to add to the values in
-     * the point descriptions. Uses tooltip.valuePrefix if not defined.
-     */
-    valuePrefix?: string;
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) Suffix to add to the values in
-     * the point descriptions. Uses tooltip.valueSuffix if not defined.
-     */
-    valueSuffix?: string;
+    valueDescriptionFormat?: string;
 }
 /**
  * (Highcharts, Highstock, Highmaps, Gantt) Accessibility options for the screen
@@ -1124,10 +1119,11 @@ export interface AccessibilityScreenReaderSectionOptions {
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) Format for the screen reader
      * information region before the chart. Supported HTML tags are `<h1-7>`,
-     * `<p>`, `<div>`, `<a>`, and `<button>`. Attributes are not supported,
-     * except for id on `<div>`, `<a>`, and `<button>`. Id is required on `<a>`
-     * and `<button>` in the format `<tag id="abcd">`. Numbers, lower- and
-     * uppercase letters, "-" and "#" are valid characters in IDs.
+     * `<p>`, `<div>`, `<a>`, `<ul>`, `<ol>`, `<li>`, and `<button>`. Attributes
+     * are not supported, except for id on `<div>`, `<a>`, and `<button>`. Id is
+     * required on `<a>` and `<button>` in the format `<tag id="abcd">`.
+     * Numbers, lower- and uppercase letters, "-" and "#" are valid characters
+     * in IDs.
      */
     beforeChartFormat?: string;
     /**
@@ -1227,19 +1223,56 @@ export interface AnimationOptionsObject {
      */
     step?: Function;
 }
+export interface AnnotationControllable {
+    annotation: Annotation;
+    chart: Chart;
+    collection: string;
+    points: Array<Point>;
+}
 /**
  * (Highcharts, Highstock, Highmaps, Gantt) Options for annotation's control
  * points. Each control point inherits options from controlPointOptions object.
  * Options from the controlPointOptions can be overwritten by options in a
  * specific control point.
  */
-export interface AnnotationsControlPointOptions {
+export interface AnnotationControlPointOptionsObject {
     height?: number;
-    positioner?: object;
-    style?: AnnotationsControlPointStyleOptions;
+    positioner?: AnnotationControlPointPositionerFunction;
+    style?: (AnnotationsControlPointStyleOptions|NavigationAnnotationsControlPointStyleOptions);
     symbol?: string;
     visible?: boolean;
     width?: number;
+}
+/**
+ * (Highcharts, Highstock, Highmaps, Gantt) An array of points for the shape.
+ * This option is available for shapes which can use multiple points such as
+ * path. A point can be either a point object or a point's id.
+ */
+export interface AnnotationMockPointOptionsObject {
+    /**
+     * (Highcharts, Highstock, Highmaps, Gantt) The x position of the point.
+     * Units can be either in axis or chart pixel coordinates.
+     */
+    x?: number;
+    /**
+     * (Highcharts, Highstock, Highmaps, Gantt) This number defines which xAxis
+     * the point is connected to. It refers to either the axis id or the index
+     * of the axis in the xAxis array. If the option is not configured or the
+     * axis is not found the point's x coordinate refers to the chart pixels.
+     */
+    xAxis?: (number|string|null);
+    /**
+     * (Highcharts, Highstock, Highmaps, Gantt) The y position of the point.
+     * Units can be either in axis or chart pixel coordinates.
+     */
+    y?: number;
+    /**
+     * (Highcharts, Highstock, Highmaps, Gantt) This number defines which yAxis
+     * the point is connected to. It refers to either the axis id or the index
+     * of the axis in the yAxis array. If the option is not configured or the
+     * axis is not found the point's y coordinate refers to the chart pixels.
+     */
+    yAxis?: (number|string|null);
 }
 export interface AnnotationsControlPointStyleOptions {
     fill?: string;
@@ -1400,6 +1433,11 @@ export interface AnnotationsCrookedLineShapeOptions {
      * this annotation to focus. Defined in pixels.
      */
     snap?: number;
+    /**
+     * (Highstock) The URL for an image to use as the annotation shape. Note,
+     * type has to be set to `'image'`.
+     */
+    src?: string;
     /**
      * (Highstock) The color of the shape's stroke.
      */
@@ -1609,6 +1647,11 @@ export interface AnnotationsElliottWaveShapeOptions {
      * this annotation to focus. Defined in pixels.
      */
     snap?: number;
+    /**
+     * (Highstock) The URL for an image to use as the annotation shape. Note,
+     * type has to be set to `'image'`.
+     */
+    src?: string;
     /**
      * (Highstock) The color of the shape's stroke.
      */
@@ -1957,6 +2000,11 @@ export interface AnnotationsFibonacciShapeOptions {
      */
     snap?: number;
     /**
+     * (Highstock) The URL for an image to use as the annotation shape. Note,
+     * type has to be set to `'image'`.
+     */
+    src?: string;
+    /**
      * (Highstock) The color of the shape's stroke.
      */
     stroke?: ColorString;
@@ -2099,7 +2147,7 @@ export interface AnnotationsFibonacciTypeOptions {
     /**
      * (Highstock) An array with options for the labels.
      */
-    labels?: (AnnotationsFibonacciTypeLabelsOptions|Array<object>);
+    labels?: Array<AnnotationsFibonacciTypeLabelsOptions>;
     /**
      * (Highstock) Line options.
      */
@@ -2289,6 +2337,11 @@ export interface AnnotationsInfinityLineShapeOptions {
      * this annotation to focus. Defined in pixels.
      */
     snap?: number;
+    /**
+     * (Highstock) The URL for an image to use as the annotation shape. Note,
+     * type has to be set to `'image'`.
+     */
+    src?: string;
     /**
      * (Highstock) The color of the shape's stroke.
      */
@@ -2543,7 +2596,7 @@ export interface AnnotationsLabelsOptions {
      * exists in the series - it is referenced by the point's id - or a new
      * point with defined x, y properties and optionally axes.
      */
-    point?: (string|AnnotationsLabelsPointOptions|MockPointOptionsObject);
+    point?: (string|AnnotationMockPointOptionsObject);
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) The shadow of the box. The
      * shadow can be an object configuration containing `color`, `offsetX`,
@@ -2587,38 +2640,6 @@ export interface AnnotationsLabelsOptions {
      * distance takes precedence over `x` and `y` options.
      */
     y?: number;
-}
-/**
- * (Highcharts, Highstock, Highmaps, Gantt) This option defines the point to
- * which the label will be connected. It can be either the point which exists in
- * the series - it is referenced by the point's id - or a new point with defined
- * x, y properties and optionally axes.
- */
-export interface AnnotationsLabelsPointOptions {
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) The x position of the point.
-     * Units can be either in axis or chart pixel coordinates.
-     */
-    x?: number;
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) This number defines which xAxis
-     * the point is connected to. It refers to either the axis id or the index
-     * of the axis in the xAxis array. If the option is not configured or the
-     * axis is not found the point's x coordinate refers to the chart pixels.
-     */
-    xAxis?: (number|string);
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) The y position of the point.
-     * Units can be either in axis or chart pixel coordinates.
-     */
-    y?: number;
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) This number defines which yAxis
-     * the point is connected to. It refers to either the axis id or the index
-     * of the axis in the yAxis array. If the option is not configured or the
-     * axis is not found the point's y coordinate refers to the chart pixels.
-     */
-    yAxis?: (number|string);
 }
 export interface AnnotationsMeasureControlPointOptions {
     events?: any;
@@ -2789,17 +2810,17 @@ export interface AnnotationsOptions {
      * object. Options from the controlPointOptions can be overwritten by
      * options in a specific control point.
      */
-    controlPointOptions?: (object|AnnotationsControlPointOptions);
+    controlPointOptions?: AnnotationControlPointOptionsObject;
     /**
      * (Highstock) A crooked line annotation.
      */
     crookedLine?: AnnotationsCrookedLineOptions;
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) Allow an annotation to be
-     * draggable by a user. Possible values are `"x"`, `"xy"`, `"y"` and `""`
+     * draggable by a user. Possible values are `'x'`, `'xy'`, `'y'` and `''`
      * (disabled).
      */
-    draggable?: OptionsDraggableValue;
+    draggable?: AnnotationDraggableValue;
     /**
      * (Highstock) An elliott wave annotation.
      */
@@ -3027,6 +3048,11 @@ export interface AnnotationsPitchforkShapeOptions {
      */
     snap?: number;
     /**
+     * (Highstock) The URL for an image to use as the annotation shape. Note,
+     * type has to be set to `'image'`.
+     */
+    src?: string;
+    /**
      * (Highstock) The color of the shape's stroke.
      */
     stroke?: ColorString;
@@ -3056,6 +3082,11 @@ export interface AnnotationsPitchforkTypeInnerBackgroundOptions {
      * this annotation to focus. Defined in pixels.
      */
     snap?: number;
+    /**
+     * (Highstock) The URL for an image to use as the annotation shape. Note,
+     * type has to be set to `'image'`.
+     */
+    src?: string;
     /**
      * (Highstock) The color of the shape's stroke.
      */
@@ -3113,6 +3144,11 @@ export interface AnnotationsPitchforkTypeOuterBackgroundOptions {
      */
     snap?: number;
     /**
+     * (Highstock) The URL for an image to use as the annotation shape. Note,
+     * type has to be set to `'image'`.
+     */
+    src?: string;
+    /**
      * (Highstock) The color of the shape's stroke.
      */
     stroke?: ColorString;
@@ -3155,6 +3191,11 @@ export interface AnnotationsShapeOptions {
      * around an annotation making this annotation to focus. Defined in pixels.
      */
     snap?: number;
+    /**
+     * (Highcharts, Highstock, Highmaps, Gantt) The URL for an image to use as
+     * the annotation shape. Note, type has to be set to `'image'`.
+     */
+    src?: string;
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) The color of the shape's stroke.
      */
@@ -3206,13 +3247,13 @@ export interface AnnotationsShapesOptions {
      * exists in the series - it is referenced by the point's id - or a new
      * point with defined x, y properties and optionally axes.
      */
-    point?: (string|AnnotationsShapesPointOptions|MockPointOptionsObject);
+    point?: (string|AnnotationMockPointOptionsObject);
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) An array of points for the
      * shape. This option is available for shapes which can use multiple points
      * such as path. A point can be either a point object or a point's id.
      */
-    points?: (AnnotationsShapesPointsOptions|Array<(string|MockPointOptionsObject)>);
+    points?: Array<(string|AnnotationMockPointOptionsObject)>;
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) The radius of the shape.
      */
@@ -3222,6 +3263,11 @@ export interface AnnotationsShapesOptions {
      * around an annotation making this annotation to focus. Defined in pixels.
      */
     snap?: number;
+    /**
+     * (Highcharts, Highstock, Highmaps, Gantt) The URL for an image to use as
+     * the annotation shape. Note, type has to be set to `'image'`.
+     */
+    src?: string;
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) The color of the shape's stroke.
      */
@@ -3240,69 +3286,6 @@ export interface AnnotationsShapesOptions {
      * (Highcharts, Highstock, Highmaps, Gantt) The width of the shape.
      */
     width?: number;
-}
-/**
- * (Highcharts, Highstock, Highmaps, Gantt) This option defines the point to
- * which the shape will be connected. It can be either the point which exists in
- * the series - it is referenced by the point's id - or a new point with defined
- * x, y properties and optionally axes.
- */
-export interface AnnotationsShapesPointOptions {
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) The x position of the point.
-     * Units can be either in axis or chart pixel coordinates.
-     */
-    x?: number;
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) This number defines which xAxis
-     * the point is connected to. It refers to either the axis id or the index
-     * of the axis in the xAxis array. If the option is not configured or the
-     * axis is not found the point's x coordinate refers to the chart pixels.
-     */
-    xAxis?: (number|string);
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) The y position of the point.
-     * Units can be either in axis or chart pixel coordinates.
-     */
-    y?: number;
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) This number defines which yAxis
-     * the point is connected to. It refers to either the axis id or the index
-     * of the axis in the yAxis array. If the option is not configured or the
-     * axis is not found the point's y coordinate refers to the chart pixels.
-     */
-    yAxis?: (number|string);
-}
-/**
- * (Highcharts, Highstock, Highmaps, Gantt) An array of points for the shape.
- * This option is available for shapes which can use multiple points such as
- * path. A point can be either a point object or a point's id.
- */
-export interface AnnotationsShapesPointsOptions {
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) The x position of the point.
-     * Units can be either in axis or chart pixel coordinates.
-     */
-    x?: number;
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) This number defines which xAxis
-     * the point is connected to. It refers to either the axis id or the index
-     * of the axis in the xAxis array. If the option is not configured or the
-     * axis is not found the point's x coordinate refers to the chart pixels.
-     */
-    xAxis?: (number|string);
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) The y position of the point.
-     * Units can be either in axis or chart pixel coordinates.
-     */
-    y?: number;
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) This number defines which yAxis
-     * the point is connected to. It refers to either the axis id or the index
-     * of the axis in the yAxis array. If the option is not configured or the
-     * axis is not found the point's y coordinate refers to the chart pixels.
-     */
-    yAxis?: (number|string);
 }
 export interface AnnotationsTunnelControlPointOptions {
     events?: any;
@@ -3458,6 +3441,11 @@ export interface AnnotationsTunnelShapeOptions {
      * this annotation to focus. Defined in pixels.
      */
     snap?: number;
+    /**
+     * (Highstock) The URL for an image to use as the annotation shape. Note,
+     * type has to be set to `'image'`.
+     */
+    src?: string;
     /**
      * (Highstock) The color of the shape's stroke.
      */
@@ -3691,6 +3679,11 @@ export interface AnnotationsVerticalLineShapeOptions {
      */
     snap?: number;
     /**
+     * (Highstock) The URL for an image to use as the annotation shape. Note,
+     * type has to be set to `'image'`.
+     */
+    src?: string;
+    /**
      * (Highstock) The color of the shape's stroke.
      */
     stroke?: ColorString;
@@ -3721,6 +3714,11 @@ export interface AnnotationsVerticalLineTypeConnectorOptions {
      * this annotation to focus. Defined in pixels.
      */
     snap?: number;
+    /**
+     * (Highstock) The URL for an image to use as the annotation shape. Note,
+     * type has to be set to `'image'`.
+     */
+    src?: string;
     /**
      * (Highstock) The color of the shape's stroke.
      */
@@ -4767,6 +4765,10 @@ export interface ChartOptions {
      *
      * - **easing**: A string reference to an easing function set on the `Math`
      * object. See the easing demo.
+     *
+     * When zooming on a series with less than 100 points, the chart redraw will
+     * be done with animation, but in case of more data points, it is necessary
+     * to set this option to ensure animation on zoom.
      */
     animation?: (boolean|AnimationOptionsObject);
     /**
@@ -4978,6 +4980,13 @@ export interface ChartOptions {
      * _polar charts_, also known as _radar charts_.
      */
     polar?: boolean;
+    /**
+     * (Highmaps) Allows to manually load the proj4 library from Highcharts
+     * options instead of the `window`. In case of loading the library from a
+     * `script` tag, this option is not needed, it will be loaded from there by
+     * default.
+     */
+    proj4?: Function;
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) Whether to reflow the chart to
      * fit the width of the container div on resizing the window.
@@ -8106,6 +8115,34 @@ export interface DataSortingOptionsObject {
      */
     sortKey?: string;
 }
+export interface DefsArrowOptions {
+    children?: Array<DefsOptions>;
+    id?: string;
+    markerHeight?: number;
+    markerWidth?: number;
+    refX?: number;
+    refY?: number;
+    render?: boolean;
+    tagName?: string;
+}
+/**
+ * (Highcharts, Highstock, Highmaps, Gantt) Styled mode only. Configuration
+ * object for adding SVG definitions for reusable elements. See gradients,
+ * shadows and patterns for more information and code examples.
+ */
+export interface DefsOptions {
+    arrow?: (DefsArrowOptions|SVGDefinitionObject);
+    "reverse-arrow"?: (DefsReverseArrowOptions|SVGDefinitionObject);
+}
+export interface DefsReverseArrowOptions {
+    id?: string;
+    markerHeight?: number;
+    markerWidth?: number;
+    refX?: number;
+    refY?: number;
+    render?: boolean;
+    tagName?: string;
+}
 /**
  * Generic dictionary in TypeScript notation.
  */
@@ -8447,7 +8484,7 @@ export interface ExportingAccessibilityOptions {
      * (Highcharts, Highstock, Highmaps, Gantt) Enable accessibility support for
      * the export menu.
      */
-    enabled?: object;
+    enabled?: boolean;
 }
 /**
  * (Highcharts, Highstock, Highmaps, Gantt) A configuration object for the
@@ -8808,6 +8845,9 @@ export interface ExportingOptions {
      *
      * - **textKey:** If internationalization is required, the key to a language
      * string
+     *
+     * Custom text for the "exitFullScreen" can be set only in lang options (it
+     * is not a separate button).
      */
     menuItemDefinitions?: Dictionary<ExportingMenuObject>;
     /**
@@ -8949,6 +8989,12 @@ export interface GanttPointOptionsObject {
      * number, the `fill` will be applied automatically.
      */
     completed?: (number|XrangePointPartialFillOptionsObject);
+    /**
+     * (Gantt) A reserved subspace to store options and values for customized
+     * functionality. Here you can add additional data for your own event
+     * callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
     /**
      * (Gantt) The ID of the point (task) that this point depends on in Gantt
      * charts. Aliases connect. Can also be an object, specifying further
@@ -9344,11 +9390,26 @@ export interface LangAccessibilityRangeSelectorOptions {
     minInputLabel?: string;
 }
 /**
+ * (Highcharts, Highstock, Highmaps, Gantt) Language options for annotation
+ * descriptions.
+ */
+export interface LangAccessibilityScreenReaderSectionAnnotationsOptions {
+    descriptionMultiplePoints?: string;
+    descriptionNoPoints?: string;
+    descriptionSinglePoint?: string;
+    heading?: string;
+}
+/**
  * (Highcharts, Highstock, Highmaps, Gantt) Language options for the screen
  * reader information sections added before and after the charts.
  */
 export interface LangAccessibilityScreenReaderSectionOptions {
     afterRegionLabel?: string;
+    /**
+     * (Highcharts, Highstock, Highmaps, Gantt) Language options for annotation
+     * descriptions.
+     */
+    annotations?: LangAccessibilityScreenReaderSectionAnnotationsOptions;
     beforeRegionLabel?: string;
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) Label for the end of the chart.
@@ -9364,7 +9425,7 @@ export interface LangAccessibilityScreenReaderSectionOptions {
 export interface LangAccessibilitySeriesOptions {
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) User supplied description text.
-     * This is added after the main summary if present.
+     * This is added in the point comment description by default if present.
      */
     description?: string;
     /**
@@ -9372,6 +9433,11 @@ export interface LangAccessibilitySeriesOptions {
      * null points.
      */
     nullPointValue?: string;
+    /**
+     * (Highcharts, Highstock, Highmaps, Gantt) Description for annotations on a
+     * point, as it is made available to assistive technology.
+     */
+    pointAnnotationsDescription?: string;
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) Lang configuration for the
      * series main summary. Each series type has two modes:
@@ -9473,7 +9539,7 @@ export interface LangNavigationOptions {
     /**
      * (Highcharts, Highstock) Translations for all field names used in popup.
      */
-    popup?: (object|LangNavigationPopupOptions);
+    popup?: LangNavigationPopupOptions;
 }
 /**
  * (Highcharts, Highstock) Translations for all field names used in popup.
@@ -9608,6 +9674,11 @@ export interface LangOptions {
      */
     drillUpText?: string;
     /**
+     * (Highcharts, Highstock, Highmaps, Gantt) Exporting module only. The text
+     * for the menu item to exit the chart from full screen.
+     */
+    exitFullscreen?: string;
+    /**
      * (Highcharts, Highstock) What to show in a date field for invalid dates.
      * Defaults to an empty string.
      */
@@ -9628,7 +9699,7 @@ export interface LangOptions {
      * Requires the `annotations.js` or `annotations-advanced.src.js` module to
      * be loaded.
      */
-    navigation?: (object|LangNavigationOptions);
+    navigation?: LangNavigationOptions;
     /**
      * (Highcharts, Highstock) The text to display when the chart contains no
      * data.
@@ -9710,8 +9781,8 @@ export interface LangOptions {
      */
     viewData?: string;
     /**
-     * (Highcharts, Highstock, Highmaps, Gantt) Exporting module only. View the
-     * chart in full screen.
+     * (Highcharts, Highstock, Highmaps, Gantt) Exporting module only. The text
+     * for the menu item to view the chart in full screen.
      */
     viewFullscreen?: string;
     /**
@@ -9797,7 +9868,7 @@ export interface LegendAccessibilityKeyboardNavigationOptions {
      * (Highcharts, Highstock, Highmaps, Gantt) Enable keyboard navigation for
      * the legend.
      */
-    enabled?: object;
+    enabled?: boolean;
 }
 /**
  * (Highcharts, Highstock, Highmaps, Gantt) Accessibility options for the
@@ -9808,7 +9879,7 @@ export interface LegendAccessibilityOptions {
      * (Highcharts, Highstock, Highmaps, Gantt) Enable accessibility support for
      * the legend.
      */
-    enabled?: object;
+    enabled?: boolean;
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) Options for keyboard navigation
      * for the legend.
@@ -10630,41 +10701,6 @@ export interface MapNavigationOptions {
      */
     mouseWheelSensitivity?: number;
 }
-/**
- * A mock point configuration.
- */
-export interface MockPointOptionsObject {
-    /**
-     * x value for the point in xAxis scale or pixels
-     */
-    x: number;
-    /**
-     * xAxis index or id
-     */
-    xAxis?: (number|string|Axis);
-    /**
-     * y value for the point in yAxis scale or pixels
-     */
-    y: number;
-    /**
-     * yAxis index or id
-     */
-    yAxis: any;
-}
-/**
- * (Highcharts, Highstock, Highmaps, Gantt) Options for annotation's control
- * points. Each control point inherits options from controlPointOptions object.
- * Options from the controlPointOptions can be overwritten by options in a
- * specific control point.
- */
-export interface NavigationAnnotationsControlPointOptions {
-    height?: number;
-    positioner?: object;
-    style?: NavigationAnnotationsControlPointStyleOptions;
-    symbol?: string;
-    visible?: boolean;
-    width?: number;
-}
 export interface NavigationAnnotationsControlPointStyleOptions {
     fill?: string;
     stroke?: string;
@@ -10890,7 +10926,7 @@ export interface NavigationAnnotationsLabelsOptions {
      * exists in the series - it is referenced by the point's id - or a new
      * point with defined x, y properties and optionally axes.
      */
-    point?: (string|MockPointOptionsObject|NavigationAnnotationsLabelsPointOptions);
+    point?: (string|AnnotationMockPointOptionsObject);
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) The shadow of the box. The
      * shadow can be an object configuration containing `color`, `offsetX`,
@@ -10936,38 +10972,6 @@ export interface NavigationAnnotationsLabelsOptions {
     y?: number;
 }
 /**
- * (Highcharts, Highstock, Highmaps, Gantt) This option defines the point to
- * which the label will be connected. It can be either the point which exists in
- * the series - it is referenced by the point's id - or a new point with defined
- * x, y properties and optionally axes.
- */
-export interface NavigationAnnotationsLabelsPointOptions {
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) The x position of the point.
-     * Units can be either in axis or chart pixel coordinates.
-     */
-    x?: number;
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) This number defines which xAxis
-     * the point is connected to. It refers to either the axis id or the index
-     * of the axis in the xAxis array. If the option is not configured or the
-     * axis is not found the point's x coordinate refers to the chart pixels.
-     */
-    xAxis?: (number|string);
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) The y position of the point.
-     * Units can be either in axis or chart pixel coordinates.
-     */
-    y?: number;
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) This number defines which yAxis
-     * the point is connected to. It refers to either the axis id or the index
-     * of the axis in the yAxis array. If the option is not configured or the
-     * axis is not found the point's y coordinate refers to the chart pixels.
-     */
-    yAxis?: (number|string);
-}
-/**
  * (Highcharts, Highstock, Highmaps, Gantt) Additional options to be merged into
  * all annotations.
  */
@@ -10978,13 +10982,13 @@ export interface NavigationAnnotationsOptions {
      * object. Options from the controlPointOptions can be overwritten by
      * options in a specific control point.
      */
-    controlPointOptions?: (object|NavigationAnnotationsControlPointOptions);
+    controlPointOptions?: AnnotationControlPointOptionsObject;
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) Allow an annotation to be
-     * draggable by a user. Possible values are `"x"`, `"xy"`, `"y"` and `""`
+     * draggable by a user. Possible values are `'x'`, `'xy'`, `'y'` and `''`
      * (disabled).
      */
-    draggable?: OptionsDraggableValue;
+    draggable?: AnnotationDraggableValue;
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) Events available in annotations.
      */
@@ -11053,6 +11057,11 @@ export interface NavigationAnnotationsShapeOptions {
      */
     snap?: number;
     /**
+     * (Highcharts, Highstock, Highmaps, Gantt) The URL for an image to use as
+     * the annotation shape. Note, type has to be set to `'image'`.
+     */
+    src?: string;
+    /**
      * (Highcharts, Highstock, Highmaps, Gantt) The color of the shape's stroke.
      */
     stroke?: ColorString;
@@ -11103,13 +11112,13 @@ export interface NavigationAnnotationsShapesOptions {
      * exists in the series - it is referenced by the point's id - or a new
      * point with defined x, y properties and optionally axes.
      */
-    point?: (string|MockPointOptionsObject|NavigationAnnotationsShapesPointOptions);
+    point?: (string|AnnotationMockPointOptionsObject);
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) An array of points for the
      * shape. This option is available for shapes which can use multiple points
      * such as path. A point can be either a point object or a point's id.
      */
-    points?: (NavigationAnnotationsShapesPointsOptions|Array<(string|MockPointOptionsObject)>);
+    points?: Array<(string|AnnotationMockPointOptionsObject)>;
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) The radius of the shape.
      */
@@ -11119,6 +11128,11 @@ export interface NavigationAnnotationsShapesOptions {
      * around an annotation making this annotation to focus. Defined in pixels.
      */
     snap?: number;
+    /**
+     * (Highcharts, Highstock, Highmaps, Gantt) The URL for an image to use as
+     * the annotation shape. Note, type has to be set to `'image'`.
+     */
+    src?: string;
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) The color of the shape's stroke.
      */
@@ -11137,185 +11151,6 @@ export interface NavigationAnnotationsShapesOptions {
      * (Highcharts, Highstock, Highmaps, Gantt) The width of the shape.
      */
     width?: number;
-}
-/**
- * (Highcharts, Highstock, Highmaps, Gantt) This option defines the point to
- * which the shape will be connected. It can be either the point which exists in
- * the series - it is referenced by the point's id - or a new point with defined
- * x, y properties and optionally axes.
- */
-export interface NavigationAnnotationsShapesPointOptions {
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) The x position of the point.
-     * Units can be either in axis or chart pixel coordinates.
-     */
-    x?: number;
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) This number defines which xAxis
-     * the point is connected to. It refers to either the axis id or the index
-     * of the axis in the xAxis array. If the option is not configured or the
-     * axis is not found the point's x coordinate refers to the chart pixels.
-     */
-    xAxis?: (number|string);
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) The y position of the point.
-     * Units can be either in axis or chart pixel coordinates.
-     */
-    y?: number;
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) This number defines which yAxis
-     * the point is connected to. It refers to either the axis id or the index
-     * of the axis in the yAxis array. If the option is not configured or the
-     * axis is not found the point's y coordinate refers to the chart pixels.
-     */
-    yAxis?: (number|string);
-}
-/**
- * (Highcharts, Highstock, Highmaps, Gantt) An array of points for the shape.
- * This option is available for shapes which can use multiple points such as
- * path. A point can be either a point object or a point's id.
- */
-export interface NavigationAnnotationsShapesPointsOptions {
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) The x position of the point.
-     * Units can be either in axis or chart pixel coordinates.
-     */
-    x?: number;
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) This number defines which xAxis
-     * the point is connected to. It refers to either the axis id or the index
-     * of the axis in the xAxis array. If the option is not configured or the
-     * axis is not found the point's x coordinate refers to the chart pixels.
-     */
-    xAxis?: (number|string);
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) The y position of the point.
-     * Units can be either in axis or chart pixel coordinates.
-     */
-    y?: number;
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) This number defines which yAxis
-     * the point is connected to. It refers to either the axis id or the index
-     * of the axis in the yAxis array. If the option is not configured or the
-     * axis is not found the point's y coordinate refers to the chart pixels.
-     */
-    yAxis?: (number|string);
-}
-/**
- * (Highstock) A line with arrow annotation. Includes `start` and one event in
- * `steps` array.
- */
-export interface NavigationBindingsArrowInfinityLineOptions {
-    start?: object;
-}
-/**
- * (Highstock) A ray with an arrow annotation bindings. Includes `start` and one
- * event in `steps` array.
- */
-export interface NavigationBindingsArrowRayOptions {
-    start?: object;
-}
-/**
- * (Highstock) A segment with an arrow annotation bindings. Includes `start` and
- * one event in `steps` array.
- */
-export interface NavigationBindingsArrowSegmentOptions {
-    start?: object;
-}
-/**
- * (Highstock) Crooked line (three points) annotation bindings. Includes `start`
- * and two events in `steps` (for second and third points in crooked line)
- * array.
- */
-export interface NavigationBindingsCrooked3Options {
-    start?: object;
-}
-/**
- * (Highstock) Crooked line (five points) annotation bindings. Includes `start`
- * and four events in `steps` (for all consequent points in crooked line) array.
- */
-export interface NavigationBindingsCrooked5Options {
-    start?: object;
-}
-/**
- * (Highstock) Hides/shows two price indicators:
- *
- * - last price in the dataset
- *
- * - last price in the selected range
- */
-export interface NavigationBindingsCurrentPriceIndicatorOptions {
-    init?: object;
-}
-/**
- * (Highstock) Elliott wave (three points) annotation bindings. Includes `start`
- * and two events in `steps` (for second and third points) array.
- */
-export interface NavigationBindingsElliott3Options {
-    start?: object;
-}
-/**
- * (Highstock) Elliott wave (five points) annotation bindings. Includes `start`
- * and four event in `steps` (for all consequent points in Elliott wave) array.
- */
-export interface NavigationBindingsElliott5Options {
-    start?: object;
-}
-/**
- * (Highstock) A fibonacci annotation bindings. Includes `start` and two events
- * in `steps` array (updates second point, then height).
- */
-export interface NavigationBindingsFibonacciOptions {
-    start?: object;
-}
-/**
- * (Highstock) Displays chart in fullscreen.
- */
-export interface NavigationBindingsFullScreenOptions {
-    init?: object;
-}
-/**
- * (Highstock) A horizontal line annotation. Includes `start` event.
- */
-export interface NavigationBindingsHorizontalLineOptions {
-    start?: object;
-}
-/**
- * (Highstock) Indicators bindings. Includes `init` event to show a popup.
- *
- * Note: In order to show base series from the chart in the popup's dropdown
- * each series requires series.id to be defined.
- */
-export interface NavigationBindingsIndicatorsOptions {
-    init?: object;
-}
-/**
- * (Highstock) A line annotation. Includes `start` and one event in `steps`
- * array.
- */
-export interface NavigationBindingsInfinityLineOptions {
-    start?: object;
-}
-/**
- * (Highstock) A measure (x-dimension) annotation bindings. Includes `start` and
- * one event in `steps` array.
- */
-export interface NavigationBindingsMeasureXOptions {
-    start?: object;
-}
-/**
- * (Highstock) A measure (xy-dimension) annotation bindings. Includes `start`
- * and one event in `steps` array.
- */
-export interface NavigationBindingsMeasureXYOptions {
-    start?: object;
-}
-/**
- * (Highstock) A measure (y-dimension) annotation bindings. Includes `start` and
- * one event in `steps` array.
- */
-export interface NavigationBindingsMeasureYOptions {
-    start?: object;
 }
 /**
  * (Highcharts, Highstock) Bindings definitions for custom HTML buttons. Each
@@ -11337,34 +11172,34 @@ export interface NavigationBindingsOptions {
      * (Highstock) A line with arrow annotation. Includes `start` and one event
      * in `steps` array.
      */
-    arrowInfinityLine?: (NavigationBindingsArrowInfinityLineOptions|StockToolsBindingsObject);
+    arrowInfinityLine?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) A ray with an arrow annotation bindings. Includes `start` and
      * one event in `steps` array.
      */
-    arrowRay?: (NavigationBindingsArrowRayOptions|StockToolsBindingsObject);
+    arrowRay?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) A segment with an arrow annotation bindings. Includes `start`
      * and one event in `steps` array.
      */
-    arrowSegment?: (NavigationBindingsArrowSegmentOptions|StockToolsBindingsObject);
+    arrowSegment?: NavigationBindingsOptionsObject;
     /**
      * (Highcharts, Highstock) A circle annotation bindings. Includes `start`
      * and one event in `steps` array.
      */
-    circleAnnotation?: StockToolsBindingsObject;
+    circleAnnotation?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) Crooked line (three points) annotation bindings. Includes
      * `start` and two events in `steps` (for second and third points in crooked
      * line) array.
      */
-    crooked3?: (NavigationBindingsCrooked3Options|StockToolsBindingsObject);
+    crooked3?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) Crooked line (five points) annotation bindings. Includes
      * `start` and four events in `steps` (for all consequent points in crooked
      * line) array.
      */
-    crooked5?: (NavigationBindingsCrooked5Options|StockToolsBindingsObject);
+    crooked5?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) Hides/shows two price indicators:
      *
@@ -11372,107 +11207,107 @@ export interface NavigationBindingsOptions {
      *
      * - last price in the selected range
      */
-    currentPriceIndicator?: (NavigationBindingsCurrentPriceIndicatorOptions|StockToolsBindingsObject);
+    currentPriceIndicator?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) Elliott wave (three points) annotation bindings. Includes
      * `start` and two events in `steps` (for second and third points) array.
      */
-    elliott3?: (NavigationBindingsElliott3Options|StockToolsBindingsObject);
+    elliott3?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) Elliott wave (five points) annotation bindings. Includes
      * `start` and four event in `steps` (for all consequent points in Elliott
      * wave) array.
      */
-    elliott5?: (NavigationBindingsElliott5Options|StockToolsBindingsObject);
+    elliott5?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) A fibonacci annotation bindings. Includes `start` and two
      * events in `steps` array (updates second point, then height).
      */
-    fibonacci?: (NavigationBindingsFibonacciOptions|StockToolsBindingsObject);
+    fibonacci?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) A flag series bindings. Includes `start` event. On click,
      * finds the closest point and marks it with a flag with `'circlepin'`
      * shape.
      */
-    flagCirclepin?: StockToolsBindingsObject;
+    flagCirclepin?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) A flag series bindings. Includes `start` event. On click,
      * finds the closest point and marks it with a flag with `'diamondpin'`
      * shape.
      */
-    flagDiamondpin?: StockToolsBindingsObject;
+    flagDiamondpin?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) A flag series bindings. Includes `start` event. On click,
      * finds the closest point and marks it with a flag without pin shape.
      */
-    flagSimplepin?: StockToolsBindingsObject;
+    flagSimplepin?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) A flag series bindings. Includes `start` event. On click,
      * finds the closest point and marks it with a flag with `'squarepin'`
      * shape.
      */
-    flagSquarepin?: StockToolsBindingsObject;
+    flagSquarepin?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) Displays chart in fullscreen.
      */
-    fullScreen?: (NavigationBindingsFullScreenOptions|StockToolsBindingsObject);
+    fullScreen?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) A horizontal line annotation. Includes `start` event.
      */
-    horizontalLine?: (NavigationBindingsHorizontalLineOptions|StockToolsBindingsObject);
+    horizontalLine?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) Indicators bindings. Includes `init` event to show a popup.
      *
      * Note: In order to show base series from the chart in the popup's dropdown
      * each series requires series.id to be defined.
      */
-    indicators?: (NavigationBindingsIndicatorsOptions|StockToolsBindingsObject);
+    indicators?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) A line annotation. Includes `start` and one event in `steps`
      * array.
      */
-    infinityLine?: (NavigationBindingsInfinityLineOptions|StockToolsBindingsObject);
+    infinityLine?: NavigationBindingsOptionsObject;
     /**
      * (Highcharts, Highstock) A label annotation bindings. Includes `start`
      * event only.
      */
-    labelAnnotation?: StockToolsBindingsObject;
+    labelAnnotation?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) A measure (x-dimension) annotation bindings. Includes `start`
      * and one event in `steps` array.
      */
-    measureX?: (NavigationBindingsMeasureXOptions|StockToolsBindingsObject);
+    measureX?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) A measure (xy-dimension) annotation bindings. Includes
      * `start` and one event in `steps` array.
      */
-    measureXY?: (NavigationBindingsMeasureXYOptions|StockToolsBindingsObject);
+    measureXY?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) A measure (y-dimension) annotation bindings. Includes `start`
      * and one event in `steps` array.
      */
-    measureY?: (NavigationBindingsMeasureYOptions|StockToolsBindingsObject);
+    measureY?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) A parallel channel (tunnel) annotation bindings. Includes
      * `start` and two events in `steps` array (updates second point, then
      * height).
      */
-    parallelChannel?: (NavigationBindingsParallelChannelOptions|StockToolsBindingsObject);
+    parallelChannel?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) An Andrew's pitchfork annotation bindings. Includes `start`
      * and two events in `steps` array (sets second and third control points).
      */
-    pitchfork?: (NavigationBindingsPitchforkOptions|StockToolsBindingsObject);
+    pitchfork?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) A ray annotation bindings. Includes `start` and one event in
      * `steps` array.
      */
-    ray?: (NavigationBindingsRayOptions|StockToolsBindingsObject);
+    ray?: NavigationBindingsOptionsObject;
     /**
      * (Highcharts, Highstock) A rectangle annotation bindings. Includes `start`
      * and one event in `steps` array.
      */
-    rectangleAnnotation?: StockToolsBindingsObject;
+    rectangleAnnotation?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) Save a chart in localStorage under `highcharts-chart` key.
      * Stored items:
@@ -11483,181 +11318,91 @@ export interface NavigationBindingsOptions {
      *
      * - flags
      */
-    saveChart?: (NavigationBindingsSaveChartOptions|StockToolsBindingsObject);
+    saveChart?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) A segment annotation bindings. Includes `start` and one event
      * in `steps` array.
      */
-    segment?: (NavigationBindingsSegmentOptions|StockToolsBindingsObject);
+    segment?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) Changes main series to `'candlestick'` type.
      */
-    seriesTypeCandlestick?: (NavigationBindingsSeriesTypeCandlestickOptions|StockToolsBindingsObject);
+    seriesTypeCandlestick?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) Changes main series to `'line'` type.
      */
-    seriesTypeLine?: (NavigationBindingsSeriesTypeLineOptions|StockToolsBindingsObject);
+    seriesTypeLine?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) Changes main series to `'ohlc'` type.
      */
-    seriesTypeOhlc?: (NavigationBindingsSeriesTypeOhlcOptions|StockToolsBindingsObject);
+    seriesTypeOhlc?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) Hides/shows all annotations on a chart.
      */
-    toggleAnnotations?: (NavigationBindingsToggleAnnotationsOptions|StockToolsBindingsObject);
+    toggleAnnotations?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) A vertical arrow annotation bindings. Includes `start` event.
      * On click, finds the closest point and marks it with an arrow. Green arrow
      * when pointing from above, red when pointing from below the point.
      */
-    verticalArrow?: (NavigationBindingsVerticalArrowOptions|StockToolsBindingsObject);
+    verticalArrow?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) A vertical counter annotation bindings. Includes `start`
      * event. On click, finds the closest point and marks it with a numeric
      * annotation - incrementing counter on each add.
      */
-    verticalCounter?: (NavigationBindingsVerticalCounterOptions|StockToolsBindingsObject);
+    verticalCounter?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) A vertical arrow annotation bindings. Includes `start` event.
      * On click, finds the closest point and marks it with an arrow and a label
      * with value.
      */
-    verticalLabel?: (NavigationBindingsVerticalLabelOptions|StockToolsBindingsObject);
+    verticalLabel?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) A vertical line annotation. Includes `start` event.
      */
-    verticalLine?: (NavigationBindingsVerticalLineOptions|StockToolsBindingsObject);
+    verticalLine?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) Enables zooming in xAxis on a chart. Includes `start` event
      * which changes chart.zoomType.
      */
-    zoomX?: (NavigationBindingsZoomXOptions|StockToolsBindingsObject);
+    zoomX?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) Enables zooming in xAxis and yAxis on a chart. Includes
      * `start` event which changes chart.zoomType.
      */
-    zoomXY?: (NavigationBindingsZoomXYOptions|StockToolsBindingsObject);
+    zoomXY?: NavigationBindingsOptionsObject;
     /**
      * (Highstock) Enables zooming in yAxis on a chart. Includes `start` event
      * which changes chart.zoomType.
      */
-    zoomY?: (NavigationBindingsZoomYOptions|StockToolsBindingsObject);
+    zoomY?: NavigationBindingsOptionsObject;
 }
 /**
- * (Highstock) A parallel channel (tunnel) annotation bindings. Includes `start`
- * and two events in `steps` array (updates second point, then height).
+ * A config object for navigation bindings in annotations.
  */
-export interface NavigationBindingsParallelChannelOptions {
-    start?: object;
-}
-/**
- * (Highstock) An Andrew's pitchfork annotation bindings. Includes `start` and
- * two events in `steps` array (sets second and third control points).
- */
-export interface NavigationBindingsPitchforkOptions {
-    start?: object;
-}
-/**
- * (Highstock) A ray annotation bindings. Includes `start` and one event in
- * `steps` array.
- */
-export interface NavigationBindingsRayOptions {
-    start?: object;
-}
-/**
- * (Highstock) Save a chart in localStorage under `highcharts-chart` key. Stored
- * items:
- *
- * - annotations
- *
- * - indicators (with yAxes)
- *
- * - flags
- */
-export interface NavigationBindingsSaveChartOptions {
-    init?: object;
-}
-/**
- * (Highstock) A segment annotation bindings. Includes `start` and one event in
- * `steps` array.
- */
-export interface NavigationBindingsSegmentOptions {
-    start?: object;
-}
-/**
- * (Highstock) Changes main series to `'candlestick'` type.
- */
-export interface NavigationBindingsSeriesTypeCandlestickOptions {
-    init?: object;
-}
-/**
- * (Highstock) Changes main series to `'line'` type.
- */
-export interface NavigationBindingsSeriesTypeLineOptions {
-    init?: object;
-}
-/**
- * (Highstock) Changes main series to `'ohlc'` type.
- */
-export interface NavigationBindingsSeriesTypeOhlcOptions {
-    init?: object;
-}
-/**
- * (Highstock) Hides/shows all annotations on a chart.
- */
-export interface NavigationBindingsToggleAnnotationsOptions {
-    init?: object;
-}
-/**
- * (Highstock) A vertical arrow annotation bindings. Includes `start` event. On
- * click, finds the closest point and marks it with an arrow. Green arrow when
- * pointing from above, red when pointing from below the point.
- */
-export interface NavigationBindingsVerticalArrowOptions {
-    start?: object;
-}
-/**
- * (Highstock) A vertical counter annotation bindings. Includes `start` event.
- * On click, finds the closest point and marks it with a numeric annotation -
- * incrementing counter on each add.
- */
-export interface NavigationBindingsVerticalCounterOptions {
-    start?: object;
-}
-/**
- * (Highstock) A vertical arrow annotation bindings. Includes `start` event. On
- * click, finds the closest point and marks it with an arrow and a label with
- * value.
- */
-export interface NavigationBindingsVerticalLabelOptions {
-    start?: object;
-}
-/**
- * (Highstock) A vertical line annotation. Includes `start` event.
- */
-export interface NavigationBindingsVerticalLineOptions {
-    start?: object;
-}
-/**
- * (Highstock) Enables zooming in xAxis on a chart. Includes `start` event which
- * changes chart.zoomType.
- */
-export interface NavigationBindingsZoomXOptions {
-    init?: object;
-}
-/**
- * (Highstock) Enables zooming in xAxis and yAxis on a chart. Includes `start`
- * event which changes chart.zoomType.
- */
-export interface NavigationBindingsZoomXYOptions {
-    init?: object;
-}
-/**
- * (Highstock) Enables zooming in yAxis on a chart. Includes `start` event which
- * changes chart.zoomType.
- */
-export interface NavigationBindingsZoomYOptions {
-    init?: object;
+export interface NavigationBindingsOptionsObject {
+    /**
+     * ClassName of the element for a binding.
+     */
+    className?: string;
+    /**
+     * Last event to be fired after last step event.
+     */
+    end?: Function;
+    /**
+     * Initial event, fired on a button click.
+     */
+    init?: Function;
+    /**
+     * Event fired on first click on a chart.
+     */
+    start?: Function;
+    /**
+     * Last event to be fired after last step event. Array of step events to be
+     * called sequentially after each user click.
+     */
+    steps?: Array<Function>;
 }
 /**
  * (Highcharts, Highstock, Highmaps, Gantt) A collection of options for buttons
@@ -11812,7 +11557,7 @@ export interface NavigationOptions {
      *
      * - `end`: last event to be called after last step event
      */
-    bindings?: (NavigationBindingsOptions|Dictionary<StockToolsBindingsObject>);
+    bindings?: (NavigationBindingsOptions|Dictionary<NavigationBindingsOptionsObject>);
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) A CSS class name where all
      * bindings will be attached to. Multiple charts on the same page should
@@ -14005,13 +13750,19 @@ export interface NavigatorYAxisOptions {
      */
     pane?: number;
     /**
-     * (Highcharts, Highstock, Gantt) An array of objects defining plot bands on
-     * the Y axis.
+     * (Highcharts, Highstock, Gantt) An array of colored bands stretching
+     * across the plot area marking an interval on the axis.
+     *
+     * In styled mode, the plot bands are styled by the `.highcharts-plot-band`
+     * class in addition to the `className` option.
      */
     plotBands?: Array<NavigatorYAxisPlotBandsOptions>;
     /**
-     * (Highcharts, Highstock, Gantt) An array of objects representing plot
-     * lines on the X axis
+     * (Highcharts, Highstock, Gantt) An array of lines stretching across the
+     * plot area, marking a specific value on one of the axes.
+     *
+     * In styled mode, the plot lines are styled by the `.highcharts-plot-line`
+     * class in addition to the `className` option.
      */
     plotLines?: Array<NavigatorYAxisPlotLinesOptions>;
     /**
@@ -14308,8 +14059,11 @@ export interface NavigatorYAxisPlotBandsLabelOptions {
     y?: number;
 }
 /**
- * (Highcharts, Highstock, Gantt) An array of objects defining plot bands on the
- * Y axis.
+ * (Highcharts, Highstock, Gantt) An array of colored bands stretching across
+ * the plot area marking an interval on the axis.
+ *
+ * In styled mode, the plot bands are styled by the `.highcharts-plot-band`
+ * class in addition to the `className` option.
  */
 export interface NavigatorYAxisPlotBandsOptions {
     /**
@@ -14474,8 +14228,11 @@ export interface NavigatorYAxisPlotLinesLabelOptions {
     y?: number;
 }
 /**
- * (Highcharts, Highstock, Gantt) An array of objects representing plot lines on
- * the X axis
+ * (Highcharts, Highstock, Gantt) An array of lines stretching across the plot
+ * area, marking a specific value on one of the axes.
+ *
+ * In styled mode, the plot lines are styled by the `.highcharts-plot-line`
+ * class in addition to the `className` option.
  */
 export interface NavigatorYAxisPlotLinesOptions {
     /**
@@ -14923,7 +14680,7 @@ export interface Options {
      * object for adding SVG definitions for reusable elements. See gradients,
      * shadows and patterns for more information and code examples.
      */
-    defs?: any;
+    defs?: DefsOptions;
     /**
      * (Highcharts, Highmaps) Options for drill down, the concept of inspecting
      * increasingly high resolution data through clicking on chart items like
@@ -15159,8 +14916,14 @@ export interface PaneOptions {
      */
     endAngle?: number;
     /**
+     * (Highcharts) The inner size of the pane, either as a number defining
+     * pixels, or a percentage defining a percentage of the pane's size.
+     */
+    innerSize?: (number|string);
+    /**
      * (Highcharts) The size of the pane, either as a number defining pixels, or
-     * a percentage defining a percentage of the plot are.
+     * a percentage defining a percentage of the available plot area (the
+     * smallest of the plot height or plot width).
      */
     size?: (number|string);
     /**
@@ -15232,6 +14995,10 @@ export interface PatternOptionsObject {
      * for the pattern, the `image` property is ignored.
      */
     path: (string|SVGAttributes);
+    /**
+     * SVG `patternTransform` to apply to the entire pattern.
+     */
+    patternTransform: string;
     /**
      * Width of the pattern. For images this is automatically set to the width
      * of the element bounding box if not supplied. For non-image patterns the
@@ -15461,6 +15228,12 @@ export interface PlotAbandsOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -15547,13 +15320,13 @@ export interface PlotAbandsOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -15999,6 +15772,12 @@ export interface PlotAdOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -16085,13 +15864,13 @@ export interface PlotAdOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -16529,6 +16308,12 @@ export interface PlotAoOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -16615,13 +16400,13 @@ export interface PlotAoOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -17047,6 +16832,12 @@ export interface PlotApoOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -17133,13 +16924,13 @@ export interface PlotApoOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -17597,6 +17388,12 @@ export interface PlotAreaOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highstock) A reserved subspace to store options and values
+     * for customized functionality. Here you can add additional data for your
+     * own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts, Highstock) A name for the dash style to use for the graph,
      * or for some series types the outline of each shape.
      *
@@ -17709,13 +17506,13 @@ export interface PlotAreaOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -18008,7 +17805,7 @@ export interface PlotAreaOptions {
      * * If `Infinity` or `-Infinity`, the area between the graph and the
      * corresponing Y axis extreme is filled (since v6.1.0).
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highcharts, Highstock) A configuration object for the tooltip rendering
      * of each single series. Properties are inherited from tooltip, but only
@@ -18295,6 +18092,12 @@ export interface PlotArearangeOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highstock) A reserved subspace to store options and values
+     * for customized functionality. Here you can add additional data for your
+     * own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts, Highstock) A name for the dash style to use for the graph,
      * or for some series types the outline of each shape.
      *
@@ -18402,13 +18205,13 @@ export interface PlotArearangeOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -18692,7 +18495,7 @@ export interface PlotArearangeOptions {
      * * If `Infinity` or `-Infinity`, the area between the graph and the
      * corresponing Y axis extreme is filled (since v6.1.0).
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highcharts, Highstock) A configuration object for the tooltip rendering
      * of each single series. Properties are inherited from tooltip, but only
@@ -18978,6 +18781,12 @@ export interface PlotAreasplineOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highstock) A reserved subspace to store options and values
+     * for customized functionality. Here you can add additional data for your
+     * own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts, Highstock) A name for the dash style to use for the graph,
      * or for some series types the outline of each shape.
      *
@@ -19090,13 +18899,13 @@ export interface PlotAreasplineOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -19384,7 +19193,7 @@ export interface PlotAreasplineOptions {
      * * If `Infinity` or `-Infinity`, the area between the graph and the
      * corresponing Y axis extreme is filled (since v6.1.0).
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highcharts, Highstock) A configuration object for the tooltip rendering
      * of each single series. Properties are inherited from tooltip, but only
@@ -19672,6 +19481,12 @@ export interface PlotAreasplinerangeOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highstock) A reserved subspace to store options and values
+     * for customized functionality. Here you can add additional data for your
+     * own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts, Highstock) A name for the dash style to use for the graph,
      * or for some series types the outline of each shape.
      *
@@ -19779,13 +19594,13 @@ export interface PlotAreasplinerangeOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -20064,7 +19879,7 @@ export interface PlotAreasplinerangeOptions {
      * * If `Infinity` or `-Infinity`, the area between the graph and the
      * corresponing Y axis extreme is filled (since v6.1.0).
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highcharts, Highstock) A configuration object for the tooltip rendering
      * of each single series. Properties are inherited from tooltip, but only
@@ -20340,6 +20155,12 @@ export interface PlotAroonOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -20426,13 +20247,13 @@ export interface PlotAroonOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -20835,6 +20656,12 @@ export interface PlotAroonoscillatorOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -20921,13 +20748,13 @@ export interface PlotAroonoscillatorOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -21361,6 +21188,12 @@ export interface PlotAtrOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -21447,13 +21280,13 @@ export interface PlotAtrOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -21931,6 +21764,12 @@ export interface PlotBarOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -22293,7 +22132,7 @@ export interface PlotBarOptions {
      * distinguishing between values above and below a threshold. If `null`, the
      * columns extend from the padding Y axis minimum.
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highcharts) A configuration object for the tooltip rendering of each
      * single series. Properties are inherited from tooltip, but only the
@@ -22579,6 +22418,12 @@ export interface PlotBbOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -22665,13 +22510,13 @@ export interface PlotBbOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -23126,6 +22971,12 @@ export interface PlotBellcurveOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -23231,13 +23082,13 @@ export interface PlotBellcurveOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -23499,7 +23350,7 @@ export interface PlotBellcurveOptions {
      * * If `Infinity` or `-Infinity`, the area between the graph and the
      * corresponing Y axis extreme is filled (since v6.1.0).
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highcharts) A configuration object for the tooltip rendering of each
      * single series. Properties are inherited from tooltip, but only the
@@ -23787,6 +23638,12 @@ export interface PlotBoxplotOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -23978,7 +23835,7 @@ export interface PlotBoxplotOptions {
      * In styled mode, the median stroke width can be set with the
      * `.highcharts-boxplot-median` class.
      */
-    medianWidth?: number;
+    medianWidth?: (number|null);
     /**
      * (Highcharts, Highstock, Gantt) The minimal height for a column or width
      * for a bar. By default, 0 values are not shown. To visualize a 0 (or close
@@ -24187,7 +24044,7 @@ export interface PlotBoxplotOptions {
      * distinguishing between values above and below a threshold. If `null`, the
      * columns extend from the padding Y axis minimum.
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highcharts) A configuration object for the tooltip rendering of each
      * single series. Properties are inherited from tooltip, but only the
@@ -24516,6 +24373,12 @@ export interface PlotBubbleOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highstock) A reserved subspace to store options and values
+     * for customized functionality. Here you can add additional data for your
+     * own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts, Highstock) A name for the dash style to use for the graph,
      * or for some series types the outline of each shape.
      *
@@ -24615,13 +24478,13 @@ export interface PlotBubbleOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -24956,26 +24819,6 @@ export interface PlotBubbleOptions {
     zThreshold?: number;
 }
 /**
- * (Highcharts, Highstock) Options for the series data sorting.
- */
-export interface PlotBulletDataSortingOptions {
-    /**
-     * (Highcharts, Highstock) Enable or disable data sorting for the series.
-     * Use xAxis.reversed to change the sorting order.
-     */
-    enabled?: boolean;
-    /**
-     * (Highcharts, Highstock) Whether to allow matching points by name in an
-     * update. If this option is disabled, points will be matched by order.
-     */
-    matchByName?: boolean;
-    /**
-     * (Highcharts, Highstock) Determines what data value should be used to sort
-     * by.
-     */
-    sortKey?: string;
-}
-/**
  * (Highcharts) Style options for the guide box. The guide box has one state by
  * default, the `default` state.
  */
@@ -25171,6 +25014,12 @@ export interface PlotBulletOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -25197,10 +25046,6 @@ export interface PlotBulletOptions {
      * (see example).
      */
     dataLabels?: (DataLabelsOptionsObject|Array<DataLabelsOptionsObject>);
-    /**
-     * (Highcharts, Highstock) Options for the series data sorting.
-     */
-    dataSorting?: (DataSortingOptionsObject|PlotBulletDataSortingOptions);
     /**
      * (Highcharts) Depth of the columns in a 3D column chart.
      */
@@ -25537,7 +25382,7 @@ export interface PlotBulletOptions {
      * distinguishing between values above and below a threshold. If `null`, the
      * columns extend from the padding Y axis minimum.
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highcharts) A configuration object for the tooltip rendering of each
      * single series. Properties are inherited from tooltip, but only the
@@ -25845,6 +25690,12 @@ export interface PlotCandlestickOptions {
      * listed under series.color.
      */
     cursor?: (string|CursorValue);
+    /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
     /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
@@ -26490,6 +26341,12 @@ export interface PlotCciOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -26576,13 +26433,13 @@ export interface PlotCciOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -27015,6 +26872,12 @@ export interface PlotChaikinOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -27101,13 +26964,13 @@ export interface PlotChaikinOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -27530,6 +27393,12 @@ export interface PlotCmfOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -27616,13 +27485,13 @@ export interface PlotCmfOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -28106,6 +27975,12 @@ export interface PlotColumnOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highstock) A reserved subspace to store options and values
+     * for customized functionality. Here you can add additional data for your
+     * own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -28468,7 +28343,7 @@ export interface PlotColumnOptions {
      * distinguishing between values above and below a threshold. If `null`, the
      * columns extend from the padding Y axis minimum.
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highcharts, Highstock) A configuration object for the tooltip rendering
      * of each single series. Properties are inherited from tooltip, but only
@@ -28744,6 +28619,12 @@ export interface PlotColumnpyramidOptions {
      * listed under series.color.
      */
     cursor?: (string|CursorValue);
+    /**
+     * (Highcharts, Highstock) A reserved subspace to store options and values
+     * for customized functionality. Here you can add additional data for your
+     * own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
     /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
@@ -29359,6 +29240,12 @@ export interface PlotColumnrangeOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highstock) A reserved subspace to store options and values
+     * for customized functionality. Here you can add additional data for your
+     * own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -29931,6 +29818,12 @@ export interface PlotCylinderOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -30286,7 +30179,7 @@ export interface PlotCylinderOptions {
      * distinguishing between values above and below a threshold. If `null`, the
      * columns extend from the padding Y axis minimum.
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highcharts) A configuration object for the tooltip rendering of each
      * single series. Properties are inherited from tooltip, but only the
@@ -30531,6 +30424,12 @@ export interface PlotDemaOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -30617,13 +30516,13 @@ export interface PlotDemaOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -30843,26 +30742,6 @@ export interface PlotDemaParamsOptions {
      * calculations.
      */
     period?: number;
-}
-/**
- * (Highcharts, Highstock) Options for the series data sorting.
- */
-export interface PlotDependencywheelDataSortingOptions {
-    /**
-     * (Highcharts, Highstock) Enable or disable data sorting for the series.
-     * Use xAxis.reversed to change the sorting order.
-     */
-    enabled?: boolean;
-    /**
-     * (Highcharts, Highstock) Whether to allow matching points by name in an
-     * update. If this option is disabled, points will be matched by order.
-     */
-    matchByName?: boolean;
-    /**
-     * (Highcharts, Highstock) Determines what data value should be used to sort
-     * by.
-     */
-    sortKey?: string;
 }
 /**
  * (Highcharts) Set options on specific levels. Takes precedence over series
@@ -31087,6 +30966,12 @@ export interface PlotDependencywheelOptions {
      */
     curveFactor?: number;
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -31109,10 +30994,6 @@ export interface PlotDependencywheelOptions {
      * to links and is an empty string by default.
      */
     dataLabels?: (SeriesSankeyDataLabelsOptionsObject|Array<SeriesSankeyDataLabelsOptionsObject>);
-    /**
-     * (Highcharts, Highstock) Options for the series data sorting.
-     */
-    dataSorting?: (DataSortingOptionsObject|PlotDependencywheelDataSortingOptions);
     /**
      * (Highcharts) A description of the series to add to the screen reader
      * information about the series.
@@ -31223,6 +31104,10 @@ export interface PlotDependencywheelOptions {
     /**
      * (Highcharts) The padding between nodes in a sankey diagram or dependency
      * wheel, in pixels.
+     *
+     * If the number of nodes is so great that it is possible to lay them out
+     * within the plot area with the given `nodePadding`, they will be rendered
+     * with a smaller padding as a strategy to avoid overflow.
      */
     nodePadding?: number;
     /**
@@ -31522,6 +31407,12 @@ export interface PlotDpoOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -31608,13 +31499,13 @@ export interface PlotDpoOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -32080,6 +31971,12 @@ export interface PlotDumbbellOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highstock) A reserved subspace to store options and values
+     * for customized functionality. Here you can add additional data for your
+     * own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts, Highstock) A name for the dash style to use for the graph,
      * or for some series types the outline of each shape.
      *
@@ -32168,13 +32065,13 @@ export interface PlotDumbbellOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -32446,7 +32343,7 @@ export interface PlotDumbbellOptions {
      * * If `Infinity` or `-Infinity`, the area between the graph and the
      * corresponing Y axis extreme is filled (since v6.1.0).
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highcharts, Highstock) A configuration object for the tooltip rendering
      * of each single series. Properties are inherited from tooltip, but only
@@ -32704,6 +32601,12 @@ export interface PlotEmaOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -32790,13 +32693,13 @@ export interface PlotEmaOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -33249,6 +33152,12 @@ export interface PlotErrorbarOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highstock) A reserved subspace to store options and values
+     * for customized functionality. Here you can add additional data for your
+     * own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -33434,7 +33343,7 @@ export interface PlotErrorbarOptions {
      * In styled mode, the median stroke width can be set with the
      * `.highcharts-boxplot-median` class.
      */
-    medianWidth?: number;
+    medianWidth?: (number|null);
     /**
      * (Highcharts, Highstock, Gantt) The minimal height for a column or width
      * for a bar. By default, 0 values are not shown. To visualize a 0 (or close
@@ -33643,7 +33552,7 @@ export interface PlotErrorbarOptions {
      * distinguishing between values above and below a threshold. If `null`, the
      * columns extend from the padding Y axis minimum.
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highcharts, Highstock) A configuration object for the tooltip rendering
      * of each single series. Properties are inherited from tooltip, but only
@@ -33920,6 +33829,12 @@ export interface PlotFlagsOptions {
      * listed under series.color.
      */
     cursor?: (string|CursorValue);
+    /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) Options for the series data
      * labels, appearing next to each data point.
@@ -34311,7 +34226,7 @@ export interface PlotFlagsOptions {
      * distinguishing between values above and below a threshold. If `null`, the
      * columns extend from the padding Y axis minimum.
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highstock) The text to display on each flag. This can be defined on
      * series level, or individually for each point. Defaults to `"A"`.
@@ -34365,26 +34280,6 @@ export interface PlotFlagsOptions {
      * option (view live demo).
      */
     zones?: Array<SeriesZonesOptionsObject>;
-}
-/**
- * (Highcharts, Highstock) Options for the series data sorting.
- */
-export interface PlotFunnel3dDataSortingOptions {
-    /**
-     * (Highcharts, Highstock) Enable or disable data sorting for the series.
-     * Use xAxis.reversed to change the sorting order.
-     */
-    enabled?: boolean;
-    /**
-     * (Highcharts, Highstock) Whether to allow matching points by name in an
-     * update. If this option is disabled, points will be matched by order.
-     */
-    matchByName?: boolean;
-    /**
-     * (Highcharts, Highstock) Determines what data value should be used to sort
-     * by.
-     */
-    sortKey?: string;
 }
 /**
  * (Highcharts) Style options for the guide box. The guide box has one state by
@@ -34584,6 +34479,12 @@ export interface PlotFunnel3dOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -34610,10 +34511,6 @@ export interface PlotFunnel3dOptions {
      * (see example).
      */
     dataLabels?: (DataLabelsOptionsObject|Array<DataLabelsOptionsObject>);
-    /**
-     * (Highcharts, Highstock) Options for the series data sorting.
-     */
-    dataSorting?: (DataSortingOptionsObject|PlotFunnel3dDataSortingOptions);
     /**
      * (Highcharts) Depth of the columns in a 3D column chart.
      */
@@ -34975,7 +34872,7 @@ export interface PlotFunnel3dOptions {
      * distinguishing between values above and below a threshold. If `null`, the
      * columns extend from the padding Y axis minimum.
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highcharts) A configuration object for the tooltip rendering of each
      * single series. Properties are inherited from tooltip, but only the
@@ -35189,6 +35086,12 @@ export interface PlotFunnelOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -35267,13 +35170,13 @@ export interface PlotFunnelOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -35483,26 +35386,6 @@ export interface PlotFunnelOptions {
     zIndex?: number;
 }
 /**
- * (Highcharts, Highstock) Options for the series data sorting.
- */
-export interface PlotGanttDataSortingOptions {
-    /**
-     * (Highcharts, Highstock) Enable or disable data sorting for the series.
-     * Use xAxis.reversed to change the sorting order.
-     */
-    enabled?: boolean;
-    /**
-     * (Highcharts, Highstock) Whether to allow matching points by name in an
-     * update. If this option is disabled, points will be matched by order.
-     */
-    matchByName?: boolean;
-    /**
-     * (Highcharts, Highstock) Determines what data value should be used to sort
-     * by.
-     */
-    sortKey?: string;
-}
-/**
  * (Gantt) Style options for the guide box. The guide box has one state by
  * default, the `default` state.
  */
@@ -35701,6 +35584,12 @@ export interface PlotGanttOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Gantt) A reserved subspace to store options and values for customized
+     * functionality. Here you can add additional data for your own event
+     * callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -35727,10 +35616,6 @@ export interface PlotGanttOptions {
      * (see example).
      */
     dataLabels?: (DataLabelsOptionsObject|Array<DataLabelsOptionsObject>);
-    /**
-     * (Highcharts, Highstock) Options for the series data sorting.
-     */
-    dataSorting?: (DataSortingOptionsObject|PlotGanttDataSortingOptions);
     /**
      * (Gantt) A description of the series to add to the screen reader
      * information about the series.
@@ -35988,26 +35873,6 @@ export interface PlotGanttPartialFillOptions {
     fill?: (ColorString|GradientColorObject|PatternObject);
 }
 /**
- * (Highcharts, Highstock) Options for the series data sorting.
- */
-export interface PlotGaugeDataSortingOptions {
-    /**
-     * (Highcharts, Highstock) Enable or disable data sorting for the series.
-     * Use xAxis.reversed to change the sorting order.
-     */
-    enabled?: boolean;
-    /**
-     * (Highcharts, Highstock) Whether to allow matching points by name in an
-     * update. If this option is disabled, points will be matched by order.
-     */
-    matchByName?: boolean;
-    /**
-     * (Highcharts, Highstock) Determines what data value should be used to sort
-     * by.
-     */
-    sortKey?: string;
-}
-/**
  * (Highcharts) Options for the dial or arrow pointer of the gauge.
  *
  * In styled mode, the dial is styled with the `.highcharts-gauge-series
@@ -36197,6 +36062,12 @@ export interface PlotGaugeOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -36216,10 +36087,6 @@ export interface PlotGaugeOptions {
      * enabled by default and shown in a bordered box below the point.
      */
     dataLabels?: (DataLabelsOptionsObject|Array<DataLabelsOptionsObject>);
-    /**
-     * (Highcharts, Highstock) Options for the series data sorting.
-     */
-    dataSorting?: (DataSortingOptionsObject|PlotGaugeDataSortingOptions);
     /**
      * (Highcharts) A description of the series to add to the screen reader
      * information about the series.
@@ -36264,13 +36131,13 @@ export interface PlotGaugeOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -36718,6 +36585,12 @@ export interface PlotHeatmapOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highmaps) A reserved subspace to store options and values
+     * for customized functionality. Here you can add additional data for your
+     * own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -36792,13 +36665,13 @@ export interface PlotHeatmapOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -37240,6 +37113,12 @@ export interface PlotHistogramOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -37560,7 +37439,7 @@ export interface PlotHistogramOptions {
      * distinguishing between values above and below a threshold. If `null`, the
      * columns extend from the padding Y axis minimum.
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highcharts) A configuration object for the tooltip rendering of each
      * single series. Properties are inherited from tooltip, but only the
@@ -37840,6 +37719,12 @@ export interface PlotIkhOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -37926,13 +37811,13 @@ export interface PlotIkhOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -38408,6 +38293,12 @@ export interface PlotItemOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -38482,13 +38373,13 @@ export interface PlotItemOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -38923,6 +38814,12 @@ export interface PlotKeltnerchannelsOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -39009,13 +38906,13 @@ export interface PlotKeltnerchannelsOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -39483,6 +39380,12 @@ export interface PlotLinearregressionangleOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -39569,13 +39472,13 @@ export interface PlotLinearregressionangleOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -40047,6 +39950,12 @@ export interface PlotLinearregressioninterceptOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -40133,13 +40042,13 @@ export interface PlotLinearregressioninterceptOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -40571,6 +40480,12 @@ export interface PlotLinearregressionOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -40657,13 +40572,13 @@ export interface PlotLinearregressionOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -41115,6 +41030,12 @@ export interface PlotLinearregressionslopeOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -41201,13 +41122,13 @@ export interface PlotLinearregressionslopeOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -41681,6 +41602,12 @@ export interface PlotLineOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highstock) A reserved subspace to store options and values
+     * for customized functionality. Here you can add additional data for your
+     * own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts, Highstock) A name for the dash style to use for the graph,
      * or for some series types the outline of each shape.
      *
@@ -41774,13 +41701,13 @@ export interface PlotLineOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -42346,6 +42273,12 @@ export interface PlotLollipopOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highstock) A reserved subspace to store options and values
+     * for customized functionality. Here you can add additional data for your
+     * own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts, Highstock) A name for the dash style to use for the graph,
      * or for some series types the outline of each shape.
      *
@@ -42434,13 +42367,13 @@ export interface PlotLollipopOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -42708,7 +42641,7 @@ export interface PlotLollipopOptions {
      * * If `Infinity` or `-Infinity`, the area between the graph and the
      * corresponing Y axis extreme is filled (since v6.1.0).
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highcharts, Highstock) A configuration object for the tooltip rendering
      * of each single series. Properties are inherited from tooltip, but only
@@ -42994,6 +42927,12 @@ export interface PlotMacdOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -43080,13 +43019,13 @@ export interface PlotMacdOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -43606,6 +43545,12 @@ export interface PlotMapbubbleOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highmaps) A reserved subspace to store options and values for customized
+     * functionality. Here you can add additional data for your own event
+     * callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highmaps) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -43705,13 +43650,13 @@ export interface PlotMapbubbleOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -44364,6 +44309,12 @@ export interface PlotMaplineOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highmaps) A reserved subspace to store options and values for customized
+     * functionality. Here you can add additional data for your own event
+     * callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highmaps) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -44461,13 +44412,13 @@ export interface PlotMaplineOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -44968,6 +44919,12 @@ export interface PlotMapOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highmaps) A reserved subspace to store options and values for customized
+     * functionality. Here you can add additional data for your own event
+     * callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highmaps) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -45061,13 +45018,13 @@ export interface PlotMapOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -45825,6 +45782,12 @@ export interface PlotMappointOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highmaps) A reserved subspace to store options and values for customized
+     * functionality. Here you can add additional data for your own event
+     * callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highmaps) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -45918,13 +45881,13 @@ export interface PlotMappointOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -46431,6 +46394,12 @@ export interface PlotMfiOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -46517,13 +46486,13 @@ export interface PlotMfiOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -46958,6 +46927,12 @@ export interface PlotMomentumOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -47044,13 +47019,13 @@ export interface PlotMomentumOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -47483,6 +47458,12 @@ export interface PlotNatrOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -47569,13 +47550,13 @@ export interface PlotNatrOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -47791,26 +47772,6 @@ export interface PlotNatrParamsOptions {
      * calculations.
      */
     period?: number;
-}
-/**
- * (Highcharts, Highstock) Options for the series data sorting.
- */
-export interface PlotNetworkgraphDataSortingOptions {
-    /**
-     * (Highcharts, Highstock) Enable or disable data sorting for the series.
-     * Use xAxis.reversed to change the sorting order.
-     */
-    enabled?: boolean;
-    /**
-     * (Highcharts, Highstock) Whether to allow matching points by name in an
-     * update. If this option is disabled, points will be matched by order.
-     */
-    matchByName?: boolean;
-    /**
-     * (Highcharts, Highstock) Determines what data value should be used to sort
-     * by.
-     */
-    sortKey?: string;
 }
 export interface PlotNetworkgraphLayoutAlgorithmOptions {
     /**
@@ -48082,6 +48043,12 @@ export interface PlotNetworkgraphOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -48116,10 +48083,6 @@ export interface PlotNetworkgraphOptions {
      * (see example).
      */
     dataLabels?: (SeriesNetworkgraphDataLabelsOptionsObject|Array<SeriesNetworkgraphDataLabelsOptionsObject>);
-    /**
-     * (Highcharts, Highstock) Options for the series data sorting.
-     */
-    dataSorting?: (DataSortingOptionsObject|PlotNetworkgraphDataSortingOptions);
     /**
      * (Highcharts) A description of the series to add to the screen reader
      * information about the series.
@@ -48172,13 +48135,13 @@ export interface PlotNetworkgraphOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -48605,6 +48568,12 @@ export interface PlotOhlcOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -48968,7 +48937,7 @@ export interface PlotOhlcOptions {
      * distinguishing between values above and below a threshold. If `null`, the
      * columns extend from the padding Y axis minimum.
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highstock) A configuration object for the tooltip rendering of each
      * single series. Properties are inherited from tooltip, but only the
@@ -50096,7 +50065,6 @@ export interface PlotOptions {
      * (see online documentation for example)
      */
     packedbubble?: PlotPackedbubbleOptions;
-    packedBubble?: PlotPackedBubbleOptions;
     /**
      * (Highcharts) A pareto diagram is a type of chart that contains both bars
      * and a line graph, where individual values are represented in descending
@@ -50886,26 +50854,6 @@ export interface PlotOptions {
     zigzag?: PlotZigzagOptions;
 }
 /**
- * (Highcharts, Highstock) Options for the series data sorting.
- */
-export interface PlotOrganizationDataSortingOptions {
-    /**
-     * (Highcharts, Highstock) Enable or disable data sorting for the series.
-     * Use xAxis.reversed to change the sorting order.
-     */
-    enabled?: boolean;
-    /**
-     * (Highcharts, Highstock) Whether to allow matching points by name in an
-     * update. If this option is disabled, points will be matched by order.
-     */
-    matchByName?: boolean;
-    /**
-     * (Highcharts, Highstock) Determines what data value should be used to sort
-     * by.
-     */
-    sortKey?: string;
-}
-/**
  * (Highcharts) Set options on specific levels. Takes precedence over series
  * options, but not node and link options.
  */
@@ -51106,6 +51054,12 @@ export interface PlotOrganizationOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -51128,10 +51082,6 @@ export interface PlotOrganizationOptions {
      * to links and is an empty string by default.
      */
     dataLabels?: (SeriesOrganizationDataLabelsOptionsObject|Array<SeriesOrganizationDataLabelsOptionsObject>);
-    /**
-     * (Highcharts, Highstock) Options for the series data sorting.
-     */
-    dataSorting?: (DataSortingOptionsObject|PlotOrganizationDataSortingOptions);
     /**
      * (Highcharts) A description of the series to add to the screen reader
      * information about the series.
@@ -51259,6 +51209,10 @@ export interface PlotOrganizationOptions {
     /**
      * (Highcharts) The padding between nodes in a sankey diagram or dependency
      * wheel, in pixels.
+     *
+     * If the number of nodes is so great that it is possible to lay them out
+     * within the plot area with the given `nodePadding`, they will be rendered
+     * with a smaller padding as a strategy to avoid overflow.
      */
     nodePadding?: number;
     /**
@@ -51351,47 +51305,6 @@ export interface PlotOrganizationOptions {
      * (Highmaps) Define the z index of the series.
      */
     zIndex?: number;
-}
-export interface PlotPackedBubbleDataLabelsOptions {
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) Presentation attributes for the
-     * text path.
-     */
-    attributes?: SVGAttributes;
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) The format string specifying
-     * what to show for _node_ in the networkgraph. In v7.0 defaults to `{key}`,
-     * since v7.1 defaults to `undefined` and `formatter` is used instead.
-     */
-    format?: string;
-    parentNodeFormat?: string;
-    /**
-     * (Highcharts, Highstock, Highmaps, Gantt) Options for a _node_ label text
-     * which should follow marker's shape.
-     *
-     * **Note:** Only SVG-based renderer supports this option.
-     */
-    textPath?: DataLabelsTextPathOptionsObject;
-}
-/**
- * (Highcharts, Highstock) Options for the series data sorting.
- */
-export interface PlotPackedbubbleDataSortingOptions {
-    /**
-     * (Highcharts, Highstock) Enable or disable data sorting for the series.
-     * Use xAxis.reversed to change the sorting order.
-     */
-    enabled?: boolean;
-    /**
-     * (Highcharts, Highstock) Whether to allow matching points by name in an
-     * update. If this option is disabled, points will be matched by order.
-     */
-    matchByName?: boolean;
-    /**
-     * (Highcharts, Highstock) Determines what data value should be used to sort
-     * by.
-     */
-    sortKey?: string;
 }
 /**
  * (Highcharts) Options for layout algorithm when simulation is enabled. Inside
@@ -51774,6 +51687,12 @@ export interface PlotPackedbubbleOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -51808,10 +51727,6 @@ export interface PlotPackedbubbleOptions {
      * (see example).
      */
     dataLabels?: (SeriesPackedBubbleDataLabelsOptionsObject|Array<SeriesPackedBubbleDataLabelsOptionsObject>);
-    /**
-     * (Highcharts, Highstock) Options for the series data sorting.
-     */
-    dataSorting?: (DataSortingOptionsObject|PlotPackedbubbleDataSortingOptions);
     /**
      * (Highcharts) A description of the series to add to the screen reader
      * information about the series.
@@ -51871,13 +51786,13 @@ export interface PlotPackedbubbleOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -52184,9 +52099,6 @@ export interface PlotPackedbubbleOptions {
      */
     zThreshold?: number;
 }
-export interface PlotPackedBubbleOptions {
-    dataLabels?: PlotPackedBubbleDataLabelsOptions;
-}
 /**
  * (Highcharts, Highstock) Options for the series data sorting.
  */
@@ -52367,6 +52279,12 @@ export interface PlotParetoOptions {
      * listed under series.color.
      */
     cursor?: (string|CursorValue);
+    /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
     /**
      * (Highcharts) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
@@ -52819,6 +52737,12 @@ export interface PlotPcOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -52905,13 +52829,13 @@ export interface PlotPcOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -53318,6 +53242,12 @@ export interface PlotPieOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -53396,13 +53326,13 @@ export interface PlotPieOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -53817,6 +53747,12 @@ export interface PlotPivotpointsOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -53903,13 +53839,13 @@ export interface PlotPivotpointsOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -54365,6 +54301,12 @@ export interface PlotPolygonOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highstock) A reserved subspace to store options and values
+     * for customized functionality. Here you can add additional data for your
+     * own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts, Highstock) A name for the dash style to use for the graph,
      * or for some series types the outline of each shape.
      *
@@ -54458,13 +54400,13 @@ export interface PlotPolygonOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -54943,6 +54885,12 @@ export interface PlotPpoOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -55029,13 +54977,13 @@ export interface PlotPpoOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -55494,6 +55442,12 @@ export interface PlotPriceenvelopesOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -55580,13 +55534,13 @@ export interface PlotPriceenvelopesOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -56049,6 +56003,12 @@ export interface PlotPsarOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -56135,13 +56095,13 @@ export interface PlotPsarOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -56373,26 +56333,6 @@ export interface PlotPsarParamsOptions {
     maxAccelerationFactor?: number;
 }
 /**
- * (Highcharts, Highstock) Options for the series data sorting.
- */
-export interface PlotPyramid3dDataSortingOptions {
-    /**
-     * (Highcharts, Highstock) Enable or disable data sorting for the series.
-     * Use xAxis.reversed to change the sorting order.
-     */
-    enabled?: boolean;
-    /**
-     * (Highcharts, Highstock) Whether to allow matching points by name in an
-     * update. If this option is disabled, points will be matched by order.
-     */
-    matchByName?: boolean;
-    /**
-     * (Highcharts, Highstock) Determines what data value should be used to sort
-     * by.
-     */
-    sortKey?: string;
-}
-/**
  * (Highcharts) Style options for the guide box. The guide box has one state by
  * default, the `default` state.
  */
@@ -56587,6 +56527,12 @@ export interface PlotPyramid3dOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -56613,10 +56559,6 @@ export interface PlotPyramid3dOptions {
      * (see example).
      */
     dataLabels?: (DataLabelsOptionsObject|Array<DataLabelsOptionsObject>);
-    /**
-     * (Highcharts, Highstock) Options for the series data sorting.
-     */
-    dataSorting?: (DataSortingOptionsObject|PlotPyramid3dDataSortingOptions);
     /**
      * (Highcharts) Depth of the columns in a 3D column chart.
      */
@@ -56968,7 +56910,7 @@ export interface PlotPyramid3dOptions {
      * distinguishing between values above and below a threshold. If `null`, the
      * columns extend from the padding Y axis minimum.
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highcharts) A configuration object for the tooltip rendering of each
      * single series. Properties are inherited from tooltip, but only the
@@ -57181,6 +57123,12 @@ export interface PlotPyramidOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -57259,13 +57207,13 @@ export interface PlotPyramidOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -57695,6 +57643,12 @@ export interface PlotRocOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -57781,13 +57735,13 @@ export interface PlotRocOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -58220,6 +58174,12 @@ export interface PlotRsiOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -58306,13 +58266,13 @@ export interface PlotRsiOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -58526,26 +58486,6 @@ export interface PlotRsiParamsOptions {
      * calculations.
      */
     period?: number;
-}
-/**
- * (Highcharts, Highstock) Options for the series data sorting.
- */
-export interface PlotSankeyDataSortingOptions {
-    /**
-     * (Highcharts, Highstock) Enable or disable data sorting for the series.
-     * Use xAxis.reversed to change the sorting order.
-     */
-    enabled?: boolean;
-    /**
-     * (Highcharts, Highstock) Whether to allow matching points by name in an
-     * update. If this option is disabled, points will be matched by order.
-     */
-    matchByName?: boolean;
-    /**
-     * (Highcharts, Highstock) Determines what data value should be used to sort
-     * by.
-     */
-    sortKey?: string;
 }
 /**
  * (Highcharts) Set options on specific levels. Takes precedence over series
@@ -58762,6 +58702,12 @@ export interface PlotSankeyOptions {
      */
     curveFactor?: number;
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -58784,10 +58730,6 @@ export interface PlotSankeyOptions {
      * to links and is an empty string by default.
      */
     dataLabels?: (SeriesSankeyDataLabelsOptionsObject|Array<SeriesSankeyDataLabelsOptionsObject>);
-    /**
-     * (Highcharts, Highstock) Options for the series data sorting.
-     */
-    dataSorting?: (DataSortingOptionsObject|PlotSankeyDataSortingOptions);
     /**
      * (Highcharts) A description of the series to add to the screen reader
      * information about the series.
@@ -58898,6 +58840,10 @@ export interface PlotSankeyOptions {
     /**
      * (Highcharts) The padding between nodes in a sankey diagram or dependency
      * wheel, in pixels.
+     *
+     * If the number of nodes is so great that it is possible to lay them out
+     * within the plot area with the given `nodePadding`, they will be rendered
+     * with a smaller padding as a strategy to avoid overflow.
      */
     nodePadding?: number;
     /**
@@ -59243,6 +59189,12 @@ export interface PlotScatter3dOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -59329,13 +59281,13 @@ export interface PlotScatter3dOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -60092,6 +60044,12 @@ export interface PlotScatterOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highstock) A reserved subspace to store options and values
+     * for customized functionality. Here you can add additional data for your
+     * own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts, Highstock) A name for the dash style to use for the graph,
      * or for some series types the outline of each shape.
      *
@@ -60185,13 +60143,13 @@ export interface PlotScatterOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -60726,6 +60684,12 @@ export interface PlotSeriesOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highstock, Highmaps, Gantt) A reserved subspace to store
+     * options and values for customized functionality. Here you can add
+     * additional data for your own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts, Highstock, Highmaps, Gantt) A name for the dash style to use
      * for the graph, or for some series types the outline of each shape.
      *
@@ -60820,13 +60784,13 @@ export interface PlotSeriesOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -61369,6 +61333,12 @@ export interface PlotSlowstochasticOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -61455,13 +61425,13 @@ export interface PlotSlowstochasticOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -61912,6 +61882,12 @@ export interface PlotSmaOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -61998,13 +61974,13 @@ export interface PlotSmaOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -62222,26 +62198,6 @@ export interface PlotSmaParamsOptions {
     period?: number;
 }
 /**
- * (Highcharts, Highstock) Options for the series data sorting.
- */
-export interface PlotSolidgaugeDataSortingOptions {
-    /**
-     * (Highcharts, Highstock) Enable or disable data sorting for the series.
-     * Use xAxis.reversed to change the sorting order.
-     */
-    enabled?: boolean;
-    /**
-     * (Highcharts, Highstock) Whether to allow matching points by name in an
-     * update. If this option is disabled, points will be matched by order.
-     */
-    matchByName?: boolean;
-    /**
-     * (Highcharts, Highstock) Determines what data value should be used to sort
-     * by.
-     */
-    sortKey?: string;
-}
-/**
  * (Highcharts) A solid gauge is a circular gauge where the value is indicated
  * by a filled arc, and the color of the arc may variate with the value.
  *
@@ -62388,6 +62344,12 @@ export interface PlotSolidgaugeOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -62407,10 +62369,6 @@ export interface PlotSolidgaugeOptions {
      * enabled by default and shown in a bordered box below the point.
      */
     dataLabels?: (DataLabelsOptionsObject|Array<DataLabelsOptionsObject>);
-    /**
-     * (Highcharts, Highstock) Options for the series data sorting.
-     */
-    dataSorting?: (DataSortingOptionsObject|PlotSolidgaugeDataSortingOptions);
     /**
      * (Highcharts) A description of the series to add to the screen reader
      * information about the series.
@@ -62448,13 +62406,13 @@ export interface PlotSolidgaugeOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -62915,6 +62873,12 @@ export interface PlotSplineOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highstock) A reserved subspace to store options and values
+     * for customized functionality. Here you can add additional data for your
+     * own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts, Highstock) A name for the dash style to use for the graph,
      * or for some series types the outline of each shape.
      *
@@ -63008,13 +62972,13 @@ export interface PlotSplineOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -63535,6 +63499,12 @@ export interface PlotStochasticOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -63621,13 +63591,13 @@ export interface PlotStochasticOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -64102,6 +64072,12 @@ export interface PlotStreamgraphOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highstock) A reserved subspace to store options and values
+     * for customized functionality. Here you can add additional data for your
+     * own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts, Highstock) A name for the dash style to use for the graph,
      * or for some series types the outline of each shape.
      *
@@ -64214,13 +64190,13 @@ export interface PlotStreamgraphOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -64508,7 +64484,7 @@ export interface PlotStreamgraphOptions {
      * * If `Infinity` or `-Infinity`, the area between the graph and the
      * corresponing Y axis extreme is filled (since v6.1.0).
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highcharts, Highstock) A configuration object for the tooltip rendering
      * of each single series. Properties are inherited from tooltip, but only
@@ -64785,6 +64761,12 @@ export interface PlotSunburstOptions {
      * listed under series.color.
      */
     cursor?: (string|CursorValue);
+    /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) Options for the series data
      * labels, appearing next to each data point.
@@ -65238,6 +65220,12 @@ export interface PlotSupertrendOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -65329,13 +65317,13 @@ export interface PlotSupertrendOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -65746,6 +65734,12 @@ export interface PlotTemaOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -65832,13 +65826,13 @@ export interface PlotTemaOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -66060,26 +66054,6 @@ export interface PlotTemaParamsOptions {
     period?: number;
 }
 /**
- * (Highcharts, Highstock) Options for the series data sorting.
- */
-export interface PlotTilemapDataSortingOptions {
-    /**
-     * (Highcharts, Highstock) Enable or disable data sorting for the series.
-     * Use xAxis.reversed to change the sorting order.
-     */
-    enabled?: boolean;
-    /**
-     * (Highcharts, Highstock) Whether to allow matching points by name in an
-     * update. If this option is disabled, points will be matched by order.
-     */
-    matchByName?: boolean;
-    /**
-     * (Highcharts, Highstock) Determines what data value should be used to sort
-     * by.
-     */
-    sortKey?: string;
-}
-/**
  * (Highcharts, Highmaps) Style options for the guide box. The guide box has one
  * state by default, the `default` state.
  */
@@ -66256,6 +66230,12 @@ export interface PlotTilemapOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highmaps) A reserved subspace to store options and values
+     * for customized functionality. Here you can add additional data for your
+     * own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -66282,10 +66262,6 @@ export interface PlotTilemapOptions {
      * (see example).
      */
     dataLabels?: (DataLabelsOptionsObject|Array<DataLabelsOptionsObject>);
-    /**
-     * (Highcharts, Highstock) Options for the series data sorting.
-     */
-    dataSorting?: (DataSortingOptionsObject|PlotTilemapDataSortingOptions);
     /**
      * (Highcharts, Highmaps) A description of the series to add to the screen
      * reader information about the series.
@@ -66330,13 +66306,13 @@ export interface PlotTilemapOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -66524,26 +66500,6 @@ export interface PlotTilemapStatesHoverHaloAttributesOptions {
     zIndex?: number;
 }
 /**
- * (Highcharts, Highstock) Options for the series data sorting.
- */
-export interface PlotTimelineDataSortingOptions {
-    /**
-     * (Highcharts, Highstock) Enable or disable data sorting for the series.
-     * Use xAxis.reversed to change the sorting order.
-     */
-    enabled?: boolean;
-    /**
-     * (Highcharts, Highstock) Whether to allow matching points by name in an
-     * update. If this option is disabled, points will be matched by order.
-     */
-    matchByName?: boolean;
-    /**
-     * (Highcharts, Highstock) Determines what data value should be used to sort
-     * by.
-     */
-    sortKey?: string;
-}
-/**
  * (Highcharts) Style options for the guide box. The guide box has one state by
  * default, the `default` state.
  */
@@ -66714,6 +66670,12 @@ export interface PlotTimelineOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -66740,10 +66702,6 @@ export interface PlotTimelineOptions {
      * (see example).
      */
     dataLabels?: (TimelineDataLabelsOptionsObject|Array<TimelineDataLabelsOptionsObject>);
-    /**
-     * (Highcharts, Highstock) Options for the series data sorting.
-     */
-    dataSorting?: (DataSortingOptionsObject|PlotTimelineDataSortingOptions);
     /**
      * (Highcharts) A description of the series to add to the screen reader
      * information about the series.
@@ -66788,13 +66746,13 @@ export interface PlotTimelineOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     ignoreHiddenPoint?: boolean;
@@ -67167,26 +67125,6 @@ export interface PlotTreemapClusterZonesOptions {
     to?: number;
 }
 /**
- * (Highcharts, Highstock) Options for the series data sorting.
- */
-export interface PlotTreemapDataSortingOptions {
-    /**
-     * (Highcharts, Highstock) Enable or disable data sorting for the series.
-     * Use xAxis.reversed to change the sorting order.
-     */
-    enabled?: boolean;
-    /**
-     * (Highcharts, Highstock) Whether to allow matching points by name in an
-     * update. If this option is disabled, points will be matched by order.
-     */
-    matchByName?: boolean;
-    /**
-     * (Highcharts, Highstock) Determines what data value should be used to sort
-     * by.
-     */
-    sortKey?: string;
-}
-/**
  * (Highcharts) A configuration object to define how the color of a child varies
  * from the parent's color. The variation is distributed among the children of
  * node. For example when setting brightness, the brightness change will range
@@ -67498,6 +67436,12 @@ export interface PlotTreemapOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -67532,10 +67476,6 @@ export interface PlotTreemapOptions {
      * (see example).
      */
     dataLabels?: (DataLabelsOptionsObject|Array<DataLabelsOptionsObject>);
-    /**
-     * (Highcharts, Highstock) Options for the series data sorting.
-     */
-    dataSorting?: (DataSortingOptionsObject|PlotTreemapDataSortingOptions);
     /**
      * (Highcharts) A description of the series to add to the screen reader
      * information about the series.
@@ -67584,13 +67524,13 @@ export interface PlotTreemapOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -68149,6 +68089,12 @@ export interface PlotTrendlineOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -68235,13 +68181,13 @@ export interface PlotTrendlineOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -68656,6 +68602,12 @@ export interface PlotTrixOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -68742,13 +68694,13 @@ export interface PlotTrixOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -69153,6 +69105,12 @@ export interface PlotVariablepieOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -69231,13 +69189,13 @@ export interface PlotVariablepieOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -69700,6 +69658,12 @@ export interface PlotVariwideOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -70045,7 +70009,7 @@ export interface PlotVariwideOptions {
      * distinguishing between values above and below a threshold. If `null`, the
      * columns extend from the padding Y axis minimum.
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highcharts) A configuration object for the tooltip rendering of each
      * single series. Properties are inherited from tooltip, but only the
@@ -70305,6 +70269,12 @@ export interface PlotVbpOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -70391,13 +70361,13 @@ export interface PlotVbpOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -71048,6 +71018,12 @@ export interface PlotVectorOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highstock) A reserved subspace to store options and values
+     * for customized functionality. Here you can add additional data for your
+     * own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts, Highstock, Highmaps, Gantt) Options for the series data
      * labels, appearing next to each data point.
      *
@@ -71536,26 +71512,6 @@ export interface PlotVennClusterZonesOptions {
     to?: number;
 }
 /**
- * (Highcharts, Highstock) Options for the series data sorting.
- */
-export interface PlotVennDataSortingOptions {
-    /**
-     * (Highcharts, Highstock) Enable or disable data sorting for the series.
-     * Use xAxis.reversed to change the sorting order.
-     */
-    enabled?: boolean;
-    /**
-     * (Highcharts, Highstock) Whether to allow matching points by name in an
-     * update. If this option is disabled, points will be matched by order.
-     */
-    matchByName?: boolean;
-    /**
-     * (Highcharts, Highstock) Determines what data value should be used to sort
-     * by.
-     */
-    sortKey?: string;
-}
-/**
  * (Highcharts) A Venn diagram displays all possible logical relations between a
  * collection of different sets. The sets are represented by circles, and the
  * relation between the sets are displayed by the overlap or lack of overlap
@@ -71759,6 +71715,12 @@ export interface PlotVennOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -71793,10 +71755,6 @@ export interface PlotVennOptions {
      * (see example).
      */
     dataLabels?: (DataLabelsOptionsObject|Array<DataLabelsOptionsObject>);
-    /**
-     * (Highcharts, Highstock) Options for the series data sorting.
-     */
-    dataSorting?: (DataSortingOptionsObject|PlotVennDataSortingOptions);
     /**
      * (Highcharts) A description of the series to add to the screen reader
      * information about the series.
@@ -71834,13 +71792,13 @@ export interface PlotVennOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -72206,6 +72164,12 @@ export interface PlotVwapOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -72292,13 +72256,13 @@ export interface PlotVwapOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -72775,6 +72739,12 @@ export interface PlotWaterfallOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts) A name for the dash style to use for the line connecting the
      * columns of the waterfall series. Possible values: Dash, DashDot, Dot,
      * LongDash, LongDashDot, LongDashDotDot, ShortDash, ShortDashDot,
@@ -73158,7 +73128,7 @@ export interface PlotWaterfallOptions {
      * distinguishing between values above and below a threshold. If `null`, the
      * columns extend from the padding Y axis minimum.
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highcharts) A configuration object for the tooltip rendering of each
      * single series. Properties are inherited from tooltip, but only the
@@ -73425,6 +73395,12 @@ export interface PlotWilliamsrOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -73511,13 +73487,13 @@ export interface PlotWilliamsrOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -73952,6 +73928,12 @@ export interface PlotWindbarbOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highstock) A reserved subspace to store options and values
+     * for customized functionality. Here you can add additional data for your
+     * own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts, Highstock) Data grouping options for the wind barbs. In
      * Highcharts, this requires the `modules/datagrouping.js` module to be
      * loaded. In Highstock, data grouping is included.
@@ -74293,7 +74275,7 @@ export interface PlotWindbarbOptions {
      * distinguishing between values above and below a threshold. If `null`, the
      * columns extend from the padding Y axis minimum.
      */
-    threshold?: number;
+    threshold?: (number|null);
     /**
      * (Highcharts, Highstock) A configuration object for the tooltip rendering
      * of each single series. Properties are inherited from tooltip, but only
@@ -74568,6 +74550,12 @@ export interface PlotWmaOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -74654,13 +74642,13 @@ export interface PlotWmaOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -74878,26 +74866,6 @@ export interface PlotWmaParamsOptions {
     period?: number;
 }
 /**
- * (Highcharts, Highstock) Options for the series data sorting.
- */
-export interface PlotWordcloudDataSortingOptions {
-    /**
-     * (Highcharts, Highstock) Enable or disable data sorting for the series.
-     * Use xAxis.reversed to change the sorting order.
-     */
-    enabled?: boolean;
-    /**
-     * (Highcharts, Highstock) Whether to allow matching points by name in an
-     * update. If this option is disabled, points will be matched by order.
-     */
-    matchByName?: boolean;
-    /**
-     * (Highcharts, Highstock) Determines what data value should be used to sort
-     * by.
-     */
-    sortKey?: string;
-}
-/**
  * (Highcharts) A word cloud is a visualization of a set of words, where the
  * size and placement of a word is determined by how it is weighted.
  *
@@ -75075,9 +75043,11 @@ export interface PlotWordcloudOptions {
      */
     cursor?: (string|CursorValue);
     /**
-     * (Highcharts, Highstock) Options for the series data sorting.
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
      */
-    dataSorting?: (DataSortingOptionsObject|PlotWordcloudDataSortingOptions);
+    custom?: Dictionary<any>;
     /**
      * (Highcharts) A description of the series to add to the screen reader
      * information about the series.
@@ -75269,26 +75239,6 @@ export interface PlotWordcloudRotationOptions {
      * (Highcharts) The largest degree of rotation for a word.
      */
     to?: number;
-}
-/**
- * (Highcharts, Highstock) Options for the series data sorting.
- */
-export interface PlotXrangeDataSortingOptions {
-    /**
-     * (Highcharts, Highstock) Enable or disable data sorting for the series.
-     * Use xAxis.reversed to change the sorting order.
-     */
-    enabled?: boolean;
-    /**
-     * (Highcharts, Highstock) Whether to allow matching points by name in an
-     * update. If this option is disabled, points will be matched by order.
-     */
-    matchByName?: boolean;
-    /**
-     * (Highcharts, Highstock) Determines what data value should be used to sort
-     * by.
-     */
-    sortKey?: string;
 }
 /**
  * (Highcharts, Highstock, Gantt) Style options for the guide box. The guide box
@@ -75493,6 +75443,12 @@ export interface PlotXrangeOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highcharts, Highstock, Gantt) A reserved subspace to store options and
+     * values for customized functionality. Here you can add additional data for
+     * your own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) Data grouping is the concept of sampling the data values into
      * larger blocks in order to ease readability and increase performance of
      * the JavaScript charts. Highstock by default applies data grouping when
@@ -75519,10 +75475,6 @@ export interface PlotXrangeOptions {
      * (see example).
      */
     dataLabels?: (DataLabelsOptionsObject|Array<DataLabelsOptionsObject>);
-    /**
-     * (Highcharts, Highstock) Options for the series data sorting.
-     */
-    dataSorting?: (DataSortingOptionsObject|PlotXrangeDataSortingOptions);
     /**
      * (Highcharts, Highstock, Gantt) A description of the series to add to the
      * screen reader information about the series.
@@ -76000,6 +75952,12 @@ export interface PlotZigzagOptions {
      */
     cursor?: (string|CursorValue);
     /**
+     * (Highstock) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highstock) A name for the dash style to use for the graph, or for some
      * series types the outline of each shape.
      *
@@ -76086,13 +76044,13 @@ export interface PlotZigzagOptions {
      * (Highstock) Together with gapSize, this option defines where to draw gaps
      * in the graph.
      *
-     * When the `gapUnit` is `relative` (default), a gap size of 5 means that if
-     * the distance between two points is greater than five times that of the
+     * When the `gapUnit` is `"relative"` (default), a gap size of 5 means that
+     * if the distance between two points is greater than five times that of the
      * two closest points, the graph will be broken.
      *
-     * When the `gapUnit` is `value`, the gap is based on absolute axis values,
-     * which on a datetime axis is milliseconds. This also applies to the
-     * navigator series that inherits gap options from the base series.
+     * When the `gapUnit` is `"value"`, the gap is based on absolute axis
+     * values, which on a datetime axis is milliseconds. This also applies to
+     * the navigator series that inherits gap options from the base series.
      */
     gapUnit?: OptionsGapUnitValue;
     /**
@@ -76765,6 +76723,22 @@ export interface PointOptionsObject {
      */
     colorValue?: number;
     /**
+     * (Highcharts, Highstock) Color of the line that connects the dumbbell
+     * point's values. By default it is the series' color.
+     */
+    connectorColor?: string;
+    /**
+     * (Highcharts, Highstock) Pixel width of the line that connects the
+     * dumbbell point's values.
+     */
+    connectorWidth?: number;
+    /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts) A name for the dash style to use for the column or bar.
      * Overrides dashStyle on the series.
      *
@@ -76867,6 +76841,10 @@ Array<SeriesSunburstDataLabelsOptionsObject>);
      * (Highcharts, Highstock) The low or minimum value for each data point.
      */
     low?: number;
+    /**
+     * (Highcharts, Highstock) Color of the start markers in a dumbbell graph.
+     */
+    lowColor?: (ColorString|GradientColorObject|PatternObject);
     /**
      * (Highcharts, Highstock) Options for the point markers of line-like
      * series.
@@ -79441,14 +79419,6 @@ export interface SeriesDemaOptions extends PlotDemaOptions, SeriesOptions {
  */
 export interface SeriesDependencywheelOptions extends PlotDependencywheelOptions, SeriesOptions {
     /**
-     * Not available
-     */
-    borderRadius?: undefined;
-    /**
-     * Not available
-     */
-    crisp?: undefined;
-    /**
      * (Highcharts) An array of data points for the series. For the
      * `dependencywheel` series type, points can be given in the following way:
      *
@@ -79459,52 +79429,12 @@ export interface SeriesDependencywheelOptions extends PlotDependencywheelOptions
      */
     data?: Array<SeriesSankeyPointOptionsObject>;
     /**
-     * Not available
-     */
-    depth?: undefined;
-    /**
-     * Not available
-     */
-    edgeColor?: undefined;
-    /**
-     * Not available
-     */
-    edgeWidth?: undefined;
-    /**
-     * Not available
-     */
-    grouping?: undefined;
-    /**
-     * Not available
-     */
-    groupPadding?: undefined;
-    /**
-     * Not available
-     */
-    groupZPadding?: undefined;
-    /**
-     * Not available
-     */
-    maxPointWidth?: undefined;
-    /**
-     * Not available
-     */
-    minPointLength?: undefined;
-    /**
      * (Highcharts) A collection of options for the individual nodes. The nodes
      * in a dependency diagram are auto-generated instances of
      * `Highcharts.Point`, but options can be applied here and linked by the
      * `id`.
      */
     nodes?: Array<SeriesSankeyNodesOptionsObject>;
-    /**
-     * Not available
-     */
-    pointPadding?: undefined;
-    /**
-     * Not available
-     */
-    pointWidth?: undefined;
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) This property is only in
      * TypeScript non-optional and might be `undefined` in series objects from
@@ -79674,6 +79604,79 @@ PlotXrangeDragDropGuideBoxOptions|Dictionary<DragDropGuideBoxOptionsObject>);
      * false, a guide box is drawn to illustrate the new point size.
      */
     liveRedraw?: boolean;
+}
+/**
+ * (Highcharts, Highstock) Style options for the guide box. The guide box has
+ * one state by default, the `default` state.
+ */
+export interface SeriesDumbbellDataDragDropGuideBoxOptions {
+    /**
+     * (Highcharts, Highstock) Style options for the guide box default state.
+     */
+    default?: DragDropGuideBoxOptionsObject;
+}
+/**
+ * (Highcharts, Highstock) The `dumbbell` series. If the type option is not
+ * specified, it is inherited from chart.type.
+ *
+ * In TypeScript the type option must always be set.
+ *
+ * Configuration options for the series are given in three levels:
+ *
+ * 1. Options for all series in a chart are defined in the plotOptions.series
+ * object.
+ *
+ * 2. Options for all `dumbbell` series are defined in plotOptions.dumbbell.
+ *
+ * 3. Options for one single series are given in the series instance array. (see
+ * online documentation for example)
+ *
+ * You have to extend the `SeriesDumbbellOptions` via an interface to allow
+ * custom properties: ``` declare interface SeriesDumbbellOptions {
+ * customProperty: string; }
+ *
+ */
+export interface SeriesDumbbellOptions extends PlotDumbbellOptions, SeriesOptions {
+    /**
+     * (Highcharts, Highstock) An array of data points for the series. For the
+     * `dumbbell` series type, points can be given in the following ways:
+     *
+     * 1. An array of arrays with 3 or 2 values. In this case, the values
+     * correspond to `x,low,high`. If the first value is a string, it is applied
+     * as the name of the point, and the `x` value is inferred. The `x` value
+     * can also be omitted, in which case the inner arrays should be of length
+     * 2\. Then the `x` value is automatically calculated, either starting at 0
+     * and incremented by 1, or from `pointStart` and `pointInterval` given in
+     * the series options. (see online documentation for example)
+     *
+     * 2. An array of objects with named values. The following snippet shows
+     * only a few settings, see the complete options set below. If the total
+     * number of data points exceeds the series' turboThreshold, this option is
+     * not available. (see online documentation for example)
+     */
+    data?: Array<([(number|string), number]|[(number|string), number, number]|PointOptionsObject)>;
+    /**
+     * Not available
+     */
+    fillColor?: undefined;
+    /**
+     * Not available
+     */
+    fillOpacity?: undefined;
+    /**
+     * Not available
+     */
+    stack?: undefined;
+    /**
+     * Not available
+     */
+    trackByArea?: undefined;
+    /**
+     * (Highcharts, Highstock, Highmaps, Gantt) This property is only in
+     * TypeScript non-optional and might be `undefined` in series objects from
+     * unknown sources.
+     */
+    type: "dumbbell";
 }
 /**
  * (Highstock) A `EMA` series. If the type option is not specified, it is
@@ -79878,6 +79881,14 @@ export interface SeriesFlagsDataDragDropGuideBoxOptions {
  */
 export interface SeriesFlagsOptions extends PlotFlagsOptions, SeriesOptions {
     /**
+     * Not available
+     */
+    borderRadius?: undefined;
+    /**
+     * Not available
+     */
+    colorByPoint?: undefined;
+    /**
      * (Highstock) An array of data points for the series. For the `flags`
      * series type, points can be given in the following ways:
      *
@@ -79896,11 +79907,23 @@ export interface SeriesFlagsOptions extends PlotFlagsOptions, SeriesOptions {
      */
     dataURL?: undefined;
     /**
+     * Not available
+     */
+    pointPadding?: undefined;
+    /**
+     * Not available
+     */
+    pointWidth?: undefined;
+    /**
      * (Highcharts, Highstock, Highmaps, Gantt) This property is only in
      * TypeScript non-optional and might be `undefined` in series objects from
      * unknown sources.
      */
     type: "flags";
+    /**
+     * Not available
+     */
+    useOhlcData?: undefined;
 }
 /**
  * (Highcharts) Style options for the guide box. The guide box has one state by
@@ -80741,15 +80764,16 @@ export interface SeriesLineDataDragDropOptions {
     guideBox?: (SeriesAreaDataDragDropGuideBoxOptions|SeriesArearangeDataDragDropGuideBoxOptions|SeriesAreasplineDataDragDropGuideBoxOptions|SeriesAreasplinerangeDataDragDropGuideBoxOptions|
 SeriesBarDataDragDropGuideBoxOptions|SeriesBoxplotDataDragDropGuideBoxOptions|SeriesBubbleDataDragDropGuideBoxOptions|SeriesBulletDataDragDropGuideBoxOptions|
 SeriesCandlestickDataDragDropGuideBoxOptions|SeriesColumnDataDragDropGuideBoxOptions|SeriesColumnpyramidDataDragDropGuideBoxOptions|SeriesColumnrangeDataDragDropGuideBoxOptions|
-SeriesCylinderDataDragDropGuideBoxOptions|SeriesErrorbarDataDragDropGuideBoxOptions|SeriesFlagsDataDragDropGuideBoxOptions|SeriesFunnel3dDataDragDropGuideBoxOptions|
-SeriesFunnelDataDragDropGuideBoxOptions|SeriesGanttDataDragDropGuideBoxOptions|SeriesGaugeDataDragDropGuideBoxOptions|SeriesHeatmapDataDragDropGuideBoxOptions|SeriesItemDataDragDropGuideBoxOptions|
-SeriesLineDataDragDropGuideBoxOptions|SeriesNetworkgraphDataDragDropGuideBoxOptions|SeriesOhlcDataDragDropGuideBoxOptions|SeriesPackedbubbleDataDragDropGuideBoxOptions|
-SeriesParetoDataDragDropGuideBoxOptions|SeriesPieDataDragDropGuideBoxOptions|SeriesPolygonDataDragDropGuideBoxOptions|SeriesPyramid3dDataDragDropGuideBoxOptions|
-SeriesPyramidDataDragDropGuideBoxOptions|SeriesScatter3dDataDragDropGuideBoxOptions|SeriesScatterDataDragDropGuideBoxOptions|SeriesSolidgaugeDataDragDropGuideBoxOptions|
-SeriesSplineDataDragDropGuideBoxOptions|SeriesStreamgraphDataDragDropGuideBoxOptions|SeriesSunburstDataDragDropGuideBoxOptions|SeriesTilemapDataDragDropGuideBoxOptions|
-SeriesTimelineDataDragDropGuideBoxOptions|SeriesTreemapDataDragDropGuideBoxOptions|SeriesVariablepieDataDragDropGuideBoxOptions|SeriesVariwideDataDragDropGuideBoxOptions|
-SeriesVectorDataDragDropGuideBoxOptions|SeriesVennDataDragDropGuideBoxOptions|SeriesWaterfallDataDragDropGuideBoxOptions|SeriesWindbarbDataDragDropGuideBoxOptions|
-SeriesWordcloudDataDragDropGuideBoxOptions|SeriesXrangeDataDragDropGuideBoxOptions|Dictionary<DragDropGuideBoxOptionsObject>);
+SeriesCylinderDataDragDropGuideBoxOptions|SeriesDumbbellDataDragDropGuideBoxOptions|SeriesErrorbarDataDragDropGuideBoxOptions|SeriesFlagsDataDragDropGuideBoxOptions|
+SeriesFunnel3dDataDragDropGuideBoxOptions|SeriesFunnelDataDragDropGuideBoxOptions|SeriesGanttDataDragDropGuideBoxOptions|SeriesGaugeDataDragDropGuideBoxOptions|
+SeriesHeatmapDataDragDropGuideBoxOptions|SeriesItemDataDragDropGuideBoxOptions|SeriesLineDataDragDropGuideBoxOptions|SeriesLollipopDataDragDropGuideBoxOptions|
+SeriesNetworkgraphDataDragDropGuideBoxOptions|SeriesOhlcDataDragDropGuideBoxOptions|SeriesPackedbubbleDataDragDropGuideBoxOptions|SeriesParetoDataDragDropGuideBoxOptions|
+SeriesPieDataDragDropGuideBoxOptions|SeriesPolygonDataDragDropGuideBoxOptions|SeriesPyramid3dDataDragDropGuideBoxOptions|SeriesPyramidDataDragDropGuideBoxOptions|
+SeriesScatter3dDataDragDropGuideBoxOptions|SeriesScatterDataDragDropGuideBoxOptions|SeriesSolidgaugeDataDragDropGuideBoxOptions|SeriesSplineDataDragDropGuideBoxOptions|
+SeriesStreamgraphDataDragDropGuideBoxOptions|SeriesSunburstDataDragDropGuideBoxOptions|SeriesTilemapDataDragDropGuideBoxOptions|SeriesTimelineDataDragDropGuideBoxOptions|
+SeriesTreemapDataDragDropGuideBoxOptions|SeriesVariablepieDataDragDropGuideBoxOptions|SeriesVariwideDataDragDropGuideBoxOptions|SeriesVectorDataDragDropGuideBoxOptions|
+SeriesVennDataDragDropGuideBoxOptions|SeriesWaterfallDataDragDropGuideBoxOptions|SeriesWindbarbDataDragDropGuideBoxOptions|SeriesWordcloudDataDragDropGuideBoxOptions|
+SeriesXrangeDataDragDropGuideBoxOptions|Dictionary<DragDropGuideBoxOptionsObject>);
     /**
      * (Highcharts, Highstock, Gantt) Update points as they are dragged. If
      * false, a guide box is drawn to illustrate the new point size.
@@ -80800,9 +80824,9 @@ export interface SeriesLineOptions extends PlotLineOptions, SeriesOptions {
      * not available. (see online documentation for example)
      *
      * **Note:** In TypeScript you have to extend `PointOptionsObject` with an
-     * additional declaration to allow custom data options: ```ts declare module
-     * `highcharts` { interface PointOptionsObject { customProperty: string; } }
-     * ```
+     * additional declaration to allow custom data types: ```ts declare module
+     * `highcharts` { interface PointOptionsObject { custom: Record<string,
+     * (boolean|number|string)>; } } ```
      */
     data?: Array<(number|[(number|string), (number|null)]|null|PointOptionsObject)>;
     /**
@@ -80819,6 +80843,87 @@ export interface SeriesLineOptions extends PlotLineOptions, SeriesOptions {
      * unknown sources.
      */
     type: "line";
+}
+/**
+ * (Highcharts, Highstock) Style options for the guide box. The guide box has
+ * one state by default, the `default` state.
+ */
+export interface SeriesLollipopDataDragDropGuideBoxOptions {
+    /**
+     * (Highcharts, Highstock) Style options for the guide box default state.
+     */
+    default?: DragDropGuideBoxOptionsObject;
+}
+/**
+ * (Highcharts, Highstock) The `lollipop` series. If the type option is not
+ * specified, it is inherited from chart.type.
+ *
+ * In TypeScript the type option must always be set.
+ *
+ * Configuration options for the series are given in three levels:
+ *
+ * 1. Options for all series in a chart are defined in the plotOptions.series
+ * object.
+ *
+ * 2. Options for all `lollipop` series are defined in plotOptions.lollipop.
+ *
+ * 3. Options for one single series are given in the series instance array. (see
+ * online documentation for example)
+ *
+ * You have to extend the `SeriesLollipopOptions` via an interface to allow
+ * custom properties: ``` declare interface SeriesLollipopOptions {
+ * customProperty: string; }
+ *
+ */
+export interface SeriesLollipopOptions extends PlotLollipopOptions, SeriesOptions {
+    /**
+     * (Highcharts, Highstock) An array of data points for the series. For the
+     * `lollipop` series type, points can be given in the following ways:
+     *
+     * 1. An array of numerical values. In this case, the numerical values will
+     * be interpreted as `y` options. The `x` values will be automatically
+     * calculated, either starting at 0 and incremented by 1, or from
+     * `pointStart` and `pointInterval` given in the series options. If the axis
+     * has categories, these will be used. Example: (see online documentation
+     * for example)
+     *
+     * 2. An array of arrays with 2 values. In this case, the values correspond
+     * to `x,y`. If the first value is a string, it is applied as the name of
+     * the point, and the `x` value is inferred. (see online documentation for
+     * example)
+     *
+     * 3. An array of objects with named values. The following snippet shows
+     * only a few settings, see the complete options set below. If the total
+     * number of data points exceeds the series' turboThreshold, this option is
+     * not available. (see online documentation for example)
+     */
+    data?: Array<(number|[(number|string), (number|null)]|null|PointOptionsObject)>;
+    /**
+     * Not available
+     */
+    fillColor?: undefined;
+    /**
+     * Not available
+     */
+    fillOpacity?: undefined;
+    /**
+     * Not available
+     */
+    lowColor?: undefined;
+    /**
+     * Not available
+     */
+    stack?: undefined;
+    /**
+     * Not available
+     */
+    trackByArea?: undefined;
+    /**
+     * (Highcharts, Highstock, Highmaps, Gantt) This property is only in
+     * TypeScript non-optional and might be `undefined` in series objects from
+     * unknown sources.
+     */
+    type: "lollipop";
 }
 /**
  * (Highstock) A `MACD` series. If the type option is not specified, it is
@@ -82147,10 +82252,6 @@ export interface SeriesOrganizationDataLabelsOptionsObject {
  */
 export interface SeriesOrganizationOptions extends PlotOrganizationOptions, SeriesOptions {
     /**
-     * Not available
-     */
-    curveFactor?: undefined;
-    /**
      * (Highcharts) An array of data points for the series. For the
      * `organization` series type, points can be given in the following way:
      *
@@ -82229,6 +82330,11 @@ export interface SeriesPackedBubbleDataLabelsOptionsObject {
      */
     allowOverlap?: boolean;
     /**
+     * (Highcharts, Highstock, Highmaps, Gantt) Presentation attributes for the
+     * text path.
+     */
+    attributes?: SVGAttributes;
+    /**
      * (Highcharts, Highstock, Highmaps, Gantt) The background color or gradient
      * for the data label.
      */
@@ -82292,8 +82398,9 @@ export interface SeriesPackedBubbleDataLabelsOptionsObject {
      */
     filter?: DataLabelsFilterOptionsObject;
     /**
-     * (Highcharts, Highstock, Highmaps, Gantt) A format string for the data
-     * label. Available variables are the same as for `formatter`.
+     * (Highcharts, Highstock, Highmaps, Gantt) The format string specifying
+     * what to show for _node_ in the networkgraph. In v7.0 defaults to `{key}`,
+     * since v7.1 defaults to `undefined` and `formatter` is used instead.
      */
     format?: string;
     /**
@@ -82335,6 +82442,7 @@ export interface SeriesPackedBubbleDataLabelsOptionsObject {
      * the `backgroundColor` is set, this is the padding within the box.
      */
     padding?: number;
+    parentNodeFormat?: string;
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) Callback to format data labels
      * for _parentNodes_. The `parentNodeFormat` option takes precedence over
@@ -82396,12 +82504,10 @@ export interface SeriesPackedBubbleDataLabelsOptionsObject {
      */
     style?: CSSObject;
     /**
-     * (Highcharts, Highstock, Highmaps, Gantt) Options for a label text which
-     * should follow marker's shape. Border and background are disabled for a
-     * label that follows a path.
+     * (Highcharts, Highstock, Highmaps, Gantt) Options for a _node_ label text
+     * which should follow marker's shape.
      *
-     * **Note:** Only SVG-based renderer supports this option. Setting `useHTML`
-     * to true will disable this option.
+     * **Note:** Only SVG-based renderer supports this option.
      */
     textPath?: DataLabelsTextPathOptionsObject;
     /**
@@ -82736,7 +82842,7 @@ export interface SeriesPieDataLabelsOptionsObject {
      * as a percentage of pie's radius. Connectors are only shown for data
      * labels outside the pie.
      */
-    distance?: number;
+    distance?: (number|string);
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) Enable or disable the data
      * labels.
@@ -83838,6 +83944,12 @@ export interface SeriesSankeyPointOptionsObject {
      */
     colorIndex?: number;
     /**
+     * (Highcharts) A reserved subspace to store options and values for
+     * customized functionality. Here you can add additional data for your own
+     * event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts) Individual data label for each point. The options are the
      * same as the ones for plotOptions.series.dataLabels.
      */
@@ -84365,13 +84477,16 @@ export interface SeriesStatesInactiveOptionsObject {
      */
     animation?: (boolean|AnimationOptionsObject);
     /**
+     * (Highstock) Enable or disable the inactive state for a series
+     */
+    enabled?: boolean;
+    /**
      * (Highcharts) Opacity for the links between nodes in the sankey diagram in
      * inactive mode.
      */
     linkOpacity?: number;
     /**
-     * (Highstock) Opacity of series elements (dataLabels, line, area). Set to 1
-     * to disable inactive state.
+     * (Highstock) Opacity of series elements (dataLabels, line, area).
      */
     opacity?: number;
 }
@@ -84704,7 +84819,7 @@ export interface SeriesSunburstDataLabelsOptionsObject {
      * as a percentage of pie's radius. Connectors are only shown for data
      * labels outside the pie.
      */
-    distance?: number;
+    distance?: (number|string);
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) Enable or disable the data
      * labels.
@@ -84777,8 +84892,11 @@ export interface SeriesSunburstDataLabelsOptionsObject {
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) Decides how the data label will
      * be rotated relative to the perimeter of the sunburst. Valid values are
-     * `auto`, `parallel` and `perpendicular`. When `auto`, the best fit will be
-     * computed for the point.
+     * `auto`, `circular`, `parallel` and `perpendicular`. When `auto`, the best
+     * fit will be computed for the point. The `circular` option works similiar
+     * to `auto`, but uses the `textPath` feature - labels are curved, resulting
+     * in a better layout, however multiple lines and `textOutline` are not
+     * supported.
      *
      * The `series.rotation` option takes precedence over `rotationMode`.
      */
@@ -85238,6 +85356,11 @@ export interface SeriesTooltipOptionsObject {
      * flexibility.
      */
     pointFormatter?: FormatterCallbackFunction<Point>;
+    /**
+     * (Highstock) Prevents the tooltip from switching or closing, when touched
+     * or pointed.
+     */
+    stickOnHover?: boolean;
     /**
      * (Highstock) Number of decimals in indicator series.
      */
@@ -86008,14 +86131,6 @@ export interface SeriesWordcloudDataDragDropGuideBoxOptions {
  */
 export interface SeriesWordcloudOptions extends PlotWordcloudOptions, SeriesOptions {
     /**
-     * Not available
-     */
-    crisp?: undefined;
-    /**
-     * Not available
-     */
-    cropTreshold?: undefined;
-    /**
      * (Highcharts) An array of data points for the series. For the `wordcloud`
      * series type, points can be given in the following ways:
      *
@@ -86028,42 +86143,6 @@ export interface SeriesWordcloudOptions extends PlotWordcloudOptions, SeriesOpti
      * not available. (see online documentation for example)
      */
     data?: Array<([string, number]|PointOptionsObject)>;
-    /**
-     * Not available
-     */
-    depth?: undefined;
-    /**
-     * Not available
-     */
-    edgeColor?: undefined;
-    /**
-     * Not available
-     */
-    grouping?: undefined;
-    /**
-     * Not available
-     */
-    groupPadding?: undefined;
-    /**
-     * Not available
-     */
-    groupZPadding?: undefined;
-    /**
-     * Not available
-     */
-    maxPointWidth?: undefined;
-    /**
-     * Not available
-     */
-    minPointLength?: undefined;
-    /**
-     * Not available
-     */
-    pointPadding?: undefined;
-    /**
-     * Not available
-     */
-    pointWidth?: undefined;
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) This property is only in
      * TypeScript non-optional and might be `undefined` in series objects from
@@ -86272,32 +86351,6 @@ export interface StackItemObject {
      * Shared x value of the stack
      */
     x: number;
-}
-/**
- * A config object for bindings in Stock Tools module.
- */
-export interface StockToolsBindingsObject {
-    /**
-     * ClassName of the element for a binding.
-     */
-    className?: string;
-    /**
-     * Last event to be fired after last step event.
-     */
-    end?: Function;
-    /**
-     * Initial event, fired on a button click.
-     */
-    init?: Function;
-    /**
-     * Event fired on first click on a chart.
-     */
-    start?: Function;
-    /**
-     * Last event to be fired after last step event. Array of step events to be
-     * called sequentially after each user click.
-     */
-    steps?: Array<Function>;
 }
 export interface StockToolsGuiDefinitionsAdvancedFibonacciOptions {
     /**
@@ -86802,7 +86855,7 @@ export interface SVGAttributes {
  * names are reserved: tagName, textContent, and children.
  */
 export interface SVGDefinitionObject {
-    [key: string]: (number|string|Array<SVGDefinitionObject>|undefined);
+    [key: string]: (boolean|number|string|Array<SVGDefinitionObject>|undefined);
     children?: Array<SVGDefinitionObject>;
     tagName?: string;
     textContent?: string;
@@ -87145,7 +87198,7 @@ export interface TimeOptions {
      * using their local DST crossover dates, with the help of external
      * libraries.
      */
-    getTimezoneOffset?: string;
+    getTimezoneOffset?: TimezoneOffsetCallbackFunction;
     /**
      * (Highcharts, Highstock, Gantt) Requires moment.js. If the timezone option
      * is specified, it creates a default getTimezoneOffset function that looks
@@ -87552,6 +87605,11 @@ export interface TooltipOptions {
      * read. This option takes precedence over `tooltip.shared`.
      */
     split?: boolean;
+    /**
+     * (Highcharts, Highstock, Highmaps, Gantt) Prevents the tooltip from
+     * switching or closing, when touched or pointed.
+     */
+    stickOnHover?: boolean;
     /**
      * (Highcharts, Highstock, Highmaps, Gantt) CSS styles for the tooltip. The
      * tooltip can also be styled through the CSS class `.highcharts-tooltip`.
@@ -89213,6 +89271,12 @@ export interface XrangePointOptionsObject {
      */
     connect?: (string|XrangePointConnectorsOptionsObject|Array<(string|XrangePointConnectorsOptionsObject)>);
     /**
+     * (Highcharts, Highstock, Gantt) A reserved subspace to store options and
+     * values for customized functionality. Here you can add additional data for
+     * your own event callbacks and formatter callbacks.
+     */
+    custom?: Dictionary<any>;
+    /**
      * (Highcharts, Highstock, Gantt) Individual data label for each point. The
      * options are the same as the ones for plotOptions.series.dataLabels.
      */
@@ -90013,13 +90077,19 @@ export interface YAxisOptions {
      */
     pane?: number;
     /**
-     * (Highcharts, Highstock, Gantt) An array of objects defining plot bands on
-     * the Y axis.
+     * (Highcharts, Highstock, Gantt) An array of colored bands stretching
+     * across the plot area marking an interval on the axis.
+     *
+     * In styled mode, the plot bands are styled by the `.highcharts-plot-band`
+     * class in addition to the `className` option.
      */
     plotBands?: Array<YAxisPlotBandsOptions>;
     /**
-     * (Highcharts, Highstock, Gantt) An array of objects representing plot
-     * lines on the X axis
+     * (Highcharts, Highstock, Gantt) An array of lines stretching across the
+     * plot area, marking a specific value on one of the axes.
+     *
+     * In styled mode, the plot lines are styled by the `.highcharts-plot-line`
+     * class in addition to the `className` option.
      */
     plotLines?: Array<YAxisPlotLinesOptions>;
     /**
@@ -90363,8 +90433,11 @@ export interface YAxisPlotBandsLabelOptions {
     y?: number;
 }
 /**
- * (Highcharts, Highstock, Gantt) An array of objects defining plot bands on the
- * Y axis.
+ * (Highcharts, Highstock, Gantt) An array of colored bands stretching across
+ * the plot area marking an interval on the axis.
+ *
+ * In styled mode, the plot bands are styled by the `.highcharts-plot-band`
+ * class in addition to the `className` option.
  */
 export interface YAxisPlotBandsOptions {
     /**
@@ -90529,8 +90602,11 @@ export interface YAxisPlotLinesLabelOptions {
     y?: number;
 }
 /**
- * (Highcharts, Highstock, Gantt) An array of objects representing plot lines on
- * the X axis
+ * (Highcharts, Highstock, Gantt) An array of lines stretching across the plot
+ * area, marking a specific value on one of the axes.
+ *
+ * In styled mode, the plot lines are styled by the `.highcharts-plot-line`
+ * class in addition to the `className` option.
  */
 export interface YAxisPlotLinesOptions {
     /**
@@ -92360,13 +92436,13 @@ export class Annotation {
      */
     chart: Chart;
     /**
-     * The array of control points.
+     * The group svg element.
      */
-    controlPoints: Array<object>;
+    group: SVGElement;
     /**
-     * The array of labels which belong to the annotation.
+     * The group svg element of the annotation's labels.
      */
-    labels: Array<object>;
+    labelsGroup: SVGElement;
     /**
      * The options for the annotations.
      */
@@ -92376,13 +92452,57 @@ export class Annotation {
      */
     points: Array<Point>;
     /**
-     * The array of shapes which belong to the annotation.
+     * The group svg element of the annotation's shapes.
      */
-    shapes: Array<object>;
+    shapesGroup: SVGElement;
     /**
      * The user options for the annotations.
      */
     userOptions: AnnotationsOptions;
+    /**
+     * Updates an annotation.
+     *
+     * @param userOptions
+     *        New user options for the annotation.
+     */
+    update(userOptions: Partial<AnnotationsOptions>): void;
+}
+/**
+ * A control point class which is a connection between controllable transform
+ * methods and a user actions.
+ */
+export class AnnotationControlPoint {
+    /**
+     * A control point class which is a connection between controllable
+     * transform methods and a user actions.
+     *
+     * @param chart
+     *        A chart instance.
+     *
+     * @param target
+     *        A controllable instance which is a target for a control point.
+     *
+     * @param options
+     *        An options object.
+     *
+     * @param index
+     *        Point index.
+     */
+    constructor(chart: Chart, target: AnnotationControllable, options: AnnotationControlPointOptionsObject, index?: number);
+    /**
+     * Set the visibility of the control point.
+     *
+     * @param visible
+     *        Visibility of the control point.
+     */
+    setVisibility(visible: boolean): void;
+    /**
+     * Update the control point.
+     *
+     * @param userOptions
+     *        New options for the control point.
+     */
+    update(userOptions: Partial<AnnotationControlPointOptionsObject>): void;
 }
 /**
  * Create a new axis object. Called internally when instanciating a new chart or
@@ -93229,6 +93349,14 @@ export class Chart {
      */
     showLoading(str?: string): void;
     /**
+     * Display the zoom button, so users can reset zoom to the default view
+     * settings.
+     *
+     * @fires Highcharts.Chart#afterShowResetZoom
+     * @fires Highcharts.Chart#beforeShowResetZoom
+     */
+    showResetZoom(): void;
+    /**
      * A generic function to update any element of the chart. Elements can be
      * enabled and disabled, moved, re-styled, re-formatted etc.
      *
@@ -93286,12 +93414,14 @@ export class Chart {
  */
 export class Color {
     /**
-     * Handle color operations. Some object methods are chainable.
+     * Creates a color instance out of a color string or object.
      *
      * @param input
-     *        The input color in either rbga or hex format
+     *        The input color in either rbga or hex format.
+     *
+     * @return Color instance.
      */
-    constructor(input: ColorType);
+    static parse(input: ColorType): Color;
     /**
      * Brighten the color instance.
      *
@@ -93498,7 +93628,7 @@ export class Point {
      * For categorized axes this property holds the category name for the point.
      * For other axes it holds the X value.
      */
-    category: (number|string);
+    category: string;
     /**
      * The point's current color.
      */
@@ -93541,7 +93671,7 @@ export class Point {
     /**
      * The percentage for points in a stacked series or pies.
      */
-    percentage: number;
+    percentage?: number;
     /**
      * Whether the point is selected or not.
      */
@@ -93558,7 +93688,7 @@ export class Point {
      * The total of values in either a stack for stacked series, or a pie in a
      * pie series.
      */
-    total: number;
+    total?: number;
     /**
      * For certain series types, like pie charts, where individual points can be
      * shown or hidden.
@@ -93602,13 +93732,6 @@ export class Point {
      * @return The path definition.
      */
     haloPath(size: number): SVGElement;
-    /**
-     * Utility to check if point has new shape type. Used in column series and
-     * all others that are based on column series.
-     *
-     * @return boolean|undefined
-     */
-    hasNewShapeType(): void;
     /**
      * Initialize the point. Called internally based on the `series.data`
      * option.
@@ -93757,18 +93880,6 @@ export class Point {
  * Pointer item that can be accessed from the Chart.pointer property.
  */
 export class Pointer {
-    /**
-     * The mouse and touch tracker object. Each Chart item has one assosiated
-     * Pointer item that can be accessed from the Chart.pointer property.
-     *
-     * @param chart
-     *        The Chart instance.
-     *
-     * @param options
-     *        The root options object. The pointer uses options from the chart
-     *        and tooltip structures.
-     */
-    constructor(chart: Chart, options: Options);
     /**
      * Destroys the Pointer object and disconnects DOM events.
      */
@@ -94111,6 +94222,17 @@ export class Series {
      */
     hide(): void;
     /**
+     * Check whether the series item is itself or inherits from a certain series
+     * type.
+     *
+     * @param type
+     *        The type of series to check for, can be either featured or custom
+     *        series types. For example `column`, `pie`, `ohlc` etc.
+     *
+     * @return True if this item is or inherits from the given type.
+     */
+    is(type: string): boolean;
+    /**
      * Get non-presentational attributes for a point. Used internally for both
      * styled mode and classic. Can be overridden for different series types.
      *
@@ -94412,7 +94534,7 @@ export class SVGElement {
      *         so the calls can be chained. If used as a getter, the current
      *         value of the attribute is returned.
      */
-    attr(hash?: (string|SVGAttributes), val?: string, complete?: Function, continueAnimation?: boolean): SVGElement;
+    attr(hash?: (string|SVGAttributes), val?: (number|string|SVGPathArray), complete?: Function, continueAnimation?: boolean): SVGElement;
     /**
      * Apply a clipping rectangle to this element.
      *
@@ -95005,21 +95127,21 @@ disabledState?: SVGAttributes, shape?: SymbolKeyValue, useHTML?: boolean): SVGEl
     /**
      * Draw a path, wraps the SVG `path` element.
      *
-     * @param attribs
-     *        The initial attributes.
-     *
-     * @return The generated wrapper element.
-     */
-    path(attribs?: SVGAttributes): SVGElement;
-    /**
-     * Draw a path, wraps the SVG `path` element.
-     *
      * @param path
      *        An SVG path definition in array form.
      *
      * @return The generated wrapper element.
      */
     path(path?: SVGPathArray): SVGElement;
+    /**
+     * Draw a path, wraps the SVG `path` element.
+     *
+     * @param attribs
+     *        The initial attributes.
+     *
+     * @return The generated wrapper element.
+     */
+    path(attribs?: SVGAttributes): SVGElement;
     /**
      * Draw and return a rectangle.
      *
@@ -95124,25 +95246,6 @@ disabledState?: SVGAttributes, shape?: SymbolKeyValue, useHTML?: boolean): SVGEl
  */
 export class Tick {
     /**
-     * The Tick class.
-     *
-     * @param axis
-     *        The axis of the tick.
-     *
-     * @param pos
-     *        The position of the tick on the axis in terms of axis values.
-     *
-     * @param type
-     *        The type of tick, either 'minor' or an empty string
-     *
-     * @param noLabel
-     *        Whether to disable the label or not. Defaults to false.
-     *
-     * @param parameters
-     *        Optional parameters for the tick.
-     */
-    constructor(axis: Axis, pos: number, type?: string, noLabel?: boolean, parameters?: object);
-    /**
      * The related axis of the tick.
      */
     axis: Axis;
@@ -95185,73 +95288,6 @@ export class Tick {
  * `Highcharts.time` if no individual time settings are applied.
  */
 export class Time {
-    /**
-     * The Time class. Time settings are applied in general for each page using
-     * `Highcharts.setOptions`, or individually for each Chart item through the
-     * time options set.
-     *
-     * The Time object is available from Highcharts.Chart#time, which refers to
-     * `Highcharts.time` if no individual time settings are applied.
-     *
-     * @param options
-     *        Time options as defined in chart.options.time.
-     */
-    constructor(options: TimeOptions);
-    /**
-     * Formats a JavaScript date timestamp (milliseconds since Jan 1st 1970)
-     * into a human readable date string. The available format keys are listed
-     * below. Additional formats can be given in the Highcharts.dateFormats
-     * hook.
-     *
-     * Supported format keys:
-     *
-     * - `%a`: Short weekday, like 'Mon'
-     *
-     * - `%A`: Long weekday, like 'Monday'
-     *
-     * - `%d`: Two digit day of the month, 01 to 31
-     *
-     * - `%e`: Day of the month, 1 through 31
-     *
-     * - `%w`: Day of the week, 0 through 6
-     *
-     * - `%b`: Short month, like 'Jan'
-     *
-     * - `%B`: Long month, like 'January'
-     *
-     * - `%m`: Two digit month number, 01 through 12
-     *
-     * - `%y`: Two digits year, like 09 for 2009
-     *
-     * - `%Y`: Four digits year, like 2009
-     *
-     * - `%H`: Two digits hours in 24h format, 00 through 23
-     *
-     * - `%k`: Hours in 24h format, 0 through 23
-     *
-     * - `%I`: Two digits hours in 12h format, 00 through 11
-     *
-     * - `%l`: Hours in 12h format, 1 through 12
-     *
-     * - `%M`: Two digits minutes, 00 through 59
-     *
-     * - `%p`: Upper case AM or PM
-     *
-     * - `%P`: Lower case AM or PM
-     *
-     * - `%S`: Two digits seconds, 00 through 59
-     *
-     * - `%L`: Milliseconds (naming from Ruby)
-     *
-     * @param timestamp
-     *        The JavaScript timestamp.
-     *
-     * @param capitalize
-     *        Upper case first letter in the return.
-     *
-     * @return The formatted date.
-     */
-    dateFormat(timestamp: number, capitalize?: boolean): string;
     /**
      * Formats a JavaScript date timestamp (milliseconds since Jan 1st 1970)
      * into a human readable date string. The available format keys are listed
@@ -95312,6 +95348,16 @@ export class Time {
      */
     dateFormat(format: string, timestamp: number, capitalize?: boolean): string;
     /**
+     * Get the value of a date object in given units, and subject to the Time
+     * object's current timezone settings. This function corresponds directly to
+     * JavaScripts `Date.getXXX / Date.getUTCXXX`, so instead of calling
+     * `date.getHours()` or `date.getUTCHours()` we will call
+     * `time.get('Hours')`.
+     *
+     * @return The given time unit
+     */
+    get(unit: TimeUnitValue, date: Date): number;
+    /**
      * Return an array with time positions distributed on round time values
      * right and right after min and max. Used in datetime axes as well as for
      * grouping data on a datetime axis.
@@ -95362,21 +95408,21 @@ export class Time {
      * @return The time in milliseconds since January 1st 1970.
      */
     makeTime(year: number, month: number, date?: number, hours?: number, minutes?: number, seconds?: number): number;
+    /**
+     * Set the value of a date object in given units, and subject to the Time
+     * object's current timezone settings. This function corresponds directly to
+     * JavaScripts `Date.setXXX / Date.setUTCXXX`, so instead of calling
+     * `date.setHours(0)` or `date.setUTCHours(0)` we will call
+     * `time.set('Hours', 0)`.
+     *
+     * @return The epoch milliseconds of the updated date
+     */
+    set(unit: TimeUnitValue, date: Date, value: number): number;
 }
 /**
  * Tooltip of a chart.
  */
 export class Tooltip {
-    /**
-     * Tooltip of a chart.
-     *
-     * @param chart
-     *        The chart instance.
-     *
-     * @param options
-     *        Tooltip options.
-     */
-    constructor(chart: Chart, options: TooltipOptions);
     /**
      * Chart of the tooltip.
      */
@@ -95659,6 +95705,46 @@ export function css(el: (HTMLDOMElement|SVGDOMElement), styles: CSSObject): void
  * Highcharts.Chart#time instance to respect chart-level time settings. The
  * `Highcharts.dateFormat` function only reflects global time settings set with
  * `setOptions`.
+ *
+ * Supported format keys:
+ *
+ * - `%a`: Short weekday, like 'Mon'
+ *
+ * - `%A`: Long weekday, like 'Monday'
+ *
+ * - `%d`: Two digit day of the month, 01 to 31
+ *
+ * - `%e`: Day of the month, 1 through 31
+ *
+ * - `%w`: Day of the week, 0 through 6
+ *
+ * - `%b`: Short month, like 'Jan'
+ *
+ * - `%B`: Long month, like 'January'
+ *
+ * - `%m`: Two digit month number, 01 through 12
+ *
+ * - `%y`: Two digits year, like 09 for 2009
+ *
+ * - `%Y`: Four digits year, like 2009
+ *
+ * - `%H`: Two digits hours in 24h format, 00 through 23
+ *
+ * - `%k`: Hours in 24h format, 0 through 23
+ *
+ * - `%I`: Two digits hours in 12h format, 00 through 11
+ *
+ * - `%l`: Hours in 12h format, 1 through 12
+ *
+ * - `%M`: Two digits minutes, 00 through 59
+ *
+ * - `%p`: Upper case AM or PM
+ *
+ * - `%P`: Lower case AM or PM
+ *
+ * - `%S`: Two digits seconds, 00 through 59
+ *
+ * - `%L`: Milliseconds (naming from Ruby)
  *
  * @param format
  *        The desired format where various time representations are prefixed
@@ -96083,12 +96169,12 @@ export function objectEach<T>(obj: any, fn: ObjectEachCallbackFunction<T>, ctx?:
  * Get the element's offset position, corrected for `overflow: auto`.
  *
  * @param el
- *        The HTML element.
+ *        The DOM element.
  *
  * @return An object containing `left` and `top` properties for the position in
  *         the page.
  */
-export function offset(el: HTMLDOMElement): OffsetObject;
+export function offset(el: Element): OffsetObject;
 /**
  * Left-pad a string to a given length by adding a character repetetively.
  *
@@ -96281,19 +96367,9 @@ export function uniqueKey(): string;
 /**
  * Wrap a method with extended functionality, preserving the original function.
  *
- * @param obj
- *        The context object that the method belongs to. In real cases, this is
- *        often a prototype.
- *
- * @param method
- *        The name of the method to extend.
- *
- * @param func
- *        A wrapper function callback. This function is called with the same
- *        arguments as the original function, except that the original function
- *        is unshifted and passed as the first argument.
+ *  ' * @function Highcharts.wrap
  */
-export function wrap(obj: any, method: string, func: WrapProceedFunction): void;
+export let wrap: any;
 declare global {
     /**
      * Highcharts-extended JQuery.

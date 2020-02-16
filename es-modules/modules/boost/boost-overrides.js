@@ -1,6 +1,6 @@
 /* *
  *
- *  Copyright (c) 2019-2019 Highsoft AS
+ *  Copyright (c) 2019-2020 Highsoft AS
  *
  *  Boost module: stripped-down renderer for higher performance
  *
@@ -12,7 +12,7 @@
 'use strict';
 import H from '../../parts/Globals.js';
 import U from '../../parts/Utilities.js';
-var isNumber = U.isNumber, wrap = U.wrap;
+var addEvent = U.addEvent, error = U.error, isNumber = U.isNumber, pick = U.pick, wrap = U.wrap;
 import '../../parts/Color.js';
 import '../../parts/Series.js';
 import '../../parts/Options.js';
@@ -21,7 +21,7 @@ import '../../parts/Interaction.js';
 import butils from './boost-utils.js';
 import boostable from './boostables.js';
 import boostableMap from './boostable-map.js';
-var boostEnabled = butils.boostEnabled, shouldForceChartSeriesBoosting = butils.shouldForceChartSeriesBoosting, Chart = H.Chart, Series = H.Series, Point = H.Point, seriesTypes = H.seriesTypes, addEvent = H.addEvent, pick = H.pick, plotOptions = H.getOptions().plotOptions;
+var boostEnabled = butils.boostEnabled, shouldForceChartSeriesBoosting = butils.shouldForceChartSeriesBoosting, Chart = H.Chart, Series = H.Series, Point = H.Point, seriesTypes = H.seriesTypes, plotOptions = H.getOptions().plotOptions;
 /**
  * Returns true if the chart is in series boost mode.
  *
@@ -77,7 +77,7 @@ Chart.prototype.getBoostClipRect = function (target) {
  *        A stripped-down point object
  *
  * @return {Highcharts.Point}
- *         A Point object as per http://api.highcharts.com/highcharts#Point
+ *         A Point object as per https://api.highcharts.com/highcharts#Point
  */
 Series.prototype.getPoint = function (boostPoint) {
     var point = boostPoint, xData = (this.xData || this.options.xData || this.processedXData ||
@@ -244,7 +244,7 @@ wrap(Series.prototype, 'processData', function (proceed) {
             // Force turbo-mode:
             firstPoint = this.getFirstValidPoint(this.options.data);
             if (!isNumber(firstPoint) && !H.isArray(firstPoint)) {
-                H.error(12, false, this.chart);
+                error(12, false, this.chart);
             }
             this.enterBoost();
         }

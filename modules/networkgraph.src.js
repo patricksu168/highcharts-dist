@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v8.0.0 (2019-12-10)
+ * @license Highcharts JS v8.0.0 (2020-02-16)
  *
  * Force directed graph module
  *
@@ -34,9 +34,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var defined = U.defined,
-            extend = U.extend,
-            pick = U.pick;
+        var defined = U.defined, extend = U.extend, find = U.find, pick = U.pick;
         var Point = H.Point;
         H.NodesMixin = {
             /* eslint-disable valid-jsdoc */
@@ -50,14 +48,11 @@
                  * @private
                  */
                 function findById(nodes, id) {
-                    return H.find(nodes, function (node) {
+                    return find(nodes, function (node) {
                         return node.id === id;
                     });
                 }
-                var node = findById(this.nodes,
-                    id),
-                    PointClass = this.pointClass,
-                    options;
+                var node = findById(this.nodes, id), PointClass = this.pointClass, options;
                 if (!node) {
                     options = this.options.nodes && findById(this.options.nodes, id);
                     node = (new PointClass()).init(this, extend({
@@ -83,8 +78,7 @@
                      * @private
                      */
                     node.getSum = function () {
-                        var sumTo = 0,
-                            sumFrom = 0;
+                        var sumTo = 0, sumFrom = 0;
                         node.linksTo.forEach(function (link) {
                             sumTo += link.weight;
                         });
@@ -127,8 +121,7 @@
              * but pushed to the this.nodes array.
              */
             generatePoints: function () {
-                var chart = this.chart,
-                    nodeLookup = {};
+                var chart = this.chart, nodeLookup = {};
                 H.Series.prototype.generatePoints.call(this);
                 if (!this.nodes) {
                     this.nodes = []; // List of Point-like node items
@@ -191,19 +184,17 @@
              * highlight all connected nodes.
              */
             setNodeState: function (state) {
-                var args = arguments,
-                    others = this.isNode ? this.linksTo.concat(this.linksFrom) :
-                        [this.fromNode,
-                    this.toNode];
+                var args = arguments, others = this.isNode ? this.linksTo.concat(this.linksFrom) :
+                    [this.fromNode, this.toNode];
                 if (state !== 'select') {
                     others.forEach(function (linkOrNode) {
-                        if (linkOrNode.series) {
+                        if (linkOrNode && linkOrNode.series) {
                             Point.prototype.setState.apply(linkOrNode, args);
                             if (!linkOrNode.isNode) {
                                 if (linkOrNode.fromNode.graphic) {
                                     Point.prototype.setState.apply(linkOrNode.fromNode, args);
                                 }
-                                if (linkOrNode.toNode.graphic) {
+                                if (linkOrNode.toNode && linkOrNode.toNode.graphic) {
                                     Point.prototype.setState.apply(linkOrNode.toNode, args);
                                 }
                             }
@@ -221,7 +212,7 @@
          *
          *  Networkgraph series
          *
-         *  (c) 2010-2019 Paweł Fus
+         *  (c) 2010-2020 Paweł Fus
          *
          *  License: www.highcharts.com/license
          *
@@ -268,9 +259,7 @@
                  * @return {void}
                  */
                 barycenter: function () {
-                    var gravitationalConstant = this.options.gravitationalConstant,
-                        xFactor = this.barycenter.xFactor,
-                        yFactor = this.barycenter.yFactor;
+                    var gravitationalConstant = this.options.gravitationalConstant, xFactor = this.barycenter.xFactor, yFactor = this.barycenter.yFactor;
                     // To consider:
                     xFactor = (xFactor - (this.box.left + this.box.width) / 2) *
                         gravitationalConstant;
@@ -323,9 +312,7 @@
                  * @return {void}
                  */
                 attractive: function (link, force, distanceXY) {
-                    var massFactor = link.getMass(),
-                        translatedX = -distanceXY.x * force * this.diffTemperature,
-                        translatedY = -distanceXY.y * force * this.diffTemperature;
+                    var massFactor = link.getMass(), translatedX = -distanceXY.x * force * this.diffTemperature, translatedY = -distanceXY.y * force * this.diffTemperature;
                     if (!link.fromNode.fixedPosition) {
                         link.fromNode.plotX -=
                             translatedX * massFactor.fromNode / link.fromNode.degree;
@@ -372,18 +359,12 @@
                  * @return {void}
                  */
                 integrate: function (layout, node) {
-                    var friction = -layout.options.friction,
-                        maxSpeed = layout.options.maxSpeed,
-                        prevX = node.prevX,
-                        prevY = node.prevY, 
-                        // Apply friciton:
-                        diffX = ((node.plotX + node.dispX -
-                            prevX) * friction),
-                        diffY = ((node.plotY + node.dispY -
-                            prevY) * friction),
-                        abs = Math.abs,
-                        signX = abs(diffX) / (diffX || 1), // need to deal with 0
-                        signY = abs(diffY) / (diffY || 1);
+                    var friction = -layout.options.friction, maxSpeed = layout.options.maxSpeed, prevX = node.prevX, prevY = node.prevY, 
+                    // Apply friciton:
+                    diffX = ((node.plotX + node.dispX -
+                        prevX) * friction), diffY = ((node.plotY + node.dispY -
+                        prevY) * friction), abs = Math.abs, signX = abs(diffX) / (diffX || 1), // need to deal with 0
+                    signY = abs(diffY) / (diffY || 1);
                     // Apply max speed:
                     diffX = signX * Math.min(maxSpeed, Math.abs(diffX));
                     diffY = signY * Math.min(maxSpeed, Math.abs(diffY));
@@ -462,13 +443,10 @@
                  * @return {void}
                  */
                 barycenter: function () {
-                    var gravitationalConstant = this.options.gravitationalConstant,
-                        xFactor = this.barycenter.xFactor,
-                        yFactor = this.barycenter.yFactor;
+                    var gravitationalConstant = this.options.gravitationalConstant, xFactor = this.barycenter.xFactor, yFactor = this.barycenter.yFactor;
                     this.nodes.forEach(function (node) {
                         if (!node.fixedPosition) {
-                            var degree = node.getDegree(),
-                                phi = degree * (1 + degree / 2);
+                            var degree = node.getDegree(), phi = degree * (1 + degree / 2);
                             node.dispX += ((xFactor - node.plotX) *
                                 gravitationalConstant *
                                 phi / node.degree);
@@ -513,9 +491,7 @@
                  * @return {void}
                  */
                 attractive: function (link, force, distanceXY, distanceR) {
-                    var massFactor = link.getMass(),
-                        translatedX = (distanceXY.x / distanceR) * force,
-                        translatedY = (distanceXY.y / distanceR) * force;
+                    var massFactor = link.getMass(), translatedX = (distanceXY.x / distanceR) * force, translatedY = (distanceXY.y / distanceR) * force;
                     if (!link.fromNode.fixedPosition) {
                         link.fromNode.dispX -=
                             translatedX * massFactor.fromNode / link.fromNode.degree;
@@ -599,7 +575,7 @@
          *
          *  Networkgraph series
          *
-         *  (c) 2010-2019 Paweł Fus
+         *  (c) 2010-2020 Paweł Fus
          *
          *  License: www.highcharts.com/license
          *
@@ -619,13 +595,13 @@
          * @param {Highcharts.Dictionary<number>} box Available space for the node
          */
         var QuadTreeNode = H.QuadTreeNode = function (box) {
-                /**
-                 * Read only. The available space for node.
-                 *
-                 * @name Highcharts.QuadTreeNode#box
-                 * @type {Highcharts.Dictionary<number>}
-                 */
-                this.box = box;
+            /**
+             * Read only. The available space for node.
+             *
+             * @name Highcharts.QuadTreeNode#box
+             * @type {Highcharts.Dictionary<number>}
+             */
+            this.box = box;
             /**
              * Read only. The minium of width and height values.
              *
@@ -735,9 +711,7 @@
              * position is used to imitate real node in the layout by approximation.
              */
             updateMassAndCenter: function () {
-                var mass = 0,
-                    plotX = 0,
-                    plotY = 0;
+                var mass = 0, plotX = 0, plotY = 0;
                 if (this.isInternal) {
                     // Calcualte weightened mass of the quad node:
                     this.nodes.forEach(function (pointMass) {
@@ -781,8 +755,7 @@
              * ```
              */
             divideBox: function () {
-                var halfWidth = this.box.width / 2,
-                    halfHeight = this.box.height / 2;
+                var halfWidth = this.box.width / 2, halfHeight = this.box.height / 2;
                 // Top left
                 this.nodes[0] = new QuadTreeNode({
                     left: this.box.left,
@@ -820,9 +793,7 @@
              * @return {number}
              */
             getBoxPosition: function (point) {
-                var left = point.plotX < this.box.left + this.box.width / 2,
-                    top = point.plotY < this.box.top + this.box.height / 2,
-                    index;
+                var left = point.plotX < this.box.left + this.box.width / 2, top = point.plotY < this.box.top + this.box.height / 2, index;
                 if (left) {
                     if (top) {
                         // Top left
@@ -859,17 +830,14 @@
          * @param {number} width width of the plotting area
          * @param {number} height height of the plotting area
          */
-        var QuadTree = H.QuadTree = function (x,
-            y,
-            width,
-            height) {
-                // Boundary rectangle:
-                this.box = {
-                    left: x,
-                    top: y,
-                    width: width,
-                    height: height
-                };
+        var QuadTree = H.QuadTree = function (x, y, width, height) {
+            // Boundary rectangle:
+            this.box = {
+                left: x,
+                top: y,
+                width: width,
+                height: height
+            };
             this.maxDepth = 25;
             this.root = new QuadTreeNode(this.box, '0');
             this.root.isInternal = true;
@@ -961,20 +929,15 @@
          *
          *  Networkgraph series
          *
-         *  (c) 2010-2019 Paweł Fus
+         *  (c) 2010-2020 Paweł Fus
          *
          *  License: www.highcharts.com/license
          *
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var clamp = U.clamp,
-            defined = U.defined,
-            extend = U.extend,
-            pick = U.pick,
-            setAnimation = U.setAnimation;
-        var addEvent = H.addEvent,
-            Chart = H.Chart;
+        var addEvent = U.addEvent, clamp = U.clamp, defined = U.defined, extend = U.extend, isFunction = U.isFunction, pick = U.pick, setAnimation = U.setAnimation;
+        var Chart = H.Chart;
         /* eslint-disable no-invalid-this, valid-jsdoc */
         H.layouts = {
             'reingold-fruchterman': function () {
@@ -1006,9 +969,7 @@
                 this.approximation = options.approximation;
             },
             start: function () {
-                var layout = this,
-                    series = this.series,
-                    options = this.options;
+                var layout = this, series = this.series, options = this.options;
                 layout.currentStep = 0;
                 layout.forces = series[0] && series[0].forces || [];
                 if (layout.initialRendering) {
@@ -1025,9 +986,7 @@
                 }
             },
             step: function () {
-                var layout = this,
-                    series = this.series,
-                    options = this.options;
+                var layout = this, series = this.series, options = this.options;
                 // Algorithm:
                 layout.currentStep++;
                 if (layout.approximation === 'barnes-hut') {
@@ -1129,7 +1088,7 @@
             },
             initPositions: function () {
                 var initialPositions = this.options.initialPositions;
-                if (H.isFunction(initialPositions)) {
+                if (isFunction(initialPositions)) {
                     initialPositions.call(this);
                     this.nodes.forEach(function (node) {
                         if (!defined(node.prevX)) {
@@ -1150,12 +1109,8 @@
                 }
             },
             setCircularPositions: function () {
-                var box = this.box,
-                    nodes = this.nodes,
-                    nodesLength = nodes.length + 1,
-                    angle = 2 * Math.PI / nodesLength,
-                    rootNodes = nodes.filter(function (node) {
-                        return node.linksTo.length === 0;
+                var box = this.box, nodes = this.nodes, nodesLength = nodes.length + 1, angle = 2 * Math.PI / nodesLength, rootNodes = nodes.filter(function (node) {
+                    return node.linksTo.length === 0;
                 }), sortedNodes = [], visitedNodes = {}, radius = this.options.initialPositionRadius;
                 /**
                  * @private
@@ -1198,9 +1153,7 @@
                 });
             },
             setRandomPositions: function () {
-                var box = this.box,
-                    nodes = this.nodes,
-                    nodesLength = nodes.length + 1;
+                var box = this.box, nodes = this.nodes, nodesLength = nodes.length + 1;
                 /**
                  * Return a repeatable, quasi-random number based on an integer
                  * input. For the initial positions
@@ -1227,9 +1180,7 @@
                 this.force('barycenter');
             },
             getBarycenter: function () {
-                var systemMass = 0,
-                    cx = 0,
-                    cy = 0;
+                var systemMass = 0, cx = 0, cy = 0;
                 this.nodes.forEach(function (node) {
                     cx += node.plotX * node.mass;
                     cy += node.plotY * node.mass;
@@ -1244,12 +1195,7 @@
                 return this.barycenter;
             },
             barnesHutApproximation: function (node, quadNode) {
-                var layout = this,
-                    distanceXY = layout.getDistXY(node,
-                    quadNode),
-                    distanceR = layout.vectorLength(distanceXY),
-                    goDeeper,
-                    force;
+                var layout = this, distanceXY = layout.getDistXY(node, quadNode), distanceR = layout.vectorLength(distanceXY), goDeeper, force;
                 if (node !== quadNode && distanceR !== 0) {
                     if (quadNode.isInternal) {
                         // Internal node:
@@ -1286,9 +1232,7 @@
                 else {
                     layout.nodes.forEach(function (node) {
                         layout.nodes.forEach(function (repNode) {
-                            var force,
-                                distanceR,
-                                distanceXY;
+                            var force, distanceR, distanceXY;
                             if (
                             // Node can not repulse itself:
                             node !== repNode &&
@@ -1308,10 +1252,7 @@
                 }
             },
             attractiveForces: function () {
-                var layout = this,
-                    distanceXY,
-                    distanceR,
-                    force;
+                var layout = this, distanceXY, distanceR, force;
                 layout.links.forEach(function (link) {
                     if (link.fromNode && link.toNode) {
                         distanceXY = layout.getDistXY(link.fromNode, link.toNode);
@@ -1324,8 +1265,7 @@
                 });
             },
             applyLimits: function () {
-                var layout = this,
-                    nodes = layout.nodes;
+                var layout = this, nodes = layout.nodes;
                 nodes.forEach(function (node) {
                     if (node.fixedPosition) {
                         return;
@@ -1416,13 +1356,11 @@
                 return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
             },
             getDistR: function (nodeA, nodeB) {
-                var distance = this.getDistXY(nodeA,
-                    nodeB);
+                var distance = this.getDistXY(nodeA, nodeB);
                 return this.vectorLength(distance);
             },
             getDistXY: function (nodeA, nodeB) {
-                var xDist = nodeA.plotX - nodeB.plotX,
-                    yDist = nodeA.plotY - nodeB.plotY;
+                var xDist = nodeA.plotX - nodeB.plotX, yDist = nodeA.plotY - nodeB.plotY;
                 return {
                     x: xDist,
                     y: yDist,
@@ -1443,8 +1381,7 @@
             }
         });
         addEvent(Chart, 'render', function () {
-            var systemsStable,
-                afterRender = false;
+            var systemsStable, afterRender = false;
             /**
              * @private
              */
@@ -1489,20 +1426,20 @@
         });
 
     });
-    _registerModule(_modules, 'modules/networkgraph/draggable-nodes.js', [_modules['parts/Globals.js']], function (H) {
+    _registerModule(_modules, 'modules/networkgraph/draggable-nodes.js', [_modules['parts/Globals.js'], _modules['parts/Utilities.js']], function (H, U) {
         /* *
          *
          *  Networkgraph series
          *
-         *  (c) 2010-2019 Paweł Fus
+         *  (c) 2010-2020 Paweł Fus
          *
          *  License: www.highcharts.com/license
          *
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var Chart = H.Chart,
-            addEvent = H.addEvent;
+        var addEvent = U.addEvent;
+        var Chart = H.Chart;
         /* eslint-disable no-invalid-this, valid-jsdoc */
         H.dragNodesMixin = {
             /**
@@ -1535,13 +1472,7 @@
              */
             onMouseMove: function (point, event) {
                 if (point.fixedPosition && point.inDragMode) {
-                    var series = this,
-                        chart = series.chart,
-                        normalizedEvent = chart.pointer.normalize(event),
-                        diffX = point.fixedPosition.chartX - normalizedEvent.chartX,
-                        diffY = point.fixedPosition.chartY - normalizedEvent.chartY,
-                        newPlotX,
-                        newPlotY;
+                    var series = this, chart = series.chart, normalizedEvent = chart.pointer.normalize(event), diffX = point.fixedPosition.chartX - normalizedEvent.chartX, diffY = point.fixedPosition.chartY - normalizedEvent.chartY, newPlotX, newPlotY;
                     // At least 5px to apply change (avoids simple click):
                     if (Math.abs(diffX) > 5 || Math.abs(diffY) > 5) {
                         newPlotX = point.fixedPosition.plotX - diffX;
@@ -1616,10 +1547,7 @@
          * Draggable mode:
          */
         addEvent(Chart, 'load', function () {
-            var chart = this,
-                mousedownUnbinder,
-                mousemoveUnbinder,
-                mouseupUnbinder;
+            var chart = this, mousedownUnbinder, mousemoveUnbinder, mouseupUnbinder;
             if (chart.container) {
                 mousedownUnbinder = addEvent(chart.container, 'mousedown', function (event) {
                     var point = chart.hoverPoint;
@@ -1654,7 +1582,7 @@
          *
          *  Networkgraph series
          *
-         *  (c) 2010-2019 Paweł Fus
+         *  (c) 2010-2020 Paweł Fus
          *
          *  License: www.highcharts.com/license
          *
@@ -1696,14 +1624,8 @@
         * @type {string}
         * @since 7.0.0
         */
-        var defined = U.defined,
-            pick = U.pick;
-        var addEvent = H.addEvent,
-            seriesType = H.seriesType,
-            seriesTypes = H.seriesTypes,
-            Point = H.Point,
-            Series = H.Series,
-            dragNodesMixin = H.dragNodesMixin;
+        var addEvent = U.addEvent, css = U.css, defined = U.defined, pick = U.pick, seriesType = U.seriesType;
+        var seriesTypes = H.seriesTypes, Point = H.Point, Series = H.Series, dragNodesMixin = H.dragNodesMixin;
         /**
          * @private
          * @class
@@ -1726,7 +1648,7 @@
          *               getExtremesFromAll, label, linecap, negativeColor,
          *               pointInterval, pointIntervalUnit, pointPlacement,
          *               pointStart, softThreshold, stack, stacking, step,
-         *               threshold, xAxis, yAxis, zoneAxis
+         *               threshold, xAxis, yAxis, zoneAxis, dataSorting
          * @requires     modules/networkgraph
          * @optionparent plotOptions.networkgraph
          */
@@ -2125,8 +2047,7 @@
              * @private
              */
             generatePoints: function () {
-                var node,
-                    i;
+                var node, i;
                 H.NodesMixin.generatePoints.apply(this, arguments);
                 // In networkgraph, it's fine to define stanalone nodes, create
                 // them:
@@ -2154,6 +2075,14 @@
                 this.indexateNodes();
             },
             /**
+             * In networkgraph, series.points refers to links,
+             * but series.nodes refers to actual points.
+             * @private
+             */
+            getPointsCollection: function () {
+                return this.nodes || [];
+            },
+            /**
              * Set index for each node. Required for proper `node.update()`.
              * Note that links are indexated out of the box in `generatePoints()`.
              *
@@ -2171,9 +2100,7 @@
              * @private
              */
             markerAttribs: function (point, state) {
-                var attribs = Series.prototype.markerAttribs.call(this,
-                    point,
-                    state);
+                var attribs = Series.prototype.markerAttribs.call(this, point, state);
                 // series.render() is called before initial positions are set:
                 if (!defined(point.plotY)) {
                     attribs.y = 0;
@@ -2213,11 +2140,7 @@
              * @private
              */
             deferLayout: function () {
-                var layoutOptions = this.options.layoutAlgorithm,
-                    graphLayoutsStorage = this.chart.graphLayoutsStorage,
-                    graphLayoutsLookup = this.chart.graphLayoutsLookup,
-                    chartOptions = this.chart.options.chart,
-                    layout;
+                var layoutOptions = this.options.layoutAlgorithm, graphLayoutsStorage = this.chart.graphLayoutsStorage, graphLayoutsLookup = this.chart.graphLayoutsLookup, chartOptions = this.chart.options.chart, layout;
                 if (!this.visible) {
                     return;
                 }
@@ -2248,9 +2171,7 @@
              * @private
              */
             render: function () {
-                var points = this.points,
-                    hoverPoint = this.chart.hoverPoint,
-                    dataLabels = [];
+                var points = this.points, hoverPoint = this.chart.hoverPoint, dataLabels = [];
                 // Render markers:
                 this.points = this.nodes;
                 seriesTypes.line.prototype.render.call(this);
@@ -2292,12 +2213,8 @@
             // Return the presentational attributes.
             pointAttribs: function (point, state) {
                 // By default, only `selected` state is passed on
-                var pointState = state || point.state || 'normal',
-                    attribs = Series.prototype.pointAttribs.call(this,
-                    point,
-                    pointState),
-                    stateOptions = this.options.states[pointState];
-                if (!point.isNode) {
+                var pointState = state || point && point.state || 'normal', attribs = Series.prototype.pointAttribs.call(this, point, pointState), stateOptions = this.options.states[pointState];
+                if (point && !point.isNode) {
                     attribs = point.getLinkAttributes();
                     // For link, get prefixed names:
                     if (stateOptions) {
@@ -2371,10 +2288,10 @@
                 if (this.series.options.draggable &&
                     !this.series.chart.styledMode) {
                     addEvent(this, 'mouseOver', function () {
-                        H.css(this.series.chart.container, { cursor: 'move' });
+                        css(this.series.chart.container, { cursor: 'move' });
                     });
                     addEvent(this, 'mouseOut', function () {
-                        H.css(this.series.chart.container, { cursor: 'default' });
+                        css(this.series.chart.container, { cursor: 'default' });
                     });
                 }
                 return this;
@@ -2387,8 +2304,8 @@
              */
             getDegree: function () {
                 var deg = this.isNode ?
-                        this.linksFrom.length + this.linksTo.length :
-                        0;
+                    this.linksFrom.length + this.linksTo.length :
+                    0;
                 return deg === 0 ? 1 : deg;
             },
             // Links:
@@ -2398,8 +2315,7 @@
              * @return {Highcharts.SVGAttributes}
              */
             getLinkAttributes: function () {
-                var linkOptions = this.series.options.link,
-                    pointOptions = this.options;
+                var linkOptions = this.series.options.link, pointOptions = this.options;
                 return {
                     'stroke-width': pick(pointOptions.width, linkOptions.width),
                     stroke: (pointOptions.color || linkOptions.color),
@@ -2435,8 +2351,7 @@
              * @private
              */
             redrawLink: function () {
-                var path = this.getLinkPath(),
-                    attribs;
+                var path = this.getLinkPath(), attribs;
                 if (this.graphic) {
                     this.shapeArgs = {
                         d: path
@@ -2467,9 +2382,7 @@
              *         For example `{ fromNode: 0.5, toNode: 0.5 }`
              */
             getMass: function () {
-                var m1 = this.fromNode.mass,
-                    m2 = this.toNode.mass,
-                    sum = m1 + m2;
+                var m1 = this.fromNode.mass, m2 = this.toNode.mass, sum = m1 + m2;
                 return {
                     fromNode: 1 - m1 / sum,
                     toNode: 1 - m2 / sum
@@ -2482,8 +2395,7 @@
              *         Path: `['M', x, y, 'L', x, y]`
              */
             getLinkPath: function () {
-                var left = this.fromNode,
-                    right = this.toNode;
+                var left = this.fromNode, right = this.toNode;
                 // Start always from left to the right node, to prevent rendering
                 // labels upside down
                 if (left.plotX > right.plotX) {
@@ -2530,11 +2442,7 @@
              * @return {void}
              */
             remove: function (redraw, animation) {
-                var point = this,
-                    series = point.series,
-                    nodesOptions = series.options.nodes || [],
-                    index,
-                    i = nodesOptions.length;
+                var point = this, series = point.series, nodesOptions = series.options.nodes || [], index, i = nodesOptions.length;
                 // For nodes, remove all connected links:
                 if (point.isNode) {
                     // Temporary disable series.points array, because
@@ -2613,7 +2521,7 @@
          *            connectNulls, dragDrop, getExtremesFromAll, label, linecap,
          *            negativeColor, pointInterval, pointIntervalUnit,
          *            pointPlacement, pointStart, softThreshold, stack, stacking,
-         *            step, threshold, xAxis, yAxis, zoneAxis
+         *            step, threshold, xAxis, yAxis, zoneAxis, dataSorting
          * @product   highcharts
          * @requires  modules/networkgraph
          * @apioption series.networkgraph

@@ -10,14 +10,15 @@
  * */
 'use strict';
 import H from '../parts/Globals.js';
+import Tick from '../parts/Tick.js';
 import U from '../parts/Utilities.js';
-var defined = U.defined, erase = U.erase, isArray = U.isArray, isNumber = U.isNumber, pick = U.pick, wrap = U.wrap;
-var addEvent = H.addEvent, argsToArray = function (args) {
+var addEvent = U.addEvent, defined = U.defined, erase = U.erase, find = U.find, isArray = U.isArray, isNumber = U.isNumber, merge = U.merge, pick = U.pick, timeUnits = U.timeUnits, wrap = U.wrap;
+var argsToArray = function (args) {
     return Array.prototype.slice.call(args, 1);
 }, dateFormat = H.dateFormat, isObject = function (x) {
     // Always use strict mode
     return U.isObject(x, true);
-}, merge = H.merge, Chart = H.Chart, Axis = H.Axis, Tick = H.Tick;
+}, Chart = H.Chart, Axis = H.Axis;
 var applyGridOptions = function applyGridOptions(axis) {
     var options = axis.options;
     // Center-align by default
@@ -433,7 +434,7 @@ function (e) {
                             unitName = 'year';
                             count = parentInfo.count * 10;
                         }
-                        unitRange = H.timeUnits[unitName];
+                        unitRange = timeUnits[unitName];
                         this.tickInterval = unitRange * count;
                         return this.getTimeTicks({
                             unitRange: unitRange,
@@ -629,7 +630,7 @@ var onGridAxisAfterInit = function onGridAxisAfterInit() {
         wrap(axis, 'labelFormatter', function (proceed) {
             var axis = this.axis, tickPos = axis.tickPositions, value = this.value, series = (axis.isLinked ?
                 axis.linkedParent :
-                axis).series[0], isFirst = value === tickPos[0], isLast = value === tickPos[tickPos.length - 1], point = series && H.find(series.options.data, function (p) {
+                axis).series[0], isFirst = value === tickPos[0], isLast = value === tickPos[tickPos.length - 1], point = series && find(series.options.data, function (p) {
                 return p[axis.isXAxis ? 'x' : 'y'] === value;
             });
             // Make additional properties available for the

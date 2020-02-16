@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.0 (2019-12-10)
+ * @license Highstock JS v8.0.0 (2020-02-16)
  *
  * Indicator series type for Highstock
  *
@@ -28,18 +28,18 @@
             obj[path] = fn.apply(null, args);
         }
     }
-    _registerModule(_modules, 'indicators/zigzag.src.js', [_modules['parts/Globals.js']], function (H) {
+    _registerModule(_modules, 'indicators/zigzag.src.js', [_modules['parts/Utilities.js']], function (U) {
         /* *
          *
-         *  (c) 2010-2019 Kacper Madej
+         *  (c) 2010-2020 Kacper Madej
          *
          *  License: www.highcharts.com/license
          *
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var seriesType = H.seriesType,
-            UNDEFINED;
+        var seriesType = U.seriesType;
+        var UNDEFINED;
         /**
          * The Zig Zag series type.
          *
@@ -103,28 +103,10 @@
             nameSuffixes: ['%'],
             nameBase: 'Zig Zag',
             getValues: function (series, params) {
-                var lowIndex = params.lowIndex,
-                    highIndex = params.highIndex,
-                    deviation = params.deviation / 100,
-                    deviations = {
-                        'low': 1 + deviation,
-                        'high': 1 - deviation
-                    },
-                    xVal = series.xData,
-                    yVal = series.yData,
-                    yValLen = yVal ? yVal.length : 0,
-                    zigzag = [],
-                    xData = [],
-                    yData = [],
-                    i,
-                    j,
-                    zigzagPoint,
-                    firstZigzagLow,
-                    firstZigzagHigh,
-                    directionUp,
-                    zigzagLen,
-                    exitLoop = false,
-                    yIndex = false;
+                var lowIndex = params.lowIndex, highIndex = params.highIndex, deviation = params.deviation / 100, deviations = {
+                    'low': 1 + deviation,
+                    'high': 1 - deviation
+                }, xVal = series.xData, yVal = series.yData, yValLen = yVal ? yVal.length : 0, zigzag = [], xData = [], yData = [], i, j, zigzagPoint, firstZigzagLow, firstZigzagHigh, directionUp, zigzagLen, exitLoop = false, yIndex = false;
                 // Exit if not enught points or no low or high values
                 if (!xVal || xVal.length <= 1 ||
                     (yValLen &&

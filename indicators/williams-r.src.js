@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.0 (2019-12-10)
+ * @license Highstock JS v8.0.0 (2020-02-16)
  *
  * Indicator series type for Highstock
  *
@@ -31,7 +31,7 @@
     _registerModule(_modules, 'mixins/reduce-array.js', [_modules['parts/Globals.js']], function (H) {
         /**
          *
-         *  (c) 2010-2019 Pawel Fus & Daniel Studencki
+         *  (c) 2010-2020 Pawel Fus & Daniel Studencki
          *
          *  License: www.highcharts.com/license
          *
@@ -40,20 +40,16 @@
          * */
         var reduce = H.reduce;
         var reduceArrayMixin = {
-                /**
-                 * Get min value of array filled by OHLC data.
-                 * @private
-                 * @param {Array<*>} arr Array of OHLC points (arrays).
-                 * @param {string} index Index of "low" value in point array.
-                 * @return {number} Returns min value.
-                 */
-                minInArray: function (arr,
-            index) {
-                    return reduce(arr,
-            function (min,
-            target) {
-                        return Math.min(min,
-            target[index]);
+            /**
+             * Get min value of array filled by OHLC data.
+             * @private
+             * @param {Array<*>} arr Array of OHLC points (arrays).
+             * @param {string} index Index of "low" value in point array.
+             * @return {number} Returns min value.
+             */
+            minInArray: function (arr, index) {
+                return reduce(arr, function (min, target) {
+                    return Math.min(min, target[index]);
                 }, Number.MAX_VALUE);
             },
             /**
@@ -88,7 +84,7 @@
 
         return reduceArrayMixin;
     });
-    _registerModule(_modules, 'indicators/williams-r.src.js', [_modules['parts/Globals.js'], _modules['parts/Utilities.js'], _modules['mixins/reduce-array.js']], function (H, U, reduceArrayMixin) {
+    _registerModule(_modules, 'indicators/williams-r.src.js', [_modules['parts/Utilities.js'], _modules['mixins/reduce-array.js']], function (U, reduceArrayMixin) {
         /* *
          *
          *  License: www.highcharts.com/license
@@ -96,7 +92,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var isArray = U.isArray;
+        var isArray = U.isArray, seriesType = U.seriesType;
         var getArrayExtremes = reduceArrayMixin.getArrayExtremes;
         /**
          * The Williams %R series type.
@@ -107,7 +103,7 @@
          *
          * @augments Highcharts.Series
          */
-        H.seriesType('williamsr', 'sma', 
+        seriesType('williamsr', 'sma', 
         /**
          * Williams %R. This series requires the `linkedTo` option to be
          * set and should be loaded after the `stock/indicators/indicators.js`.
@@ -143,23 +139,11 @@
         {
             nameBase: 'Williams %R',
             getValues: function (series, params) {
-                var period = params.period,
-                    xVal = series.xData,
-                    yVal = series.yData,
-                    yValLen = yVal ? yVal.length : 0,
-                    WR = [], // 0- date, 1- Williams %R
-                    xData = [],
-                    yData = [],
-                    slicedY,
-                    close = 3,
-                    low = 2,
-                    high = 1,
-                    extremes,
-                    R,
-                    HH, // Highest high value in period
-                    LL, // Lowest low value in period
-                    CC, // Current close value
-                    i;
+                var period = params.period, xVal = series.xData, yVal = series.yData, yValLen = yVal ? yVal.length : 0, WR = [], // 0- date, 1- Williams %R
+                xData = [], yData = [], slicedY, close = 3, low = 2, high = 1, extremes, R, HH, // Highest high value in period
+                LL, // Lowest low value in period
+                CC, // Current close value
+                i;
                 // Williams %R requires close value
                 if (xVal.length < period ||
                     !isArray(yVal[0]) ||

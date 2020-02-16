@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.0 (2019-12-10)
+ * @license Highstock JS v8.0.0 (2020-02-16)
  *
  * Indicator series type for Highstock
  *
@@ -28,7 +28,7 @@
             obj[path] = fn.apply(null, args);
         }
     }
-    _registerModule(_modules, 'indicators/dpo.src.js', [_modules['parts/Globals.js'], _modules['parts/Utilities.js']], function (H, U) {
+    _registerModule(_modules, 'indicators/dpo.src.js', [_modules['parts/Utilities.js']], function (U) {
         /* *
          *
          *  License: www.highcharts.com/license
@@ -36,16 +36,14 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var correctFloat = U.correctFloat,
-            pick = U.pick;
+        var correctFloat = U.correctFloat, pick = U.pick, seriesType = U.seriesType;
         /* eslint-disable valid-jsdoc */
         // Utils
         /**
          * @private
          */
         function accumulatePoints(sum, yVal, i, index, subtract) {
-            var price = pick(yVal[i][index],
-                yVal[i]);
+            var price = pick(yVal[i][index], yVal[i]);
             if (subtract) {
                 return correctFloat(sum - price);
             }
@@ -61,7 +59,7 @@
          *
          * @augments Highcharts.Series
          */
-        H.seriesType('dpo', 'sma', 
+        seriesType('dpo', 'sma', 
         /**
          * Detrended Price Oscillator. This series requires the `linkedTo` option to
          * be set and should be loaded after the `stock/indicators/indicators.js`.
@@ -98,24 +96,9 @@
         {
             nameBase: 'DPO',
             getValues: function (series, params) {
-                var period = params.period,
-                    index = params.index,
-                    offset = Math.floor(period / 2 + 1),
-                    range = period + offset,
-                    xVal = series.xData || [],
-                    yVal = series.yData || [],
-                    yValLen = yVal.length, 
-                    // 0- date, 1- Detrended Price Oscillator
-                    DPO = [],
-                    xData = [],
-                    yData = [],
-                    sum = 0,
-                    oscillator,
-                    periodIndex,
-                    rangeIndex,
-                    price,
-                    i,
-                    j;
+                var period = params.period, index = params.index, offset = Math.floor(period / 2 + 1), range = period + offset, xVal = series.xData || [], yVal = series.yData || [], yValLen = yVal.length, 
+                // 0- date, 1- Detrended Price Oscillator
+                DPO = [], xData = [], yData = [], sum = 0, oscillator, periodIndex, rangeIndex, price, i, j;
                 if (xVal.length <= range) {
                     return;
                 }

@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.0 (2019-12-10)
+ * @license Highstock JS v8.0.0 (2020-02-16)
  *
  * (c) 2010-2019 Highsoft AS
  * Author: Sebastian Domas
@@ -27,10 +27,10 @@
             obj[path] = fn.apply(null, args);
         }
     }
-    _registerModule(_modules, 'indicators/cmf.src.js', [_modules['parts/Globals.js']], function (H) {
+    _registerModule(_modules, 'indicators/cmf.src.js', [_modules['parts/Utilities.js']], function (U) {
         /* *
          *
-         *  (c) 2010-2019 Highsoft AS
+         *  (c) 2010-2020 Highsoft AS
          *
          *  Author: Sebastian Domas
          *
@@ -41,6 +41,7 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
+        var seriesType = U.seriesType;
         /**
          * The CMF series type.
          *
@@ -50,7 +51,7 @@
          *
          * @augments Highcharts.Series
          */
-        H.seriesType('cmf', 'sma', 
+        seriesType('cmf', 'sma', 
         /**
          * Chaikin Money Flow indicator (cmf).
          *
@@ -89,15 +90,11 @@
              * otherwise false.
              */
             isValid: function () {
-                var chart = this.chart,
-                    options = this.options,
-                    series = this.linkedParent,
-                    volumeSeries = (this.volumeSeries ||
-                        (this.volumeSeries =
-                            chart.get(options.params.volumeSeriesID))),
-                    isSeriesOHLC = (series &&
-                        series.yData &&
-                        series.yData[0].length === 4);
+                var chart = this.chart, options = this.options, series = this.linkedParent, volumeSeries = (this.volumeSeries ||
+                    (this.volumeSeries =
+                        chart.get(options.params.volumeSeriesID))), isSeriesOHLC = (series &&
+                    series.yData &&
+                    series.yData[0].length === 4);
                 /**
                  * @private
                  * @param {Highcharts.Series} serie to check length validity on.
@@ -137,16 +134,7 @@
              * flow data
              */
             getMoneyFlow: function (xData, seriesYData, volumeSeriesYData, period) {
-                var len = seriesYData.length,
-                    moneyFlowVolume = [],
-                    sumVolume = 0,
-                    sumMoneyFlowVolume = 0,
-                    moneyFlowXData = [],
-                    moneyFlowYData = [],
-                    values = [],
-                    i,
-                    point,
-                    nullIndex = -1;
+                var len = seriesYData.length, moneyFlowVolume = [], sumVolume = 0, sumMoneyFlowVolume = 0, moneyFlowXData = [], moneyFlowYData = [], values = [], i, point, nullIndex = -1;
                 /**
                  * Calculates money flow volume, changes i, nullIndex vars from
                  * upper scope!
@@ -156,14 +144,11 @@
                  * @return {number|null} - volume * moneyFlowMultiplier
                  **/
                 function getMoneyFlowVolume(ohlc, volume) {
-                    var high = ohlc[1],
-                        low = ohlc[2],
-                        close = ohlc[3],
-                        isValid = volume !== null &&
-                            high !== null &&
-                            low !== null &&
-                            close !== null &&
-                            high !== low;
+                    var high = ohlc[1], low = ohlc[2], close = ohlc[3], isValid = volume !== null &&
+                        high !== null &&
+                        low !== null &&
+                        close !== null &&
+                        high !== low;
                     /**
                      * @private
                      * @param {number} h - High value

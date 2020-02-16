@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v8.0.0 (2019-12-10)
+ * @license Highcharts JS v8.0.0 (2020-02-16)
  *
  * Highcharts funnel module
  *
@@ -28,12 +28,12 @@
             obj[path] = fn.apply(null, args);
         }
     }
-    _registerModule(_modules, 'modules/funnel.src.js', [_modules['parts/Globals.js'], _modules['parts/Utilities.js']], function (Highcharts, U) {
+    _registerModule(_modules, 'modules/funnel.src.js', [_modules['parts/Globals.js'], _modules['parts/Utilities.js'], _modules['parts/Globals.js']], function (Highcharts, U, H) {
         /* *
          *
          *  Highcharts funnel module
          *
-         *  (c) 2010-2019 Torstein Honsi
+         *  (c) 2010-2020 Torstein Honsi
          *
          *  License: www.highcharts.com/license
          *
@@ -43,11 +43,7 @@
         /* eslint indent: 0 */
         var pick = U.pick;
         // create shortcuts
-        var seriesType = Highcharts.seriesType,
-            seriesTypes = Highcharts.seriesTypes,
-            fireEvent = Highcharts.fireEvent,
-            addEvent = Highcharts.addEvent,
-            noop = Highcharts.noop;
+        var seriesType = Highcharts.seriesType, seriesTypes = Highcharts.seriesTypes, fireEvent = Highcharts.fireEvent, addEvent = Highcharts.addEvent, noop = Highcharts.noop;
         /**
          * @private
          * @class
@@ -65,7 +61,7 @@
          *         Funnel demo
          *
          * @extends      plotOptions.pie
-         * @excluding    innerSize,size
+         * @excluding    innerSize,size,dataSorting
          * @product      highcharts
          * @requires     modules/funnel
          * @optionparent plotOptions.funnel
@@ -174,43 +170,10 @@
             animate: noop,
             // Overrides the pie translate method
             translate: function () {
-                var sum = 0,
-                    series = this,
-                    chart = series.chart,
-                    options = series.options,
-                    reversed = options.reversed,
-                    ignoreHiddenPoint = options.ignoreHiddenPoint,
-                    plotWidth = chart.plotWidth,
-                    plotHeight = chart.plotHeight,
-                    cumulative = 0, // start at top
-                    center = options.center,
-                    centerX = getLength(center[0],
-                    plotWidth),
-                    centerY = getLength(center[1],
-                    plotHeight),
-                    width = getLength(options.width,
-                    plotWidth),
-                    tempWidth,
-                    height = getLength(options.height,
-                    plotHeight),
-                    neckWidth = getLength(options.neckWidth,
-                    plotWidth),
-                    neckHeight = getLength(options.neckHeight,
-                    plotHeight),
-                    neckY = (centerY - height / 2) + height - neckHeight,
-                    data = series.data,
-                    path,
-                    fraction,
-                    half = (options.dataLabels.position === 'left' ?
-                        1 :
-                        0),
-                    x1,
-                    y1,
-                    x2,
-                    x3,
-                    y3,
-                    x4,
-                    y5;
+                var sum = 0, series = this, chart = series.chart, options = series.options, reversed = options.reversed, ignoreHiddenPoint = options.ignoreHiddenPoint, plotWidth = chart.plotWidth, plotHeight = chart.plotHeight, cumulative = 0, // start at top
+                center = options.center, centerX = getLength(center[0], plotWidth), centerY = getLength(center[1], plotHeight), width = getLength(options.width, plotWidth), tempWidth, height = getLength(options.height, plotHeight), neckWidth = getLength(options.neckWidth, plotWidth), neckHeight = getLength(options.neckHeight, plotHeight), neckY = (centerY - height / 2) + height - neckHeight, data = series.data, path, fraction, half = (options.dataLabels.position === 'left' ?
+                    1 :
+                    0), x1, y1, x2, x3, y3, x4, y5;
                 /**
                  * Get positions - either an integer or a percentage string must be
                  * given.
@@ -349,15 +312,7 @@
             },
             // Extend the pie data label method
             drawDataLabels: function () {
-                var series = this,
-                    data = series.data,
-                    labelDistance = series.options.dataLabels.distance,
-                    leftSide,
-                    sign,
-                    point,
-                    i = data.length,
-                    x,
-                    y;
+                var series = this, data = series.data, labelDistance = series.options.dataLabels.distance, leftSide, sign, point, i = data.length, x, y;
                 // In the original pie label anticollision logic, the slots are
                 // distributed from one labelDistance above to one labelDistance
                 // below the pie. In funnels we don't want this.
@@ -404,23 +359,12 @@
                 seriesTypes[series.options.dataLabels.inside ? 'column' : 'pie'].prototype.drawDataLabels.call(this);
             },
             alignDataLabel: function (point, dataLabel, options, alignTo, isNew) {
-                var series = point.series,
-                    reversed = series.options.reversed,
-                    dlBox = point.dlBox || point.shapeArgs,
-                    align = options.align,
-                    verticalAlign = options.verticalAlign,
-                    inside = ((series.options || {}).dataLabels || {}).inside,
-                    centerY = series.center[1],
-                    pointPlotY = (reversed ?
-                        2 * centerY - point.plotY :
-                        point.plotY),
-                    widthAtLabel = series.getWidthAt(pointPlotY - dlBox.height / 2 +
-                        dataLabel.height),
-                    offset = verticalAlign === 'middle' ?
-                        (dlBox.topWidth - dlBox.bottomWidth) / 4 :
-                        (widthAtLabel - dlBox.bottomWidth) / 2,
-                    y = dlBox.y,
-                    x = dlBox.x;
+                var series = point.series, reversed = series.options.reversed, dlBox = point.dlBox || point.shapeArgs, align = options.align, verticalAlign = options.verticalAlign, inside = ((series.options || {}).dataLabels || {}).inside, centerY = series.center[1], pointPlotY = (reversed ?
+                    2 * centerY - point.plotY :
+                    point.plotY), widthAtLabel = series.getWidthAt(pointPlotY - dlBox.height / 2 +
+                    dataLabel.height), offset = verticalAlign === 'middle' ?
+                    (dlBox.topWidth - dlBox.bottomWidth) / 4 :
+                    (widthAtLabel - dlBox.bottomWidth) / 2, y = dlBox.y, x = dlBox.x;
                 if (verticalAlign === 'middle') {
                     y = dlBox.y - dlBox.height / 2 + dataLabel.height / 2;
                 }
@@ -466,9 +410,14 @@
         /* eslint-disable no-invalid-this */
         addEvent(Highcharts.Chart, 'afterHideAllOverlappingLabels', function () {
             this.series.forEach(function (series) {
-                if (series instanceof seriesTypes.pie &&
+                var dataLabelsOptions = series.options && series.options.dataLabels;
+                if (H.isArray(dataLabelsOptions)) {
+                    dataLabelsOptions = dataLabelsOptions[0];
+                }
+                if (series.is('pie') &&
                     series.placeDataLabels &&
-                    !((series.options || {}).dataLabels || {}).inside) {
+                    dataLabelsOptions &&
+                    !dataLabelsOptions.inside) {
                     series.placeDataLabels();
                 }
             });
@@ -478,7 +427,7 @@
          * not specified, it is inherited from [chart.type](#chart.type).
          *
          * @extends   series,plotOptions.funnel
-         * @excluding dataParser, dataURL, stack, xAxis, yAxis
+         * @excluding dataParser, dataURL, stack, xAxis, yAxis, dataSorting
          * @product   highcharts
          * @requires  modules/funnel
          * @apioption series.funnel
@@ -578,7 +527,7 @@
          * not specified, it is inherited from [chart.type](#chart.type).
          *
          * @extends   series,plotOptions.pyramid
-         * @excluding dataParser, dataURL, stack, xAxis, yAxis
+         * @excluding dataParser, dataURL, stack, xAxis, yAxis, dataSorting
          * @product   highcharts
          * @requires  modules/funnel
          * @apioption series.pyramid

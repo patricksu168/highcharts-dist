@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.0 (2019-12-10)
+ * @license Highstock JS v8.0.0 (2020-02-16)
  *
  * Indicator series type for Highstock
  *
@@ -31,7 +31,7 @@
     _registerModule(_modules, 'indicators/volume-by-price.src.js', [_modules['parts/Globals.js'], _modules['parts/Utilities.js']], function (H, U) {
         /* *
          *
-         *  (c) 2010-2019 Paweł Dalek
+         *  (c) 2010-2020 Paweł Dalek
          *
          *  Volume By Price (VBP) indicator for Highstock
          *
@@ -40,20 +40,11 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var animObject = U.animObject,
-            arrayMax = U.arrayMax,
-            arrayMin = U.arrayMin,
-            correctFloat = U.correctFloat,
-            extend = U.extend,
-            isArray = U.isArray;
+        var addEvent = U.addEvent, animObject = U.animObject, arrayMax = U.arrayMax, arrayMin = U.arrayMin, correctFloat = U.correctFloat, error = U.error, extend = U.extend, isArray = U.isArray, seriesType = U.seriesType;
         /* eslint-disable require-jsdoc */
         // Utils
         function arrayExtremesOHLC(data) {
-            var dataLength = data.length,
-                min = data[0][3],
-                max = min,
-                i = 1,
-                currentPoint;
+            var dataLength = data.length, min = data[0][3], max = min, i = 1, currentPoint;
             for (; i < dataLength; i++) {
                 currentPoint = data[i][3];
                 if (currentPoint < min) {
@@ -69,11 +60,7 @@
             };
         }
         /* eslint-enable require-jsdoc */
-        var abs = Math.abs,
-            noop = H.noop,
-            addEvent = H.addEvent,
-            seriesType = H.seriesType,
-            columnPrototype = H.seriesTypes.column.prototype;
+        var abs = Math.abs, noop = H.noop, columnPrototype = H.seriesTypes.column.prototype;
         /**
          * The Volume By Price (VBP) series type.
          *
@@ -197,10 +184,7 @@
             getColumnMetrics: columnPrototype.getColumnMetrics,
             crispCol: columnPrototype.crispCol,
             init: function (chart) {
-                var indicator = this,
-                    params,
-                    baseSeries,
-                    volumeSeries;
+                var indicator = this, params, baseSeries, volumeSeries;
                 H.seriesTypes.sma.prototype.init.apply(indicator, arguments);
                 params = indicator.options.params;
                 baseSeries = indicator.linkedParent;
@@ -238,8 +222,7 @@
             },
             // Initial animation
             animate: function (init) {
-                var series = this,
-                    attr = {};
+                var series = this, attr = {};
                 if (H.svg && !init) {
                     attr.translateX = series.yAxis.pos;
                     series.group.animate(attr, extend(animObject(series.options.animation), {
@@ -265,8 +248,8 @@
             // Function responsible for dividing volume into positive and negative
             posNegVolume: function (initVol, pos) {
                 var indicator = this, signOrder = pos ?
-                        ['positive', 'negative'] :
-                        ['negative', 'positive'], volumeDivision = indicator.options.volumeDivision, pointLength = indicator.points.length, posWidths = [], negWidths = [], i = 0, pointWidth, priceZone, wholeVol, point;
+                    ['positive', 'negative'] :
+                    ['negative', 'positive'], volumeDivision = indicator.options.volumeDivision, pointLength = indicator.points.length, posWidths = [], negWidths = [], i = 0, pointWidth, priceZone, wholeVol, point;
                 if (initVol) {
                     indicator.posWidths = posWidths;
                     indicator.negWidths = negWidths;
@@ -304,26 +287,7 @@
                 }
             },
             translate: function () {
-                var indicator = this,
-                    options = indicator.options,
-                    chart = indicator.chart,
-                    yAxis = indicator.yAxis,
-                    yAxisMin = yAxis.min,
-                    zoneLinesOptions = indicator.options.zoneLines,
-                    priceZones = (indicator.priceZones),
-                    yBarOffset = 0,
-                    indicatorPoints,
-                    volumeDataArray,
-                    maxVolume,
-                    primalBarWidth,
-                    barHeight,
-                    barHeightP,
-                    oldBarHeight,
-                    barWidth,
-                    pointPadding,
-                    chartPlotTop,
-                    barX,
-                    barY;
+                var indicator = this, options = indicator.options, chart = indicator.chart, yAxis = indicator.yAxis, yAxisMin = yAxis.min, zoneLinesOptions = indicator.options.zoneLines, priceZones = (indicator.priceZones), yBarOffset = 0, indicatorPoints, volumeDataArray, maxVolume, primalBarWidth, barHeight, barHeightP, oldBarHeight, barWidth, pointPadding, chartPlotTop, barX, barY;
                 columnPrototype.translate.apply(indicator);
                 indicatorPoints = indicator.points;
                 // Do translate operation when points exist
@@ -367,26 +331,16 @@
                 }
             },
             getValues: function (series, params) {
-                var indicator = this,
-                    xValues = series.processedXData,
-                    yValues = series.processedYData,
-                    chart = indicator.chart,
-                    ranges = params.ranges,
-                    VBP = [],
-                    xData = [],
-                    yData = [],
-                    isOHLC,
-                    volumeSeries,
-                    priceZones;
+                var indicator = this, xValues = series.processedXData, yValues = series.processedYData, chart = indicator.chart, ranges = params.ranges, VBP = [], xData = [], yData = [], isOHLC, volumeSeries, priceZones;
                 // Checks if base series exists
                 if (!series.chart) {
-                    H.error('Base series not found! In case it has been removed, add ' +
+                    error('Base series not found! In case it has been removed, add ' +
                         'a new one.', true, chart);
                     return;
                 }
                 // Checks if volume series exists
                 if (!(volumeSeries = (chart.get(params.volumeSeriesID)))) {
-                    H.error('Series ' +
+                    error('Series ' +
                         params.volumeSeriesID +
                         ' not found! Check `volumeSeriesID`.', true, chart);
                     return;
@@ -394,7 +348,7 @@
                 // Checks if series data fits the OHLC format
                 isOHLC = isArray(yValues[0]);
                 if (isOHLC && yValues[0].length !== 4) {
-                    H.error('Type of ' +
+                    error('Type of ' +
                         series.name +
                         ' series is different than line, OHLC or candlestick.', true, chart);
                     return;
@@ -415,20 +369,11 @@
             },
             // Specifing where each zone should start ans end
             specifyZones: function (isOHLC, xValues, yValues, ranges, volumeSeries) {
-                var indicator = this,
-                    rangeExtremes = (isOHLC ? arrayExtremesOHLC(yValues) : false),
-                    lowRange = rangeExtremes ?
-                        rangeExtremes.min :
-                        arrayMin(yValues),
-                    highRange = rangeExtremes ?
-                        rangeExtremes.max :
-                        arrayMax(yValues),
-                    zoneStarts = indicator.zoneStarts = [],
-                    priceZones = [],
-                    i = 0,
-                    j = 1,
-                    rangeStep,
-                    zoneStartsLength;
+                var indicator = this, rangeExtremes = (isOHLC ? arrayExtremesOHLC(yValues) : false), lowRange = rangeExtremes ?
+                    rangeExtremes.min :
+                    arrayMin(yValues), highRange = rangeExtremes ?
+                    rangeExtremes.max :
+                    arrayMax(yValues), zoneStarts = indicator.zoneStarts = [], priceZones = [], i = 0, j = 1, rangeStep, zoneStartsLength;
                 if (!lowRange || !highRange) {
                     if (this.points.length) {
                         this.setData([]);
@@ -458,17 +403,7 @@
             },
             // Calculating sum of volume values for a specific zone
             volumePerZone: function (isOHLC, priceZones, volumeSeries, xValues, yValues) {
-                var indicator = this,
-                    volumeXData = volumeSeries.processedXData,
-                    volumeYData = volumeSeries.processedYData,
-                    lastZoneIndex = priceZones.length - 1,
-                    baseSeriesLength = yValues.length,
-                    volumeSeriesLength = volumeYData.length,
-                    previousValue,
-                    startFlag,
-                    endFlag,
-                    value,
-                    i;
+                var indicator = this, volumeXData = volumeSeries.processedXData, volumeYData = volumeSeries.processedYData, lastZoneIndex = priceZones.length - 1, baseSeriesLength = yValues.length, volumeSeriesLength = volumeYData.length, previousValue, startFlag, endFlag, value, i;
                 // Checks if each point has a corresponding volume value
                 if (abs(baseSeriesLength - volumeSeriesLength)) {
                     // If the first point don't have volume, add 0 value at the
@@ -524,14 +459,7 @@
             },
             // Function responsoble for drawing additional lines indicating zones
             drawZones: function (chart, yAxis, zonesValues, zonesStyles) {
-                var indicator = this,
-                    renderer = chart.renderer,
-                    zoneLinesSVG = indicator.zoneLinesSVG,
-                    zoneLinesPath = [],
-                    leftLinePos = 0,
-                    rightLinePos = chart.plotWidth,
-                    verticalOffset = chart.plotTop,
-                    verticalLinePos;
+                var indicator = this, renderer = chart.renderer, zoneLinesSVG = indicator.zoneLinesSVG, zoneLinesPath = [], leftLinePos = 0, rightLinePos = chart.plotWidth, verticalOffset = chart.plotTop, verticalLinePos;
                 zonesValues.forEach(function (value) {
                     verticalLinePos = yAxis.toPixels(value) - verticalOffset;
                     zoneLinesPath = zoneLinesPath.concat(chart.renderer.crispLine([

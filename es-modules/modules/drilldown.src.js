@@ -124,14 +124,15 @@ import H from '../parts/Globals.js';
 * @name Highcharts.DrillupEventObject#type
 * @type {"drillup"}
 */
+import Color from '../parts/Color.js';
+import Tick from '../parts/Tick.js';
 import U from '../parts/Utilities.js';
-var animObject = U.animObject, extend = U.extend, objectEach = U.objectEach, pick = U.pick, syncTimeout = U.syncTimeout;
+var addEvent = U.addEvent, animObject = U.animObject, extend = U.extend, fireEvent = U.fireEvent, format = U.format, merge = U.merge, objectEach = U.objectEach, pick = U.pick, syncTimeout = U.syncTimeout;
 import '../parts/Options.js';
 import '../parts/Chart.js';
 import '../parts/Series.js';
 import '../parts/ColumnSeries.js';
-import '../parts/Tick.js';
-var addEvent = H.addEvent, noop = H.noop, color = H.color, defaultOptions = H.defaultOptions, format = H.format, Chart = H.Chart, seriesTypes = H.seriesTypes, PieSeries = seriesTypes.pie, ColumnSeries = seriesTypes.column, Tick = H.Tick, fireEvent = H.fireEvent, ddSeriesId = 1;
+var noop = H.noop, defaultOptions = H.defaultOptions, Chart = H.Chart, seriesTypes = H.seriesTypes, PieSeries = seriesTypes.pie, ColumnSeries = seriesTypes.column, ddSeriesId = 1;
 // Add language
 extend(defaultOptions.lang, 
 /**
@@ -489,7 +490,7 @@ Chart.prototype.addSingleSeriesAsDrilldown = function (point, ddOptions) {
             else {
                 levelSeries.push(series);
                 // (#10597)
-                series.purgedOptions = H.merge({
+                series.purgedOptions = merge({
                     _ddSeriesId: series.options._ddSeriesId,
                     _levelNumber: series.options._levelNumber,
                     selected: series.options.selected
@@ -509,8 +510,8 @@ Chart.prototype.addSingleSeriesAsDrilldown = function (point, ddOptions) {
         // no graphic in line series with markers disabled
         bBox: point.graphic ? point.graphic.getBBox() : {},
         color: point.isNull ?
-            new H.Color(color).setOpacity(0).get() :
-            color,
+            new Color(colorProp.color).setOpacity(0).get() :
+            colorProp.color,
         lowerSeriesOptions: ddOptions,
         pointOptions: oldSeries.options.data[pointIndex],
         pointIndex: pointIndex,
@@ -650,7 +651,10 @@ Chart.prototype.drillUp = function () {
             }
             oldSeries.xData = []; // Overcome problems with minRange (#2898)
             level.levelSeriesOptions.forEach(addSeries);
-            fireEvent(chart, 'drillup', { seriesOptions: level.seriesOptions });
+            fireEvent(chart, 'drillup', {
+                seriesOptions: level.seriesPurgedOptions ||
+                    level.seriesOptions
+            });
             if (newSeries.type === oldSeries.type) {
                 newSeries.drilldownLevel = level;
                 newSeries.options.animation =
@@ -695,7 +699,7 @@ Chart.prototype.callbacks.push(function () {
     var chart = this;
     chart.drilldown = {
         update: function (options, redraw) {
-            H.merge(true, chart.options.drilldown, options);
+            merge(true, chart.options.drilldown, options);
             if (pick(redraw, true)) {
                 chart.redraw();
             }
@@ -857,7 +861,7 @@ ColumnSeries.prototype.animateDrillupFrom = function (level) {
                 animateTo.fill = level.color;
             }
             if (animationOptions.duration) {
-                graphic.animate(animateTo, H.merge(animationOptions, { complete: complete }));
+                graphic.animate(animateTo, merge(animationOptions, { complete: complete }));
             }
             else {
                 graphic.attr(animateTo);
@@ -881,7 +885,7 @@ if (PieSeries) {
                     }
                     if (point.graphic) {
                         point.graphic
-                            .attr(H.merge(animateFrom, {
+                            .attr(merge(animateFrom, {
                             start: start + i * startAngle,
                             end: start + (i + 1) * startAngle
                         }))[animationOptions ? 'animate' : 'attr'](animateTo, animationOptions);
@@ -974,7 +978,7 @@ Tick.prototype.drillable = function () {
         if (label && ddPointsX && ddPointsX.length) {
             label.drillable = true;
             if (!label.basicStyles && !styledMode) {
-                label.basicStyles = H.merge(label.styles);
+                label.basicStyles = merge(label.styles);
             }
             label.addClass('highcharts-drilldown-axis-label');
             label.removeOnDrillableClick = addEvent(label.element, 'click', function (e) {

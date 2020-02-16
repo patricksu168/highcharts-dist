@@ -1,6 +1,6 @@
 /* *
  *
- *  (c) 2009-2019 Øystein Moseng
+ *  (c) 2009-2020 Øystein Moseng
  *
  *  Handle announcing new data for a chart.
  *
@@ -63,6 +63,7 @@ var NewDataAnnouncer = function (chart) {
 extend(NewDataAnnouncer.prototype, {
     /**
      * Initialize the new data announcer.
+     * @private
      */
     init: function () {
         this.lastAnnouncementTime = 0;
@@ -76,6 +77,7 @@ extend(NewDataAnnouncer.prototype, {
     },
     /**
      * Remove traces of announcer.
+     * @private
      */
     destroy: function () {
         this.eventProvider.removeAddedEvents();

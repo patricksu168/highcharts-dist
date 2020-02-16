@@ -1,5 +1,5 @@
 /*
- Highcharts JS v8.0.0 (2019-12-10)
+ Highcharts JS v8.0.0 (2020-02-16)
 
  Old IE (v6, v7, v8) array polyfills for Highcharts v7+.
 

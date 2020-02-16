@@ -1,6 +1,6 @@
 /* *
  *
- *  (c) 2010-2019 Torstein Honsi
+ *  (c) 2010-2020 Torstein Honsi
  *
  *  License: www.highcharts.com/license
  *
@@ -38,10 +38,10 @@ import H from './Globals.js';
  *         Parsed JavaScript time value.
  */
 import U from './Utilities.js';
-var defined = U.defined, destroyObjectProperties = U.destroyObjectProperties, discardElement = U.discardElement, extend = U.extend, isNumber = U.isNumber, objectEach = U.objectEach, pick = U.pick, pInt = U.pInt, splat = U.splat;
+var addEvent = U.addEvent, createElement = U.createElement, css = U.css, defined = U.defined, destroyObjectProperties = U.destroyObjectProperties, discardElement = U.discardElement, extend = U.extend, fireEvent = U.fireEvent, isNumber = U.isNumber, merge = U.merge, objectEach = U.objectEach, pick = U.pick, pInt = U.pInt, splat = U.splat;
 import './Axis.js';
 import './Chart.js';
-var addEvent = H.addEvent, Axis = H.Axis, Chart = H.Chart, css = H.css, createElement = H.createElement, defaultOptions = H.defaultOptions, fireEvent = H.fireEvent, merge = H.merge;
+var Axis = H.Axis, Chart = H.Chart, defaultOptions = H.defaultOptions;
 /* ************************************************************************** *
  * Start Range Selector code                                                  *
  * ************************************************************************** */
@@ -1424,13 +1424,12 @@ RangeSelector.prototype = {
  *         The new minimum value.
  */
 Axis.prototype.minFromRange = function () {
-    var rangeOptions = this.range, type = rangeOptions.type, timeName = {
-        month: 'Month',
-        year: 'FullYear'
-    }[type], min, max = this.max, dataMin, range, time = this.chart.time, 
+    var rangeOptions = this.range, type = rangeOptions.type, min, max = this.max, dataMin, range, time = this.chart.time, 
     // Get the true range from a start date
     getTrueRange = function (base, count) {
-        var date = new time.Date(base), basePeriod = time.get(timeName, date);
+        var timeName = type === 'year' ? 'FullYear' : 'Month';
+        var date = new time.Date(base);
+        var basePeriod = time.get(timeName, date);
         time.set(timeName, date, basePeriod + count);
         if (basePeriod === time.get(timeName, date)) {
             time.set('Date', date, 0); // #6537

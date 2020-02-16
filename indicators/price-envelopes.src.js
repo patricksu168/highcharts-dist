@@ -1,5 +1,5 @@
 /**
- * @license Highstock JS v8.0.0 (2019-12-10)
+ * @license Highstock JS v8.0.0 (2020-02-16)
  *
  * Indicator series type for Highstock
  *
@@ -36,9 +36,8 @@
          *  !!!!!!! SOURCE GETS TRANSPILED BY TYPESCRIPT. EDIT TS FILE ONLY. !!!!!!!
          *
          * */
-        var isArray = U.isArray;
-        var merge = H.merge,
-            SMA = H.seriesTypes.sma;
+        var isArray = U.isArray, merge = U.merge, seriesType = U.seriesType;
+        var SMA = H.seriesTypes.sma;
         /**
          * The Price Envelopes series type.
          *
@@ -48,7 +47,7 @@
          *
          * @augments Highcharts.Series
          */
-        H.seriesType('priceenvelopes', 'sma', 
+        seriesType('priceenvelopes', 'sma', 
         /**
          * Price envelopes indicator based on [SMA](#plotOptions.sma) calculations.
          * This series requires the `linkedTo` option to be set and should be loaded
@@ -158,19 +157,12 @@
                 });
             },
             drawGraph: function () {
-                var indicator = this,
-                    middleLinePoints = indicator.points,
-                    pointsLength = middleLinePoints.length,
-                    middleLineOptions = (indicator.options),
-                    middleLinePath = indicator.graph,
-                    gappedExtend = {
-                        options: {
-                            gapSize: middleLineOptions.gapSize
-                        }
-                    },
-                    deviations = [[],
-                    []], // top and bottom point place holders
-                    point;
+                var indicator = this, middleLinePoints = indicator.points, pointsLength = middleLinePoints.length, middleLineOptions = (indicator.options), middleLinePath = indicator.graph, gappedExtend = {
+                    options: {
+                        gapSize: middleLineOptions.gapSize
+                    }
+                }, deviations = [[], []], // top and bottom point place holders
+                point;
                 // Generate points for top and bottom lines:
                 while (pointsLength--) {
                     point = middleLinePoints[pointsLength];
@@ -201,25 +193,11 @@
                 SMA.prototype.drawGraph.call(indicator);
             },
             getValues: function (series, params) {
-                var period = params.period,
-                    topPercent = params.topBand,
-                    botPercent = params.bottomBand,
-                    xVal = series.xData,
-                    yVal = series.yData,
-                    yValLen = yVal ? yVal.length : 0, 
-                    // 0- date, 1-top line, 2-middle line, 3-bottom line
-                    PE = [], 
-                    // middle line, top line and bottom line
-                    ML,
-                    TL,
-                    BL,
-                    date,
-                    xData = [],
-                    yData = [],
-                    slicedX,
-                    slicedY,
-                    point,
-                    i;
+                var period = params.period, topPercent = params.topBand, botPercent = params.bottomBand, xVal = series.xData, yVal = series.yData, yValLen = yVal ? yVal.length : 0, 
+                // 0- date, 1-top line, 2-middle line, 3-bottom line
+                PE = [], 
+                // middle line, top line and bottom line
+                ML, TL, BL, date, xData = [], yData = [], slicedX, slicedY, point, i;
                 // Price envelopes requires close value
                 if (xVal.length < period ||
                     !isArray(yVal[0]) ||
